@@ -1,0 +1,74 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "python.pythonPath": "C:/Users/JONATHAN/Desktop/flask/venv/Scripts/python.exe",
+    "python.analysis.cacheFolderPath": "C:/Users/JONATHAN/SQLite/__pycache__",
+    "python.linting.pylintArgs": ["--load-plugins", "pylint_flask_sqlalchemy"],
+    "editor.fontFamily": "Fira Code",
+    "workbench.colorTheme": "Cobalt2",
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.fontLigatures": true,
+    "editor.tokenColorCustomizations": {
+      "comments": "#00ced1",
+      "textMateRules": [
+        {
+          "scope": "string.quoted.docstring.multi.python",
+          "settings": {
+            "foreground": "#777777"
+          }
+        },
+        {
+          "scope": "punctuation.definition.string.end.python",
+          "settings": {
+            "foreground": "#00ced1"
+          }
+        },
+        {
+          "scope": "punctuation.definition.string.begin.python",
+          "settings": {
+            "foreground": "#00ced1"
+          }
+        },
+        {
+          "scope": "comment.line.number-sign.python",
+          "settings": {
+            "fontStyle": "",
+            "foreground": "#777777"
+          }
+        },
+        {
+          "scope": "variable.parameter.function-call.python",
+          "settings": {
+            "fontStyle": "",
+            "foreground": "#abd0fa"
+          }
+        },
+        {
+          "scope": "meta.member.access.python",
+          "settings": {
+            "fontStyle": "",
+            "foreground": "#ffffff"
+          }
+        },
+        {
+          "scope": "meta.function-call.arguments.python",
+          "settings": {
+            "fontStyle": "",
+            "foreground": "#ffffff"
+          }
+        },
+        {
+          "scope": "entity.name.function.python",
+          "settings": {
+            "fontStyle": "",
+            "foreground": "#f1df9d"
+          }
+        }
+      ]
+    }
+  }
+}
