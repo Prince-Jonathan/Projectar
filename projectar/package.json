@@ -1,6 +1,6 @@
 {
   "name": "projectar",
-  "version": "1.0.6",
+  "version": "0.1.0",
   "private": false,
   "dependencies": {
     "react": "^16.13.1",
