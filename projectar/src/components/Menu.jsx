@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, useReducer } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Container, Header, SideMenu } from "simple-side-menu";
 import Switch from "react-switch";
@@ -7,10 +7,10 @@ import MENU_ITEMS from "./menuList";
 
 import "../style.css";
 
-class App extends PureComponent {
+class Menu extends PureComponent {
   state = {
     isOpen: true,
-    isExpandable: true,
+    isExpandable: false,
   };
 
   toggleMenuSelection = (isExpandable) => {
@@ -32,8 +32,8 @@ class App extends PureComponent {
             isOpen={isOpen}
             header={
               <Header
-                logo="https://cdn-images-1.medium.com/max/1200/1*YsPpBr_PgtyTR6CFDmKU9g.png"
-                title="Side Menu"
+                logo="https://atlas-content-cdn.pixelsquid.com/stock-images/low-poly-bubble-letter-p-language-ZR1yom3-600.jpg"
+                title="Projectar"
               />
             }
             items={MENU_ITEMS}
@@ -47,7 +47,7 @@ class App extends PureComponent {
                     <i className="material-icons btn-menu__icon">menu</i>
                   </div>
                 )}
-                <h1 className="title">Side Menu</h1>
+                <h1 className="title">Welcome {this.props.user.name}</h1>
               </div>
               <label className="nav-bar__right" htmlFor="normal-switch">
                 <span className="label">IS EXPANDABLE</span>
@@ -88,7 +88,7 @@ class App extends PureComponent {
   }
 }
 
-export default App;
+export default Menu;
 
 const RoutePath = ({ path }) => <h4 className="path">{path}</h4>;
 

@@ -8,6 +8,9 @@ from models import Project, User
 from modules import fetch, log
 
 
+@app.route('/api')
+def api():
+	return {"name":"Maxwell"}
 
 @app.route('/user/add', methods=['POST'])
 def add_user():

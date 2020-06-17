@@ -20,11 +20,7 @@ class User(db.Model, Serializer):
 	last_name = db.Column(db.String(50), nullable=False)
 	username = db.Column(db.String(100), unique=True, nullable=False)
 	pin = db.Column(db.Integer, nullable=False)
-<<<<<<< HEAD
 	# status = db.Column(db.String(50), nullable=False)
-=======
-	status = db.Column(db.String(50), nullable=False)
->>>>>>> 0cb6ac0d951036b83077a2770644b0e863f5a04f
 
 	projects = db.relationship('Project', 
 				secondary=ENROLMENT,
