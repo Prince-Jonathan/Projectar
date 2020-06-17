@@ -1,5 +1,5 @@
 {
-  "name": "react-simple-side-menu",
+  "name": "projectar",
   "version": "1.0.6",
   "private": false,
   "dependencies": {
@@ -29,6 +29,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "homepage": "http://HamzaMhadbi.github.io/simple-side-menu"
+  ]
 }
