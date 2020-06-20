@@ -21,13 +21,8 @@ body {
 .main {
  height:20vh;
 }
-.aside,
 .section {
-  
-}
-.aside {
-  background-color: yellow;
-}
-.section {
-  background-color: green;
+  align-self:center;
+  text-align:center;
+  color:white;
 }
