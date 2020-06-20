@@ -1,16 +1,10 @@
-import React, { Component } from "react";
-
+import React, { Component } from 'react';
+import Aside from "./components/sidemenu/SideMenu";
 
 class App extends Component {
-  state = { name: "Jonathan" };
-  componentDidMount() {
-    this.fetch();
-  }
-  fetch=()=>{
-    return fetch("/api").then((res) => res.json().then((data) => this.setState(data)));
-  }
-  render() {
-    return <div></div>;
+  render() { 
+    return ( <Aside/> );
   }
 }
+ 
 export default App;
