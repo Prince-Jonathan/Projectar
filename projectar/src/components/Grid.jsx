@@ -16,7 +16,6 @@ const Column = styled.div.attrs((props) => ({ className: props.className }))`
   }
   overflow: auto;
   height: auto;
-  padding: 0.5rem;
   ${({ flex }) => `flex:${flex}`};
 
   @media only screen and (max-width: 650px) {
