@@ -1,0 +1,41 @@
+import styled from "styled-components";
+
+const Row = styled.div.attrs((props) => ({ className: props.className }))`
+  display: flex;
+  overflow: hidden;
+  height: 100vh;
+  position: relative;
+  width: 100%;
+  backface-visibility: hidden;
+  will-change: overflow;
+`;
+
+const Column = styled.div.attrs((props) => ({ className: props.className }))`
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  overflow: auto;
+  height: auto;
+  padding: 0.5rem;
+  ${({ flex }) => `flex:${flex}`};
+
+  @media only screen and (max-width: 650px) {
+    ${({ xs }) => `flex:${xs}`};
+  }
+
+  @media only screen and (min-width: 650px) {
+    ${({ sm }) => `flex:${sm}`};
+  }
+
+  @media only screen and (min-width: 768px) {
+    ${({ md }) => `flex:${md}`};
+  }
+  @media only screen and (min-width: 992px) {
+    ${({ lg }) => `flex:${lg}`};
+  }
+  @media only screen and (min-width: 1200px) {
+    ${({ xl }) => `flex:${xl}`};
+  }
+`;
+
+export { Row, Column };
