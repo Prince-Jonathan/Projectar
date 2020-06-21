@@ -8,17 +8,19 @@ const Row = styled.div.attrs((props) => ({ className: props.className }))`
   width: 100%;
   backface-visibility: hidden;
   will-change: overflow;
+  ${({ background_color }) => `background-color:${background_color}`};
 `;
 
 const Column = styled.div.attrs((props) => ({ className: props.className }))`
   &::-webkit-scrollbar {
     display: none;
   }
-  min-width:159px;
+  ${'' /* min-width:159px; */}
   overflow: auto;
   height: auto;
   ${({ flex }) => `flex:${flex}`};
   ${({ background_color }) => `background-color:${background_color}`};
+
 
   @media only screen and (max-width: 650px) {
     ${({ xs }) => `flex:${xs}`};

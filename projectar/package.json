@@ -14,11 +14,17 @@
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
-    "gh-pages": "^2.0.1"
+    "css-loader": "^3.6.0",
+    "gh-pages": "^2.0.1",
+    "less": "^3.11.3",
+    "less-loader": "^6.1.1",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && webpack --config webpack.config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
@@ -32,5 +38,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "proxy": "http://localhost:8050"
 }
