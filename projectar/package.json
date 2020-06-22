@@ -6,11 +6,9 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-router-dom": "^4.3.1",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "2.1.1",
     "react-sidemenu": "^1.1.0",
-    "react-switch": "^5.0.1",
-    "simple-side-menu": "^1.0.8",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
