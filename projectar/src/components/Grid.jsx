@@ -14,6 +14,7 @@ const Row = styled.div.attrs((props) => ({ className: props.className }))`
 const Column = styled.div.attrs((props) => ({ className: props.className }))`
   &::-webkit-scrollbar {
     display: none;
+    
   }
   ${'' /* min-width:159px; */}
   overflow: auto;
@@ -21,8 +22,11 @@ const Column = styled.div.attrs((props) => ({ className: props.className }))`
   ${({ flex }) => `flex:${flex}`};
   ${({ background_color }) => `background-color:${background_color}`};
 
+  @media only screen and (max-width: 500px) {
+    ${({ xxs }) => `flex:${xxs}`};
+  }
 
-  @media only screen and (max-width: 650px) {
+  @media only screen and (min-width: 500px) {
     ${({ xs }) => `flex:${xs}`};
   }
 

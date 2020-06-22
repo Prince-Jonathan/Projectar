@@ -10,13 +10,14 @@ class App extends Component {
       .then((res) => res.json())
       .then((data) => this.setState(data));
   }
+  bgcolor="#10292E";
   render() {
     return (
-      <Row background_color="#10292E" className="main">
-        <Column flex="1" background_color="#1A2226" xs="1">
+      <Row background_color={this.bgcolor} className="main">
+        <Column  background_color={this.bgcolor} xxs="1">
           <Aside />
         </Column>
-        <Column flex="4" xs="0" className="section">
+        <Column  xxs="0" xs="2" sm="3" md="4" lg="5" className="section">
           {this.state.name ? `${this.state.name}'s ` : ""}
           <span
             style={{
