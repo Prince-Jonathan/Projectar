@@ -13,13 +13,21 @@ class App extends Component {
   render() {
     return (
       <Row background_color="#10292E" className="main">
-        <Column flex="1" background_color="#1A2226" xs="0">
+        <Column flex="1" background_color="#1A2226" xs="1">
           <Aside />
         </Column>
-        <Column flex="4" xs="1" className="section">
+        <Column flex="4" xs="0" className="section">
           {this.state.name ? `${this.state.name}'s ` : ""}
-          <span style={{ color: "white", fontStyle: "italic" }}>Work</span>
-          space
+          <span
+            style={{
+              color: "white",
+              fontFamily: "consolas, sans serif",
+              fontStyle: "italic",
+            }}
+          >
+            Project
+          </span>
+          ar
         </Column>
       </Row>
     );

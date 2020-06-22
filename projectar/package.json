@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "dev-start": "concurrently --kill-others \"less-watch-compiler --config less-watch-compiler.config.json\" \"react-scripts start\"",
+    "dev-start": "concurrently --kill-others \"less-watch-compiler --config less-watch-compiler.config.json\" \"npm start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
