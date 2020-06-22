@@ -1,0 +1,39 @@
+.Side-menu-default {
+  background-color: #5ca3d541;
+  color: #FAED25;
+}
+.Side-menu-default *:not(i) {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+}
+.Side-menu-default .divider {
+  background-color: #10292E;
+  color: #bfc8cc;
+  text-transform: uppercase;
+}
+.Side-menu-default .item a {
+  text-decoration: none;
+  color: #FAED25;
+}
+.Side-menu-default .item.active {
+  color: #F68887;
+}
+.Side-menu-default .item.active .children {
+  color: #FAED25;
+}
+.Side-menu-default .item.active > .item-title > a {
+  color: white;
+}
+.Side-menu-default .item:hover > .item-title {
+  color: #F68887;
+}
+.Side-menu-default .item:hover > .item-title a {
+  color: white;
+}
+.Side-menu-default .item.item-level-1:hover > .item-title {
+  background-color: #2a6c7a;
+}
+.Side-menu-default .item.item-level-1:hover,
+.Side-menu-default .item.item-level-1.active {
+  border-left: 4px solid #FAED25;
+}

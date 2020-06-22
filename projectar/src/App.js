@@ -12,7 +12,7 @@ class App extends Component {
   }
   render() {
     return (
-      <Row background_color="#1F2605" className="main">
+      <Row background_color="#10292E" className="main">
         <Column flex="1" background_color="#1A2226" xs="0">
           <Aside />
         </Column>
