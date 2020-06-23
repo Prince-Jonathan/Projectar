@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 body::before {
@@ -10,23 +10,23 @@ body::before {
   left: 0;
   width: 100%;
   height: 10px;
-  -webkit-box-shadow: 0px 0 10px rgba(0, 0, 0, 0.8); /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-  -moz-box-shadow: 0px 0 10px rgba(0, 0, 0, 0.8); /* Firefox 3.5 - 3.6 */
-  box-shadow: 0px 0 10px rgba(0, 0, 0, 10.8); /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+  -webkit-box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Firefox 3.5 - 3.6 */
+  box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
   z-index: 100;
 }
 body {
   margin: 0;
 }
 .main {
- height:20vh;
+  height: 20vh;
 }
 .section {
-  align-self:center;
-  text-align:center;
-  color:#FAED25;
+  align-self: center;
+  text-align: center;
+  color: #faed25;
   background-color: #eae8dc00;
-  font-family:Open Sans, sans-serif;
+  font-family: Open Sans, sans-serif;
   font-weight: bolder;
   font-size: xx-large;
 }
