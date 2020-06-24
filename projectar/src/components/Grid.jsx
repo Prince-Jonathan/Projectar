@@ -20,6 +20,7 @@ const Column = styled.div.attrs((props) => ({ className: props.className }))`
   overflow: auto;
   height: auto;
   ${({ flex }) => `flex:${flex}`};
+  ${({ flexDirection }) => `flex-direction:${flexDirection}`};
   ${({ background_color }) => `background-color:${background_color}`};
 
   @media only screen and (max-width: 500px) {
