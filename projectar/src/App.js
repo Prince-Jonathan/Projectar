@@ -33,6 +33,16 @@ class App extends Component {
     }
     return (
       <div>
+        <Default>
+          <Row background_color={bgcolor} className="main">
+            <Column background_color={bgcolor}>
+              <Aside />
+            </Column>
+            <Column xs="2" sm="3" md="4" lg="5" className="section">
+              <Wall name={this.state.name} />
+            </Column>
+          </Row>
+        </Default>
         <Mobile>
           <Row
             flex_direction="column"
@@ -43,7 +53,6 @@ class App extends Component {
               <Toolbar onClick={this.handleShowSideMenu} />
             </Column>
             <Row>
-              {console.log(asideClass.join(" "))}
               <Column
                 className={asideClass.join(" ")}
                 background_color={bgcolor}
@@ -59,16 +68,6 @@ class App extends Component {
             </Row>
           </Row>
         </Mobile>
-        <Default>
-          <Row background_color={this.bgcolor} className="main">
-            <Column background_color={this.bgcolor} xxs="1">
-              <Aside />
-            </Column>
-            <Column xxs="0" xs="2" sm="3" md="4" lg="5" className="section">
-              <Wall name={this.state.name} />
-            </Column>
-          </Row>
-        </Default>
       </div>
     );
   }

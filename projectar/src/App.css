@@ -37,7 +37,7 @@ body {
 }
 
 .section {
-  /* align-self: center; */
+  align-self: center;
   text-align: center;
   color: #faed25;
   background-color: #eae8dc00;
