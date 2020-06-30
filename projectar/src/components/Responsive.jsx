@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { useMediaQuery } from "react-responsive";
 
 const Desktop = ({ children }) => {
@@ -10,11 +10,11 @@ const Tablet = ({ children }) => {
   return isTablet ? children : null;
 };
 const Mobile = ({ children }) => {
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isMobile = useMediaQuery({ maxWidth: 500 });
   return isMobile ? children : null;
 };
 const Default = ({ children }) => {
-  const isNotMobile = useMediaQuery({ minWidth: 768 });
+  const isNotMobile = useMediaQuery({ minWidth: 500 });
   return isNotMobile ? children : null;
 };
 

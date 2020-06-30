@@ -9,6 +9,7 @@ const Row = styled.div.attrs((props) => ({ className: props.className }))`
   backface-visibility: hidden;
   will-change: overflow;
   ${({ background_color }) => `background-color:${background_color}`};
+  ${({ flex_direction }) => `flex-direction:${flex_direction}`};
 `;
 
 const Column = styled.div.attrs((props) => ({ className: props.className }))`

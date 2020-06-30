@@ -1,0 +1,15 @@
+.toolbar {
+  box-sizing: border-box;
+
+  /* position:fixed; */
+  display: flex;
+  width: 100;
+  background: #faed25;
+  height: 35px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.toolbar .button {
+  margin: 0 5px 0 5px;
+}

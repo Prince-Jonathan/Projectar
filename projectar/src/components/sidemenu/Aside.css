@@ -1,0 +1,7 @@
+.aside {
+  transform: translateX(-100%);
+}
+
+.aside .open {
+  transform: translateX(0);
+}

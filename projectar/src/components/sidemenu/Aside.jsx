@@ -1,16 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import SideMenu from "react-sidemenu";
 import items from "./menuList";
+
+// default react-sidemenu styling
 import "./side-menu.css";
+// customized react-sidemenu styling
 import "./Side-menu-custom.css";
 
-class Aside extends Component {
-  render() {
-    return (
-      <div>
-        <SideMenu items={items} />
-      </div>
-    );
-  }
-}
+const Aside = (props) => {
+  return (
+    <div>
+      <SideMenu items={items} />
+    </div>
+  );
+};
 export default Aside;
