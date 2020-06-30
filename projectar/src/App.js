@@ -39,7 +39,13 @@ class App extends Component {
               <Aside />
             </Column>
             <Column xs="2" sm="3" md="4" lg="5" className="section">
-              <Wall name={this.state.name} />
+              <Row flex_direction="column" justify_content="space-evenly">
+                <div>How's </div>
+                <div>the </div>
+                <div>projection</div>
+                <div>from</div>
+                <Wall name={this.state.name} />
+              </Row>
             </Column>
           </Row>
         </Default>
@@ -52,20 +58,27 @@ class App extends Component {
             <Column>
               <Toolbar onClick={this.handleShowSideMenu} />
             </Column>
-            <Row>
+            <Row
+              flex_direction="column"
+              justify_content="space-evenly"
+              className="section"
+            >
               <Column
                 className={asideClass.join(" ")}
                 background_color={bgcolor}
               >
                 <Aside />
               </Column>
-              <Column xs="2" sm="3" md="4" lg="5" className="section">
-                <Wall name={this.state.name} />
-              </Column>
-              {this.state.showSideMenu ? (
-                <BackDrop onClick={this.handleShowSideMenu} />
-              ) : null}
+
+              <div>project</div>
+              <div>your</div>
+              <div>outcome </div>
+              <div>with</div>
+              <Wall name={this.state.name} />
             </Row>
+            {this.state.showSideMenu ? (
+              <BackDrop onClick={this.handleShowSideMenu} />
+            ) : null}
           </Row>
         </Mobile>
       </div>

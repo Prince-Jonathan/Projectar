@@ -38,6 +38,7 @@ body {
 
 .section {
   align-self: center;
+  /* take text-align out, on introducing components */
   text-align: center;
   color: #faed25;
   background-color: #eae8dc00;
@@ -47,7 +48,7 @@ body {
 }
 
 .drawer.aside {
-  transform: translateX(-100%);
+  transform: translateX(-110%);
   transition: transform 0.3s ease-out;
 }
 
