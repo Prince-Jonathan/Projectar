@@ -15,16 +15,9 @@ const Layout = (props) => {
     <div>
       <Default>
         <Row background_color={bgcolor} className="main">
-          <Column background_color={bgcolor}>
-            {/* <Aside /> */}
-            {props.aside}
-          </Column>
+          <Column background_color={bgcolor}>{props.aside}</Column>
           <Column xs="2" sm="3" md="4" lg="5" className="section">
             <Row flex_direction="column" justify_content="space-evenly">
-              {/* <div>How's </div>
-              <div>the </div>
-              <div>projection</div>
-              <div>from</div> */}
               {props.children}
               <Wall name={props.name} />
             </Row>
@@ -46,14 +39,9 @@ const Layout = (props) => {
             className="section"
           >
             <Column className={asideClass.join(" ")} background_color={bgcolor}>
-              {/* <Aside /> */}
               {props.aside}
             </Column>
 
-            {/* <div>project</div>
-            <div>your</div>
-            <div>outcome </div>
-            <div>with</div> */}
             {props.children}
             <Wall name={props.name} />
           </Row>
