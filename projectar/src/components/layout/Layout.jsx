@@ -1,4 +1,6 @@
 import React from "react";
+import { Switch, Route } from "react-router-dom";
+
 import { Default, Mobile } from "../Responsive";
 import { Row, Column } from "../Grid";
 import Wall from "../Wall";
@@ -21,11 +23,13 @@ const Layout = (props) => {
             {props.aside}
           </Column>
           <Column xs="2" sm="3" md="4" lg="5" className="section">
-            <Row
-              justifyContent="space-evenly"
-            >
-              <Column>{props.children}</Column>
-              {/* <Wall name={props.name} /> */}
+            <Row justifyContent="space-evenly">
+              <Column>
+                {props.children}
+                <Route exact path="/">
+                  <Wall name={props.name} /> doesn't recognise this path
+                </Route>
+              </Column>
             </Row>
           </Column>
         </Row>
