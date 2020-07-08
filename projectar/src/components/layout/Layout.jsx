@@ -1,9 +1,9 @@
 import React from "react";
-import { Default, Mobile } from "../../Responsive";
-import { Row, Column } from "../../Grid";
-import Wall from "../../Wall";
-import Toolbar from "../Toolbar";
-import BackDrop from "../../backdrop/Backdrop";
+import { Default, Mobile } from "../Responsive";
+import { Row, Column } from "../Grid";
+import Wall from "../Wall";
+import Toolbar from "../toolbar/Toolbar";
+import BackDrop from "../backdrop/Backdrop";
 
 import "./Layout.css";
 
@@ -43,10 +43,10 @@ const Layout = (props) => {
             <Row
               flexWrap="wrap"
               justifyContent="space-evenly"
-              flexDirection="column"
               alignItems="center"
               overflow="auto"
               className="section pad"
+
             >
               <Column
                 className={asideClass.join(" ")}
