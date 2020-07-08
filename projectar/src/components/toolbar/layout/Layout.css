@@ -1,0 +1,39 @@
+.pad {
+  padding: 15px;
+}
+.section {
+  color: #faed25;
+  background-color: #eae8dc00;
+  font-family: Open Sans, sans-serif;
+  font-size: large;
+  align-self: center;
+  text-align: center;
+}
+.aside {
+  -webkit-box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Firefox 3.5 - 3.6 */
+  box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+.drawer {
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 200;
+  overflow-y: auto;
+
+  -webkit-box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Firefox 3.5 - 3.6 */
+  box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+
+.drawer.aside {
+  transform: translateX(-110%);
+  transition: transform 0.3s ease-out;
+}
+
+.drawer.aside.open {
+  transform: translateX(0%);
+}

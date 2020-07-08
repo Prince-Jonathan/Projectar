@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
 const Row = styled.div.attrs((props) => ({ className: props.className }))`
+  &::-webkit-scrollbar {
+    display: none;
+  }
   display: flex;
   overflow: hidden;
   height: 100vh;
@@ -8,9 +11,12 @@ const Row = styled.div.attrs((props) => ({ className: props.className }))`
   width: 100%;
   backface-visibility: hidden;
   will-change: overflow;
-  ${({ background_color }) => `background-color:${background_color}`};
-  ${({ flex_direction }) => `flex-direction:${flex_direction}`};
-  ${({ justify_content }) => `justify-content:${justify_content}`};
+  ${({ backgroundColor }) => `background-color:${backgroundColor}`};
+  ${({ flexDirection }) => `flex-direction:${flexDirection}`};
+  ${({ justifyContent }) => `justify-content:${justifyContent}`};
+  ${({ flexWrap }) => `flex-wrap:${flexWrap}`};
+  ${({ alignItems }) => `align-items:${alignItems}`};
+  ${({ overflow }) => `overflow:${overflow}`};
 `;
 
 const Column = styled.div.attrs((props) => ({ className: props.className }))`
@@ -21,7 +27,7 @@ const Column = styled.div.attrs((props) => ({ className: props.className }))`
   overflow: auto;
   height: auto;
   ${({ flex }) => `flex:${flex}`};
-  ${({ background_color }) => `background-color:${background_color}`};
+  ${({ backgroundColor }) => `background-color:${backgroundColor}`};
 
   @media only screen and (max-width: 500px) {
     ${({ xxs }) => `flex:${xxs}`};

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import Aside from "./components/sidemenu/Aside";
+import { Route, Switch } from "react-router-dom";
+import Slate from "./components/content/Slate"
 
 import "./App.css";
-import Layout from "./components/Layout";
+import Layout from "./components/toolbar/layout/Layout";
 
 class App extends Component {
   state = { name: "", showSideMenu: false };
@@ -28,10 +30,10 @@ class App extends Component {
         name={this.state.name}
         onShowSideMenu={this.handleShowSideMenu}
       >
-        <div>How's </div>
-        <div>the </div>
-        <div>projection</div>
-        <div>from</div>
+       <Slate/>
+       <Slate/>
+       <Slate/>
+       <Slate/>
       </Layout>
     );
   }

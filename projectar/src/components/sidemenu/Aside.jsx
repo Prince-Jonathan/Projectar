@@ -10,7 +10,11 @@ import "./Side-menu-custom.css";
 const Aside = (props) => {
   return (
     <div>
-      <SideMenu items={items} />
+      <SideMenu
+        key={items.length}
+        items={items}
+        onMenuItemClick={(value, extras) => (window.location.href = value)}
+      />
     </div>
   );
 };
