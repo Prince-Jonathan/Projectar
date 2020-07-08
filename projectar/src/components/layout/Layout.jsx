@@ -22,10 +22,7 @@ const Layout = (props) => {
           </Column>
           <Column xs="2" sm="3" md="4" lg="5" className="section">
             <Row
-              // flexWrap="wrap"
               justifyContent="space-evenly"
-              // alignItems="center"
-              // className="pad"
             >
               <Column>{props.children}</Column>
               {/* <Wall name={props.name} /> */}
@@ -39,11 +36,7 @@ const Layout = (props) => {
             <Toolbar onClick={props.onShowSideMenu} />
           </Column>
           <Column>
-            <Row
-              justifyContent="space-evenly"
-              // alignItems="center"
-              // className="section pad"
-            >
+            <Row justifyContent="space-evenly">
               <Column
                 className={asideClass.join(" ")}
                 backgroundColor={bgcolor}

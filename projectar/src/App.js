@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+
 import Aside from "./components/sidemenu/Aside";
-import Slate from "./components/content/Slate";
-import "./App.css";
 import Layout from "./components/layout/Layout";
+import Slate from "./components/content/Slate";
+
+import "./App.css";
 
 class App extends Component {
   state = { name: "", showSideMenu: false };
@@ -28,15 +31,23 @@ class App extends Component {
         name={this.state.name}
         onShowSideMenu={this.handleShowSideMenu}
       >
-        <Slate>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque
-          cupiditate aliquid illum blanditiis aspernatur dicta officiis ducimus.
-          Sed repellat ad, esse possimus officia nesciunt deleniti perferendis,
-          dolorum quidem autem vel.Lorem ipsum dolor sit amet, consectetur
-          adipisicing elit. Eaque cupiditate aliquid illum blanditiis aspernatur
-          dicta officiis ducimus. Sed repellat ad, esse possimus officia
-          nesciunt deleniti perferendis, dolorum quidem autem vel.{" "}
-        </Slate>
+        <Switch>
+          <Route path="/workspace">
+            <Slate>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque
+              cupiditate aliquid illum blanditiis aspernatur dicta officiis
+              ducimus. Sed repellat ad, esse possimus officia nesciunt deleniti
+              perferendis, dolorum quidem autem vel.Lorem ipsum dolor sit amet,
+              consectetur adipisicing elit. Eaque cupiditate aliquid illum
+              blanditiis aspernatur dicta officiis ducimus. Sed repellat ad,
+              esse possimus officia nesciunt deleniti perferendis, dolorum
+              quidem autem vel.
+              <hr/>
+              <div>
+              <strong>The User Workspace</strong></div>
+            </Slate>
+          </Route>
+        </Switch>
       </Layout>
     );
   }
