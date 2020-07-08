@@ -22,13 +22,12 @@ const Layout = (props) => {
           </Column>
           <Column xs="2" sm="3" md="4" lg="5" className="section">
             <Row
-              flexWrap="wrap"
+              // flexWrap="wrap"
               justifyContent="space-evenly"
-              alignItems="center"
-              overflow="auto"
-              className="pad"
+              // alignItems="center"
+              // className="pad"
             >
-              {props.children}
+              <Column>{props.children}</Column>
               {/* <Wall name={props.name} /> */}
             </Row>
           </Column>
@@ -41,12 +40,9 @@ const Layout = (props) => {
           </Column>
           <Column>
             <Row
-              flexWrap="wrap"
               justifyContent="space-evenly"
-              alignItems="center"
-              overflow="auto"
-              className="section pad"
-
+              // alignItems="center"
+              // className="section pad"
             >
               <Column
                 className={asideClass.join(" ")}
@@ -54,9 +50,10 @@ const Layout = (props) => {
               >
                 {props.aside}
               </Column>
-
-              {props.children}
-              <Wall name={props.name} />
+              <Column className="section pad">
+                {props.children}
+                <Wall name={props.name} />
+              </Column>
             </Row>
           </Column>
           {props.showSideMenu ? (

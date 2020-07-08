@@ -16,7 +16,6 @@ const Row = styled.div.attrs((props) => ({ className: props.className }))`
   ${({ justifyContent }) => `justify-content:${justifyContent}`};
   ${({ flexWrap }) => `flex-wrap:${flexWrap}`};
   ${({ alignItems }) => `align-items:${alignItems}`};
-  ${({ overflow }) => `overflow:${overflow}`};
 `;
 
 const Column = styled.div.attrs((props) => ({ className: props.className }))`

@@ -1,16 +1,16 @@
 .slate {
-  background-color: #faed25;
+  background-color: #faec25d0;
   max-height: 200px;
   max-width: 800px;
 
   /* width: max-content; */
   padding: 5px;
+  margin: 30px 0px;
   color: #10292e;
   border-radius: 5px;
+  margin-right: 10px;
 
- 
-
-  -webkit-box-shadow: 0px 0 15px rgb(0, 0, 0, 10.8); /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-  -moz-box-shadow: 0px 0 15px rgb(0, 0, 0, 10.8); /* Firefox 3.5 - 3.6 */
-  box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+  -webkit-box-shadow: 0 8px 6px -6px black; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 0 8px 6px -6px black; /* Firefox 3.5 - 3.6 */
+  box-shadow: 0 8px 6px -6px black; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }

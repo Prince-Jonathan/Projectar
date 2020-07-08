@@ -28,9 +28,15 @@ class App extends Component {
         name={this.state.name}
         onShowSideMenu={this.handleShowSideMenu}
       >
-        <Slate />
-        <Slate />
-        <Slate />
+        <Slate>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque
+          cupiditate aliquid illum blanditiis aspernatur dicta officiis ducimus.
+          Sed repellat ad, esse possimus officia nesciunt deleniti perferendis,
+          dolorum quidem autem vel.Lorem ipsum dolor sit amet, consectetur
+          adipisicing elit. Eaque cupiditate aliquid illum blanditiis aspernatur
+          dicta officiis ducimus. Sed repellat ad, esse possimus officia
+          nesciunt deleniti perferendis, dolorum quidem autem vel.{" "}
+        </Slate>
       </Layout>
     );
   }

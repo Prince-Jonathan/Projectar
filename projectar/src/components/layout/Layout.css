@@ -1,12 +1,11 @@
 .pad {
-  padding: 30px;
+  padding: 0px 35px;
 }
 .section {
   color: #faed25;
   background-color: #eae8dc00;
   font-family: Open Sans, sans-serif;
-  font-size: large;
-  align-self: center;
+  /* font-size: large; */
   text-align: center;
 }
 .aside {

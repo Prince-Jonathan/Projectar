@@ -7,13 +7,7 @@ const Slate = (props) => {
     <div>
       <Row className="slate">
         <Column>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque
-          cupiditate aliquid illum blanditiis aspernatur dicta officiis ducimus.
-          Sed repellat ad, esse possimus officia nesciunt deleniti perferendis,
-          dolorum quidem autem vel.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque
-          cupiditate aliquid illum blanditiis aspernatur dicta officiis ducimus.
-          Sed repellat ad, esse possimus officia nesciunt deleniti perferendis,
-          dolorum quidem autem vel.
+          {props.children}
         </Column>
       </Row>
     </div>
