@@ -1,19 +1,17 @@
 import React from "react";
 
 const Wall = (props) => {
+  const wall = {
+    color: "white",
+    fontFamily: "consolas, Open Sans, sans-serif",
+    fontStyle: "italic",
+  };
+  let name = props.name ? `${props.name}'s ` : "";
   return (
     <div>
-      {props.name ? `${props.name}'s ` : ""}
-      <span
-        style={{
-          color: "white",
-          fontFamily: "consolas, Open Sans, sans-serif",
-          fontStyle: "italic",
-        }}
-      >
-        Project
-      </span>
-      ar{" "}
+      {name}
+      <span style={wall}>Project</span>
+      ar
     </div>
   );
 };

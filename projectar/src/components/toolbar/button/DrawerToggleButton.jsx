@@ -3,11 +3,7 @@ import "./Button.css";
 
 const DrawerToggleButton = (props) => {
   return (
-    <button
-      onClick={props.onClick}
-      // style={{ backgroundColor: "", height: "25px", width: "50px" }}
-      className="button"
-    >
+    <button onClick={props.onClick} className="button">
       <i className="fa fa-reorder fa-lg" />
     </button>
   );

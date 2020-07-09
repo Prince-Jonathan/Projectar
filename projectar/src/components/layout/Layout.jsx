@@ -15,6 +15,9 @@ const Layout = (props) => {
   if (props.showSideMenu) {
     asideClass.push("open");
   }
+  let backdrop = props.showSideMenu ? (
+    <BackDrop onClick={props.onShowSideMenu} />
+  ) : null;
   return (
     <div>
       <Default>
@@ -53,9 +56,7 @@ const Layout = (props) => {
               </Column>
             </Row>
           </Column>
-          {props.showSideMenu ? (
-            <BackDrop onClick={props.onShowSideMenu} />
-          ) : null}
+          {backdrop}
         </Row>
       </Mobile>
     </div>
