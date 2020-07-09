@@ -1,6 +1,6 @@
 import React from "react";
 
-import DrawerToggleButton from "./DrawerToggleButton";
+import DrawerToggleButton from "./button/DrawerToggleButton";
 
 import "./Toolbar.css";
 

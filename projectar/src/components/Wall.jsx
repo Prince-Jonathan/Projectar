@@ -7,7 +7,7 @@ const Wall = (props) => {
       <span
         style={{
           color: "white",
-          fontFamily: "consolas, sans serif",
+          fontFamily: "consolas, Open Sans, sans-serif",
           fontStyle: "italic",
         }}
       >
