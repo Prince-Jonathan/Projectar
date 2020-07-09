@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
 import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
@@ -10,9 +10,9 @@ import "./App.css";
 class App extends Component {
   state = { name: "", showSideMenu: false };
   componentDidMount() {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => this.setState(data));
+    // fetch("/api")
+    //   .then((res) => res.json())
+    //   .then((data) => this.setState(data));
   }
   handleShowSideMenu = () => {
     this.setState((prevState) => {
@@ -22,12 +22,19 @@ class App extends Component {
   handleCloseSideMenu = () => {
     this.setState({ showSideMenu: false });
   };
+  handlePopUpClick = (value, extras) => {
+    const {
+      history: { push },
+    } = this.props;
+    this.handleCloseSideMenu();
+    push(`/${value}`);
+  };
 
   render() {
     return (
       <Layout
         showSideMenu={this.state.showSideMenu}
-        aside={<Aside />}
+        aside={<Aside onPopUpClick={this.handlePopUpClick} />}
         name={this.state.name}
         onShowSideMenu={this.handleShowSideMenu}
       >
@@ -73,4 +80,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

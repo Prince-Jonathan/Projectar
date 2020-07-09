@@ -1,5 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import SideMenu from "react-sidemenu";
 import items from "./menuList";
 
@@ -9,13 +8,14 @@ import "./side-menu.css";
 import "./Side-menu-custom.css";
 
 const Aside = (props) => {
-  let history = useHistory();
   return (
     <div>
       <SideMenu
         key={items.length}
         items={items}
-        onMenuItemClick={(value, extras) => (history.push(`/${value}`))}
+        onMenuItemClick={(value, extras) => {
+          props.onPopUpClick(value, extras);
+        }}
       />
     </div>
   );

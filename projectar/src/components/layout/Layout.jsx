@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 import { Default, Mobile } from "../Responsive";
 import { Row, Column } from "../Grid";
