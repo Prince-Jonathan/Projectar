@@ -3,7 +3,7 @@ import { Route } from "react-router-dom";
 
 import { Default, Mobile } from "../Responsive";
 import { Row, Column } from "../Grid";
-import Wall from "../Wall";
+import Wall from "../content/Wall";
 import Toolbar from "../toolbar/Toolbar";
 import BackDrop from "../backdrop/Backdrop";
 
@@ -30,7 +30,7 @@ const Layout = (props) => {
               <Column>
                 {props.children}
                 <Route exact path="/">
-                  <Wall name={props.name} /> doesn't recognise this path
+                  <Wall name={props.name} /> 
                 </Route>
               </Column>
             </Row>

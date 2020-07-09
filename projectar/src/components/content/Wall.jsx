@@ -1,7 +1,7 @@
 import React from "react";
 
 const Wall = (props) => {
-  const wall = {
+  const text = {
     color: "white",
     fontFamily: "consolas, Open Sans, sans-serif",
     fontStyle: "italic",
@@ -10,7 +10,7 @@ const Wall = (props) => {
   return (
     <div>
       {name}
-      <span style={wall}>Project</span>
+      <span style={text}>Project</span>
       ar
     </div>
   );
