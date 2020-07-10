@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Route } from "react-router-dom";
 
 import { Default, Mobile } from "../Responsive";
@@ -10,6 +10,9 @@ import BackDrop from "../backdrop/Backdrop";
 import "./Layout.css";
 
 const Layout = (props) => {
+  const [name, setName] = useState({});
+  useEffect(() => props.fetchData().then((data) => console.log(data), []));
+
   const bgcolor = "#10292E";
   let asideClass = ["drawer", "aside"];
   if (props.showSideMenu) {
@@ -30,7 +33,7 @@ const Layout = (props) => {
               <Column>
                 {props.children}
                 <Route exact path="/">
-                  <Wall name={props.name} /> 
+                  <Wall name={name} />
                 </Route>
               </Column>
             </Row>
@@ -52,7 +55,7 @@ const Layout = (props) => {
               </Column>
               <Column className="section pad">
                 {props.children}
-                <Wall name={props.name} />
+                <Wall name={name} />
               </Column>
             </Row>
           </Column>

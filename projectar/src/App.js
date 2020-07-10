@@ -9,11 +9,10 @@ import "./App.css";
 
 class App extends Component {
   state = { name: "", showSideMenu: false };
-  componentDidMount() {
+  fetchData = () => {
     fetch("/api")
-      .then((res) => res.json())
-      .then((data) => this.setState(data));
-  }
+      .then((res) => res.json());
+  };
   handleShowSideMenu = () => {
     this.setState((prevState) => {
       return { showSideMenu: !prevState.showSideMenu };
@@ -35,7 +34,7 @@ class App extends Component {
       <Layout
         showSideMenu={this.state.showSideMenu}
         aside={<Aside onPopUpClick={this.handlePopUpClick} />}
-        name={this.state.name}
+        fetchData={this.fetchData}
         onShowSideMenu={this.handleShowSideMenu}
       >
         <Switch>
