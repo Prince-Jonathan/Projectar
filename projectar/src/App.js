@@ -10,8 +10,7 @@ import "./App.css";
 class App extends Component {
   state = { name: "", showSideMenu: false };
   fetchData = () => {
-    fetch("/api")
-      .then((res) => res.json());
+    return fetch("/api").then((res) => res.json());
   };
   handleShowSideMenu = () => {
     this.setState((prevState) => {

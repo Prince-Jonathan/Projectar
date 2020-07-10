@@ -10,9 +10,15 @@ import BackDrop from "../backdrop/Backdrop";
 import "./Layout.css";
 
 const Layout = (props) => {
-  const [name, setName] = useState({});
-  useEffect(() => props.fetchData().then((data) => console.log(data), []));
-
+  const [user, setUser] = useState({ name: "" });
+  useEffect(() => {
+    async function fetchData() {
+      let data = await props.fetchData();
+      setUser(data);
+      console.log(user);
+    }
+    fetchData();
+  }, []);
   const bgcolor = "#10292E";
   let asideClass = ["drawer", "aside"];
   if (props.showSideMenu) {
@@ -33,7 +39,8 @@ const Layout = (props) => {
               <Column>
                 {props.children}
                 <Route exact path="/">
-                  <Wall name={name} />
+                  {console.log(user)}
+                  <Wall name={user.name} />
                 </Route>
               </Column>
             </Row>
@@ -55,7 +62,7 @@ const Layout = (props) => {
               </Column>
               <Column className="section pad">
                 {props.children}
-                <Wall name={name} />
+                <Wall name={user.name} />
               </Column>
             </Row>
           </Column>
