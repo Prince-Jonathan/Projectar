@@ -30,7 +30,7 @@ const Layout = (props) => {
               <Column>
                 {props.children}
                 <Route exact path="/">
-                  <Wall name={props.name} /> 
+                  <Wall name={props.name} />
                 </Route>
               </Column>
             </Row>
