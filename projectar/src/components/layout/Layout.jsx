@@ -15,7 +15,6 @@ const Layout = (props) => {
     async function fetchData() {
       let data = await props.fetchData();
       setUser(data);
-      console.log(user);
     }
     fetchData();
   }, []);
@@ -39,7 +38,6 @@ const Layout = (props) => {
               <Column>
                 {props.children}
                 <Route exact path="/">
-                  {console.log(user)}
                   <Wall name={user.name} />
                 </Route>
               </Column>
