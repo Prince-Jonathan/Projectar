@@ -10,6 +10,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "2.1.1",
     "react-sidemenu": "^1.1.0",
+    "react-table": "^7.2.2",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
