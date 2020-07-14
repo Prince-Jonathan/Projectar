@@ -9,7 +9,6 @@ const Table = (props) => {
     async function getData() {
       let res = await props.fetchData("/project/all");
       setData(res);
-      console.log(res);
     }
     getData();
   }, []);
