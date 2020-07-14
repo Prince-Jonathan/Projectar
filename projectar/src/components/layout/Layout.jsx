@@ -38,7 +38,11 @@ const Layout = (props) => {
               <Column>
                 {props.children}
                 <Route exact path="/">
+<<<<<<< HEAD
                   <Wall name={user.name} />
+=======
+                  <Wall name={props.name} />
+>>>>>>> master
                 </Route>
               </Column>
             </Row>
