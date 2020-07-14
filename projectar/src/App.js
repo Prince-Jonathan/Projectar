@@ -10,10 +10,11 @@ import "./App.css";
 
 class App extends Component {
   state = { name: "", showSideMenu: false };
+  fetchData = (url) => {
+    return fetch(url).then((res) => res.json());
+  };
   componentDidMount() {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => this.setState(data));
+    this.fetchData("/api").then((data) => this.setState(data));
   }
   handleShowSideMenu = () => {
     this.setState((prevState) => {
@@ -58,7 +59,7 @@ class App extends Component {
           </Route>
           <Route path="/all-projects">
             <Slate>
-            <Table/>
+              <Table fetchData={this.fetchData}/>
               <hr />
               <div>
                 <strong>Add Some Projects Here</strong>

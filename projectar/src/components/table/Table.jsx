@@ -1,28 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTable } from "react-table";
 
 import "./Table.css";
 
 const Table = (props) => {
-  const data = React.useMemo(
-    () => [
-      {
-        col2: "Hello",
-        col1: "World",
-        col3: "adf",
-        col4: "another",
-      },
-      {
-        col1: "react-table",
-        col2: "rocks",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-    ],
-    []
-  );
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    async function getData() {
+      let value = await this.props.fetchData("/api");
+      console.log(value);
+    }
+    getData();
+  },[]);
+  // const data = React.useMemo(
+  //   () => [
+  //     {
+  //       col2: "Hello",
+  //       col1: "World",
+  //       col3: "adf",
+  //       col4: "another",
+  //     },
+  //     {
+  //       col1: "react-table",
+  //       col2: "rocks",
+  //     },
+  //     {
+  //       col1: "whatever",
+  //       col2: "you want",
+  //     },
+  //   ],
+  //   []
+  // );
   const columns = React.useMemo(
     () => [
       {
