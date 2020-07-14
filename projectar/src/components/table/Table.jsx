@@ -7,11 +7,12 @@ const Table = (props) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     async function getData() {
-      let value = await this.props.fetchData("/api");
-      console.log(value);
+      let res = await props.fetchData("/project/all");
+      setData(res);
+      console.log(res);
     }
     getData();
-  },[]);
+  }, []);
   // const data = React.useMemo(
   //   () => [
   //     {
@@ -34,57 +35,24 @@ const Table = (props) => {
   const columns = React.useMemo(
     () => [
       {
+        Header: "ID",
+        accessor: "id",
+      },
+      {
         Header: "Name",
-        columns: [
-          {
-            Header: "First Name",
-            accessor: "col1",
-          },
-          {
-            Header: "Last Name",
-            accessor: "col2",
-          },
-        ],
+        accessor: "name",
       },
       {
-        Header: "Column 3",
-        accessor: "col3",
+        Header: "Client",
+        accessor: "client",
       },
       {
-        Header: "Column 4",
-        accessor: "col4",
+        Header: "Lat",
+        accessor: "lat",
       },
       {
-        Header: "Column 5",
-        accessor: "col5",
-      },
-      {
-        Header: "Column 5",
-        accessor: "col6",
-      },
-      {
-        Header: "Column 5",
-        accessor: "col7",
-      },
-      {
-        Header: "Column 5",
-        accessor: "col8",
-      },
-      {
-        Header: "Column 5",
-        accessor: "col9",
-      },
-      {
-        Header: "Column 5",
-        accessor: "col10",
-      },
-      {
-        Header: "Column 5",
-        accessor: "col11",
-      },
-      {
-        Header: "Column 5",
-        accessor: "col12",
+        Header: "Lon",
+        accessor: "lon",
       },
     ],
     []
