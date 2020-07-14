@@ -6,7 +6,7 @@ const Slate = (props) => {
   return (
     <div>
       <Row className="slate">
-        <Column>
+        <Column scroll>
           {props.children}
         </Column>
       </Row>

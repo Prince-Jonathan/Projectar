@@ -10,6 +10,7 @@ const Table = (props) => {
         col2: "Hello",
         col1: "World",
         col3: "adf",
+        col4: "another",
       },
       {
         col1: "react-table",
@@ -38,8 +39,44 @@ const Table = (props) => {
         ],
       },
       {
-        Header: "Column 2",
+        Header: "Column 3",
         accessor: "col3",
+      },
+      {
+        Header: "Column 4",
+        accessor: "col4",
+      },
+      {
+        Header: "Column 5",
+        accessor: "col5",
+      },
+      {
+        Header: "Column 5",
+        accessor: "col6",
+      },
+      {
+        Header: "Column 5",
+        accessor: "col7",
+      },
+      {
+        Header: "Column 5",
+        accessor: "col8",
+      },
+      {
+        Header: "Column 5",
+        accessor: "col9",
+      },
+      {
+        Header: "Column 5",
+        accessor: "col10",
+      },
+      {
+        Header: "Column 5",
+        accessor: "col11",
+      },
+      {
+        Header: "Column 5",
+        accessor: "col12",
       },
     ],
     []

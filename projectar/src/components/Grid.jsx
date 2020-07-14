@@ -20,9 +20,8 @@ const Row = styled.div.attrs((props) => ({ className: props.className }))`
 
 const Column = styled.div.attrs((props) => ({ className: props.className }))`
   &::-webkit-scrollbar {
-    display: none;
+    ${(props)=>!props.scroll && "display: none"};
   }
-  ${"" /* min-width:159px; */}
   overflow: auto;
   height: auto;
   ${({ flex }) => `flex:${flex}`};
