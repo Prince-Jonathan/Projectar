@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Column } from "../Grid";
+import { Row, Column } from "../../Grid";
 import "./Slate.css";
 
 const Slate = (props) => {

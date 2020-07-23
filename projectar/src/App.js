@@ -3,8 +3,8 @@ import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
 import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
-import Table from "./components/table/Table";
-import Slate from "./components/content/Slate";
+import Workspace from "./components/content/Workspace";
+import Projects from "./components/content/Projects";
 
 import "./App.css";
 
@@ -42,29 +42,10 @@ class App extends Component {
       >
         <Switch>
           <Route path="/workspace">
-            <Slate>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque
-              cupiditate aliquid illum blanditiis aspernatur dicta officiis
-              ducimus. Sed repellat ad, esse possimus officia nesciunt deleniti
-              perferendis, dolorum quidem autem vel.Lorem ipsum dolor sit amet,
-              consectetur adipisicing elit. Eaque cupiditate aliquid illum
-              blanditiis aspernatur dicta officiis ducimus. Sed repellat ad,
-              esse possimus officia nesciunt deleniti perferendis, dolorum
-              quidem autem vel.
-              <hr />
-              <div>
-                <strong>The User Workspace</strong>
-              </div>
-            </Slate>
+            <Workspace />
           </Route>
           <Route path="/all-projects">
-            <Slate>
-              <Table fetchData={this.fetchData}/>
-              <hr />
-              <div>
-                <strong>Add Some Projects Here</strong>
-              </div>
-            </Slate>
+            <Projects fetchData={this.fetchData} />
           </Route>
           <Route path="*">
             <Redirect to="/" />
