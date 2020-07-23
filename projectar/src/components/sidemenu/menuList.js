@@ -11,7 +11,6 @@ const items = [
     value: "projects",
     icon: "fa-suitcase",
     children: [
-      { label: "Add", value: "add-project" },
       { label: "Assigned", value: "assigned-projects" },
       { label: "Managed", value: "managed-projects" },
       { label: "All", value: "all-projects" },
