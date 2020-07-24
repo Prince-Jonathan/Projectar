@@ -45,7 +45,7 @@ class App extends Component {
             <Workspace />
           </Route>
           <Route path="/all-projects">
-            <Projects />
+            <Projects fetchData={this.fetchData} />
           </Route>
           <Route path="*">
             <Redirect to="/" />
