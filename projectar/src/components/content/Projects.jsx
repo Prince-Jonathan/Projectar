@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 import Table from "../table/Table";
 import Slate from "./slate/Slate";
@@ -7,7 +7,7 @@ const Projects = (props) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     async function getData() {
-      let res = await props.fetchData("/project/all");
+      let res = await props.fetchData("api/project/all");
       setData(res);
     }
     getData();
@@ -39,7 +39,7 @@ const Projects = (props) => {
   );
   return (
     <Slate>
-      <Table columns={columns} data={data}/>
+      <Table columns={columns} data={data} />
       <hr />
       <div>
         <strong>Add Some Projects Here</strong>

@@ -12,7 +12,7 @@ from modules import fetch, log
 def api():
 	return {"name":"Maxwell"}
 
-@app.route('/user/add', methods=['POST'])
+@app.route('api/user/add', methods=['POST'])
 def add_user():
 	'''Add new user'''
 	data = request.get_json()
@@ -37,7 +37,7 @@ def add_user():
 		}
 
 
-@app.route('/project/add', methods=['POST'])
+@app.route('api/project/add', methods=['POST'])
 def add_project():
 	'''Add new project'''
 	data = request.get_json()
@@ -62,7 +62,7 @@ def add_project():
 			"msg":"Project:'%s' already exits" % data["name"]
 		} 
 
-@app.route('/user/detail/<int:user_id>')
+@app.route('api/user/detail/<int:user_id>')
 def get_user(user_id):
 	'''Query user details'''
 	data = {}
@@ -85,7 +85,7 @@ def get_user(user_id):
 			"msg":"An error occured while trying to fetch user with ID: %d" % user_id
 		}
 
-@app.route('/user/all')
+@app.route('api/user/all')
 def all_users():
 	'''Get all users'''
 	data = []
@@ -102,7 +102,7 @@ def all_users():
 			"success":False	
 		}
 
-@app.route('/project/all')
+@app.route('api/project/all')
 def all_projects():
 	'''Get all Projects'''
 	data = []
@@ -120,7 +120,7 @@ def all_projects():
 			"success":False	
 		}
 
-@app.route('/user/enrol/<int:user_id>/<int:project_id>')
+@app.route('api/user/enrol/<int:user_id>/<int:project_id>')
 def enrol(user_id, project_id):
 	'''Passes two id arguments to  enrol a user to a project respectively.'''
 	try:
@@ -138,7 +138,7 @@ def enrol(user_id, project_id):
 			"success":False
 		}
 
-@app.route('/user/enrolments/<int:user_id>')
+@app.route('api/user/enrolments/<int:user_id>')
 def pro_enrol(user_id):
 	'''Get all projects that user of id has been enrolled to'''
 	data = []
@@ -164,7 +164,7 @@ def pro_enrol(user_id):
 			"success":False
 		}
 
-@app.route('/project/enrolments/<int:project_id>')
+@app.route('api/project/enrolments/<int:project_id>')
 def usr_enrol(project_id):
 	'''Get all users that have been enrolled to a project'''
 	data = []
@@ -190,7 +190,7 @@ def usr_enrol(project_id):
 			"success":False
 		}
 
-@app.route('/login', methods=['POST'])
+@app.route('api/login', methods=['POST'])
 def login():
 	'''login authentication'''
 	details = request.get_json()
