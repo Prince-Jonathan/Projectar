@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 app=Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:postgres@localhost:5432/projectar'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://projectar:pjtr@pgUserp@$$@35.225.121.217:5432/projectar'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #consumes lot of memory: set to fals
 
 db=SQLAlchemy(app)
