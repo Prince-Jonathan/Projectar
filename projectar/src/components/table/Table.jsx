@@ -1,61 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useTable } from "react-table";
 
 import "./Table.css";
 
-const Table = (props) => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    async function getData() {
-      let res = await props.fetchData("/project/all");
-      setData(res);
-    }
-    getData();
-  }, []);
-  // const data = React.useMemo(
-  //   () => [
-  //     {
-  //       col2: "Hello",
-  //       col1: "World",
-  //       col3: "adf",
-  //       col4: "another",
-  //     },
-  //     {
-  //       col1: "react-table",
-  //       col2: "rocks",
-  //     },
-  //     {
-  //       col1: "whatever",
-  //       col2: "you want",
-  //     },
-  //   ],
-  //   []
-  // );
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "ID",
-        accessor: "id",
-      },
-      {
-        Header: "Name",
-        accessor: "name",
-      },
-      {
-        Header: "Client",
-        accessor: "client",
-      },
-      {
-        Header: "Lat",
-        accessor: "lat",
-      },
-      {
-        Header: "Lon",
-        accessor: "lon",
-      },
-    ],
-    []
-  );
+const Table = ({columns, data}) => {
+   
   const tableInstance = useTable({ columns, data });
   const {
     getTableProps,
