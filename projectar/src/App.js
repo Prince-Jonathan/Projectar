@@ -14,7 +14,7 @@ class App extends Component {
     return fetch(url).then((res) => res.json());
   };
   componentDidMount() {
-    this.fetchData("/api").then((data) => this.setState(data));
+    this.fetchData("http://localhost:8050/api").then((data) => this.setState(data));
   }
   handleShowSideMenu = () => {
     this.setState((prevState) => {

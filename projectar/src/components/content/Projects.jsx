@@ -7,7 +7,7 @@ const Projects = (props) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     async function getData() {
-      let res = await props.fetchData("api/project/all");
+      let res = await props.fetchData("http://localhost:8050/api/project/all");
       setData(res);
     }
     getData();
