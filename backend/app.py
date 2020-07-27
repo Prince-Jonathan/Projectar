@@ -10,7 +10,7 @@ from sqlalchemy.inspection import inspect
 
 APP = Flask(__name__)
 CORS(APP)
-APP.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/projectar'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://projectar:pjtr@pgUserp@$$@35.225.121.217:5432/projectar'
 # consumes lot of memory: set to false
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
