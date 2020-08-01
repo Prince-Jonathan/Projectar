@@ -5,8 +5,6 @@ import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
 import Workspace from "./components/content/Workspace";
 import Projects from "./components/content/Projects";
-import { useFetch } from "./components/hooks/useFetch";
-import { usePrev } from "./components/hooks/usePrev";
 
 import "./App.css";
 
