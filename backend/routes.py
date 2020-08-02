@@ -1,11 +1,23 @@
 '''
 This Script holds all routes to endpoints 
 '''
+import asyncio
 from flask import request, redirect, url_for,jsonify
 from sqlalchemy.exc import SQLAlchemyError
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client
 from models import Project, User
 from modules import fetch, log
+
+async def create_note():
+    notification_body = {
+			'contents': {'tr': 'Yeni bildirim', 'en': 'New notification'},
+			'included_segments': ['Subscribed Users'],
+			"headings": {"en": "Title of Message"},
+	}
+    response = await client.send_notification(notification_body)
+    return response.body
+
+loop = asyncio.get_event_loop()
 
 @app.route('/api')
 def api():
@@ -13,13 +25,7 @@ def api():
 
 @app.route('/api/notify')
 def notify():
-	notification_body = {
-			'contents': {'tr': 'Yeni bildirim', 'en': 'New notification'},
-			'included_segments': ['Subscribed Users'],
-			"headings": {"en": "Title of Message"},
-	}
-	response = client.send_notification(notification_body)
-	return response.body
+	return loop.run_until_complete(create_note())
 
 @app.route('/api/user/add', methods=['POST'])
 def add_user():

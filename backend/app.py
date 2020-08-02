@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from sqlalchemy.orm.attributes import instance_state
 from sqlalchemy.inspection import inspect
-from onesignal_sdk.client import Client
+from onesignal_sdk.client import AsyncClient
 
 #initialising flask object
 APP = Flask(__name__)
@@ -19,7 +19,7 @@ APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DB = SQLAlchemy(APP)
 
 #initialising onesignal client for notifications
-ONESIGNAL_CLIENT = Client(app_id="88669c69-3692-49b8-9458-93694b80eeef", rest_api_key="MTBiY2U2YmYtMGJiOS00NTM3LTgzZGMtMDAzMDhjNTQ2NDAx")
+ONESIGNAL_CLIENT = AsyncClient(app_id="88669c69-3692-49b8-9458-93694b80eeef", rest_api_key="MTBiY2U2YmYtMGJiOS00NTM3LTgzZGMtMDAzMDhjNTQ2NDAx")
 
 class Serializer(object):
 
