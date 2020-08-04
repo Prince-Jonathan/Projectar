@@ -7,7 +7,7 @@ th,
 td {
   font-size: 15px;
   padding: 0.5rem;
-  border: 1px solid black;
+  border-bottom: 1px solid black;
 }
 tr:hover {
   background-color: #faec256b;
