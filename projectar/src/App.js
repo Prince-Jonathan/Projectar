@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios'
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 
 import Aside from "./components/sidemenu/Aside";
@@ -15,10 +16,10 @@ const App = (props) => {
   const baseUrl = "https://projectar.devcodes.co";
 
   const fetchData = (url) => {
-    return fetch(baseUrl + url).then((res) => res.json());
+    return axios.get(baseUrl + url);
   };
   useEffect(() => {
-    fetchData("/api").then((data) => setName(data.name));
+    fetchData("/api").then(({data}) => setName(data.name));
   }, []);
   const handleShowSideMenu = () => {
     setShowSideMenu((prevState) => !prevState);

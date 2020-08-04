@@ -7,8 +7,8 @@ const Projects = (props) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     async function getData() {
-      let res = await props.fetchData("/api/project/all");
-      setData(res);
+      let {data} = await props.fetchData("/api/project/all");
+      setData(data);
     }
     getData();
   }, []);
@@ -42,7 +42,7 @@ const Projects = (props) => {
       <Table columns={columns} data={data} />
       <hr />
       <div>
-        <strong>Add Some Projects Here</strong>
+        <strong>Click to Access Project</strong>
       </div>
     </Slate>
   );
