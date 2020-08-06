@@ -10,11 +10,11 @@ OneSignal.push(function() {
       colors: {
         // Customize the colors of the main button and dialog popup button
         "circle.background": "rgb(84,110,123)",
-        "circle.foreground": "#faed25",
+        "circle.foreground": "#ffee00",
         "badge.background": "rgb(84,110,123)",
         "badge.foreground": "white",
         "badge.bordercolor": "white",
-        "pulse.color": "#faed25",
+        "pulse.color": "#ffee00",
         "dialog.button.background.hovering": "rgb(77, 101, 113)",
         "dialog.button.background.active": "rgb(70, 92, 103)",
         "dialog.button.background": "rgb(84,110,123)",

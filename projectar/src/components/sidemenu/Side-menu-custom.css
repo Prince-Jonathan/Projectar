@@ -1,13 +1,14 @@
 .Side-menu-default {
-  background-color: #5ca3d541;
-  color: #FAED25;
+  background-color: #10292e;
+  color: #ffee00;
 }
 .Side-menu-default *:not(i) {
   font-family: "Open Sans", sans-serif;
   font-weight: 300;
+  
 }
 .Side-menu-default .divider {
-  background-color: #10292E;
+  background-color: #0b1d20;
   color: #bfc8cc;
   text-transform: uppercase;
 }
