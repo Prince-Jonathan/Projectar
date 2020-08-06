@@ -3,7 +3,7 @@
   color: #FAED25;
 }
 .Side-menu-default *:not(i) {
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 300;
 }
 .Side-menu-default .divider {
