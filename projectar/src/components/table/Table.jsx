@@ -1,57 +1,69 @@
 import React from "react";
-import { useTable } from "react-table";
+import { useTable, useExpanded } from "react-table";
 
 import "./Table.css";
 
-const Table = ({columns, data}) => {
-   
-  const tableInstance = useTable({ columns, data });
+const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-  } = tableInstance;
+    visibleColumns,
+    state: { expanded },
+  } = useTable(
+    {
+      columns: userColumns,
+      data,
+    },
+    useExpanded
+  );
+
+  const firstPageRows = rows.slice(0, 2);
   return (
-    // apply the table props
     <table {...getTableProps()}>
       <thead>
-        {// Loop over the header rows
-        headerGroups.map((headerGroup) => (
-          // Apply the header row props
+        {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
-            {// Loop over the headers in each row
-            headerGroup.headers.map((column) => (
-              // Apply the header cell props
-              <th {...column.getHeaderProps()}>
-                {// Render the header
-                column.render("Header")}
-              </th>
+            {headerGroup.headers.map((column) => (
+              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
             ))}
           </tr>
         ))}
       </thead>
-      {/* Apply the table body props */}
       <tbody {...getTableBodyProps()}>
-        {// Loop over the table rows
-        rows.map((row) => {
-          // Prepare the row for display
+        {rows.map((row, i) => {
           prepareRow(row);
           return (
-            // Apply the row props
-            <tr {...row.getRowProps()}>
-              {// Loop over the rows cells
-              row.cells.map((cell) => {
-                // Apply the cell props
-                return (
-                  <td {...cell.getCellProps()}>
-                    {// Render the cell contents
-                    cell.render("Cell")}
+            // Use a React.Fragment here so the table markup is still valid
+            <React.Fragment {...row.getRowProps()}>
+              <tr>
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  );
+                })}
+              </tr>
+              {/*
+                If the row is in an expanded state, render a row with a
+                column that fills the entire length of the table.
+              */}
+              {row.isExpanded ? (
+                <tr>
+                  <td className="subComp" colSpan={visibleColumns.length}>
+                    {/*
+                      Inside it, call our renderRowSubComponent function. In reality,
+                      you could pass whatever you want as props to
+                      a component like this, including the entire
+                      table instance. But for this example, we'll just
+                      pass the row
+                    */}
+                    {<div ><button>Add Task</button><br/><div ><button>Add Task</button></div><br/><div ><button>Add Task</button></div><br/><div ><button>Add Task</button></div></div>}
                   </td>
-                );
-              })}
-            </tr>
+                </tr>
+              ) : null}
+            </React.Fragment>
           );
         })}
       </tbody>
