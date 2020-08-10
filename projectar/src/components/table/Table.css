@@ -10,21 +10,25 @@ td {
   border-bottom: 1px solid black;
 }
 th {
-  background: #BCCC4E;
-  color:#10292e;
-  border:none;
+  background: #bccc4e;
+  color: #10292e;
+  border: none;
   position: sticky;
   top: 0; /* Don't forget this, required for the stickiness */
   box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
-  margin:5px;
+  margin: 5px;
 }
 tr:hover {
-  background-color: #e5f75e;
+  background-color: #bbc94f;
 }
 tr:last-child td {
   border-bottom: 100px;
 }
-.subComp{
-  background-color: #ecfc77;
+.subComp button {
+  background: #10292e;
+  color: white;
 }
 
+.subComp {
+  background: #0b1d2056;
+}

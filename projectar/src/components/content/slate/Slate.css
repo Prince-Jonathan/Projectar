@@ -1,14 +1,15 @@
 .slate {
   position: relative;
 
-  max-height: 300px;
+  max-height: 525px;
+  min-height:min-content;
   max-width: 800px;
   min-width: min-content;
   padding: 5px;
   margin: 30px 0px;
   color: #10292e;
   border-radius: 5px;
-  background-color: #DEEF59;
+  background-color: #718742;
 
   -webkit-box-shadow: 0 8px 6px -6px black; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
   -moz-box-shadow: 0 8px 6px -6px black; /* Firefox 3.5 - 3.6 */
