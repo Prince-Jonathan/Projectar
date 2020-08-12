@@ -19,8 +19,8 @@
 @media only screen and (max-width: 500px) {
   /* could go down */
   .slate {
-    min-width: 250px;
-    max-width: 250px;
+    /* min-width: 250px;
+    max-width: 250px; */
     min-height: max-content;
   }
 }
