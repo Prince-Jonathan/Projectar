@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import Table from "../table/Table";
-import Slate from "./slate/Slate";
-import { isMobile } from "../Responsive";
-import Tasks from "./project/task/Tasks";
+import Table from "../../table/Table";
+import Slate from "../slate/Slate";
+import { isMobile } from "../../Responsive";
+
+import "./Projects.css";
 
 const Projects = (props) => {
   const [data, setData] = useState([]);
@@ -63,7 +64,7 @@ const Projects = (props) => {
   );
   const renderRowSubComponent = React.useCallback(
     ({ row }) => (
-      <div>
+      <div className="project">
         <button onClick={props.onShowTasks}>Tasks</button>
         {setRowID(row.original.id)}
 

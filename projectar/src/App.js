@@ -6,7 +6,7 @@ import { useAlert } from "react-alert";
 import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
 import Workspace from "./components/content/Workspace";
-import Projects from "./components/content/Projects";
+import Projects from "./components/content/projects/Projects";
 import Project from "./components/content/project/Project";
 import Tasks from "./components/content/project/task/Tasks";
 

@@ -3,7 +3,7 @@ import "./Button.css";
 
 const DrawerToggleButton = (props) => {
   return (
-    <button onClick={props.onClick} className="button">
+    <button onClick={props.onClick}>
       <i className="fa fa-reorder fa-lg" />
     </button>
   );

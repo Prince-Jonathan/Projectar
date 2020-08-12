@@ -1,0 +1,10 @@
+.project {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  height: 100%;
+}
+.project > button{
+  margin:5px;
+}
