@@ -12,6 +12,9 @@
 
   z-index: 200;
 }
+.task > .form-container{
+  margin:10px;
+}
 
 .form-container {
   display: flex;
