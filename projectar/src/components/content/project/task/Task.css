@@ -1,0 +1,59 @@
+.task {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  color: #10292e;
+
+  z-index: 200;
+}
+
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.514);
+}
+.form-container .btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+.form-container .cancel {
+  background-color: red;
+}
+.date{
+
+}
+.form-container input[type="text"]:focus {
+  background-color: rgb(226, 226, 226);
+  outline: none;
+}
+textarea {
+  background-color: #f1f1f1;
+  resize: none;
+  outline: none;
+  border: none;
+  margin: 0px 0px 10px 0px;
+}
+textarea:focus {
+  background-color: rgb(226, 226, 226);
+  border: none;
+}
+.form-container .btn:hover,
+.open-button:hover {
+  opacity: 1;
+}
+.form-container input[type="text"] {
+  width: 100%;
+  padding: 5px;
+  font-size: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}

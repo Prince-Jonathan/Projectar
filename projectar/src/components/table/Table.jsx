@@ -19,7 +19,9 @@ const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
     },
     useExpanded
   );
-
+  const test = () => {
+    return <div>test</div>;
+  };
   const firstPageRows = rows.slice(0, 2);
   return (
     <table {...getTableProps()}>
@@ -38,7 +40,7 @@ const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
           return (
             // Use a React.Fragment here so the table markup is still valid
             <React.Fragment {...row.getRowProps()}>
-              <tr>
+              <tr className="mainComp">
                 {row.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
@@ -50,8 +52,8 @@ const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
                 column that fills the entire length of the table.
               */}
               {row.isExpanded ? (
-                <tr>
-                  <td className="subComp" colSpan={visibleColumns.length}>
+                <tr className="subComp">
+                  <td  colSpan={visibleColumns.length}>
                     {/*
                       Inside it, call our renderRowSubComponent function. In reality,
                       you could pass whatever you want as props to
@@ -59,7 +61,7 @@ const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
                       table instance. But for this example, we'll just
                       pass the row
                     */}
-                    {<div ><button>Add Task</button><br/><div ><button>Add Task</button></div><br/><div ><button>Add Task</button></div><br/><div ><button>Add Task</button></div></div>}
+                    {renderRowSubComponent({ row })}
                   </td>
                 </tr>
               ) : null}

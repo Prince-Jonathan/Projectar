@@ -5,7 +5,7 @@ import asyncio
 from flask import request, redirect, url_for,jsonify
 from sqlalchemy.exc import SQLAlchemyError
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client
-from models import Project, User
+from models import Project, User, Task
 from modules import fetch, log
 
 async def create_note():
@@ -76,6 +76,34 @@ def add_project():
 			"success":False,
 			"msg":"Project:'%s' already exits" % data["name"]
 		} 
+
+@app.route('/api/task/add', methods=['POST'])
+def add_task():
+	'''Add new task'''
+	data = request.get_json()
+	project = Project.query.get_or_404(data["project_id"])
+	task = Task(
+		title=data["title"],
+		description=data["description"],
+		target=data["target"],
+		date=data["date"],
+		project=project
+	)
+	try:
+		db.session.add(task)
+		db.session.commit()
+		return {
+			"success":True,
+			"data":data
+		}
+	except SQLAlchemyError as err:
+		print(err)
+		db.session.rollback()
+		return {
+			"success":False,
+			"msg":"Task:'%s' already exits" % data["title"]
+		} 
+
 
 @app.route('/api/user/detail/<int:user_id>')
 def get_user(user_id):

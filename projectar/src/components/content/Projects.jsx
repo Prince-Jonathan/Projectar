@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import Table from "../table/Table";
 import Slate from "./slate/Slate";
+import { isMobile } from "../Responsive";
+import Tasks from "./project/task/Tasks";
 
 const Projects = (props) => {
   const [data, setData] = useState([]);
+  const [rowID, setRowID] = useState(0);
+
   useEffect(() => {
     async function getData() {
       let { data } = await props.fetchData("/api/project/all");
@@ -12,57 +17,60 @@ const Projects = (props) => {
     }
     getData();
   }, []);
+
+  useEffect(
+    () => {
+      props.onSelect(rowID);
+    },
+    [rowID]
+  );
   const columns = React.useMemo(
-    () => [
-      {
-        // Make an expander cell
-        Header: () => null, // No header
-        id: "expander", // It needs an ID
-        Cell: ({ row }) => (
-          // Use Cell to render an expander for each row.
-          // We can use the getToggleRowExpandedProps prop-getter
-          // to build the expander.
-          <span {...row.getToggleRowExpandedProps()}>
-            {row.isExpanded ? (
-              <i class="fa fa-compress" aria-hidden="true" />
-            ) : (
-              <i class="fa fa-expand" aria-hidden="true" />
-            )}
-          </span>
-        ),
-      },
-      {
-        Header: "ID",
-        accessor: "id",
-      },
-      {
-        Header: "Name",
-        accessor: "name",
-      },
-      {
-        Header: "Client",
-        accessor: "client",
-      },
-      {
-        Header: "Lat",
-        accessor: "lat",
-      },
-      {
-        Header: "Lon",
-        accessor: "lon",
-      },
-    ],
-    []
+    () => {
+      const column = [
+        {
+          // Make an expander cell
+          Header: () => null, // No header
+          id: "expander", // It needs an ID
+          Cell: ({ row }) => (
+            // Use Cell to render an expander for each row.
+            // We can use the getToggleRowExpandedProps prop-getter
+            // to build the expander.
+            <span {...row.getToggleRowExpandedProps()}>
+              {row.isExpanded ? (
+                <i class="fa fa-compress" aria-hidden="true" />
+              ) : (
+                <i class="fa fa-expand" aria-hidden="true" />
+              )}
+            </span>
+          ),
+        },
+        {
+          Header: "Name",
+          accessor: "name",
+        },
+        {
+          Header: "Consultant",
+          accessor: "project_consultant",
+        },
+        {
+          Header: "Manager",
+          accessor: "project_manager",
+        },
+      ];
+      return isMobile ? column.splice(0, 2) : column;
+    },
+    [isMobile]
   );
   const renderRowSubComponent = React.useCallback(
     ({ row }) => (
-      <pre
-        style={{
-          fontSize: "10px",
-        }}
-      >
-        <code>{JSON.stringify({ values: row.values }, null, 2)}</code>
-      </pre>
+      <div>
+        <button onClick={props.onShowTasks}>Tasks</button>
+        {setRowID(row.original.id)}
+
+        <button>Report</button>
+
+        <button>Attendance</button>
+      </div>
     ),
     []
   );

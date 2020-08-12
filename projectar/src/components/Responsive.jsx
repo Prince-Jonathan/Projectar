@@ -1,21 +1,25 @@
 // import React from "react";
 import { useMediaQuery } from "react-responsive";
+let isDesktop
+let isTablet
+let isMobile
+let isNotMobile 
 
 const Desktop = ({ children }) => {
-  const isDesktop = useMediaQuery({ minWidth: 992 });
+  isDesktop= useMediaQuery({ minWidth: 992 });
   return isDesktop ? children : null;
 };
 const Tablet = ({ children }) => {
-  const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 991 });
+  isTablet = useMediaQuery({ minWidth: 768, maxWidth: 991 });
   return isTablet ? children : null;
 };
 const Mobile = ({ children }) => {
-  const isMobile = useMediaQuery({ maxWidth: 499 });
+  isMobile= useMediaQuery({ maxWidth: 499 });
   return isMobile ? children : null;
 };
 const Default = ({ children }) => {
-  const isNotMobile = useMediaQuery({ minWidth: 500 });
+  isNotMobile= useMediaQuery({ minWidth: 500 });
   return isNotMobile ? children : null;
 };
 
-export { Desktop, Tablet, Mobile, Default };
+export { Desktop, Tablet, Mobile, Default, isMobile };

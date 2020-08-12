@@ -4,7 +4,7 @@
   /* position:fixed; */
   display: flex;
   width: 100;
-  background: #faed25;
+  background: #ffee00;
   height: 50px;
   justify-content: flex-start;
   align-items: center;
@@ -13,6 +13,5 @@
 .toolbar .button {
   margin: 0 5px 0 5px;
   border-radius: 12px;
-  background-color: #faed25;
+  background-color: #ffee00;
 }
-

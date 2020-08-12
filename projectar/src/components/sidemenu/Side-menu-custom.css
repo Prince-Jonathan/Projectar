@@ -14,13 +14,13 @@
 }
 .Side-menu-default .item a {
   text-decoration: none;
-  color: #FAED25;
+  color: #ffee00;
 }
 .Side-menu-default .item.active {
   color: #F68887;
 }
 .Side-menu-default .item.active .children {
-  color: #FAED25;
+  color: #ffee00;
 }
 .Side-menu-default .item.active > .item-title > a {
   color: white;
@@ -36,5 +36,5 @@
 }
 .Side-menu-default .item.item-level-1:hover,
 .Side-menu-default .item.item-level-1.active {
-  border-left: 4px solid #FAED25;
+  border-left: 4px solid #ffee00;
 }

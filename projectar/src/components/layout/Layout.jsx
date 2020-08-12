@@ -29,7 +29,7 @@ const Layout = (props) => {
             <Row justifyContent="space-evenly">
               <Column>
                 {props.children}
-                <Route exact path="/">
+                <Route path="/">
                   <Wall name={props.name} />
                 </Route>
               </Column>

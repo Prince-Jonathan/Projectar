@@ -5,21 +5,27 @@ table {
 table,
 th,
 td {
+  text-align: left;
   font-size: 15px;
   padding: 0.5rem;
   border-bottom: 1px solid black;
 }
 th {
-  background: #bccc4e;
-  color: #10292e;
+  background: #10292e;
+  color: #ffee00;
   border: none;
   position: sticky;
   top: 0; /* Don't forget this, required for the stickiness */
   box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
   margin: 5px;
 }
-tr:hover {
-  background-color: #bbc94f;
+.mainComp:hover {
+  background-color: #d9e2c6;
+  color: #000000;
+
+  -webkit-box-shadow: 0 8px 6px -6px black; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 0 8px 6px -6px black; /* Firefox 3.5 - 3.6 */
+  box-shadow: 0 8px 6px -6px black; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
 tr:last-child td {
   border-bottom: 100px;
@@ -28,7 +34,9 @@ tr:last-child td {
   background: #10292e;
   color: white;
 }
-
 .subComp {
+  box-shadow: inset 0 8px 6px -6px black;
+  -webkit-box-shadow: inset 0 8px 6px -6px black;
+  -moz-box-shadow: inset 0 8px 6px -6px black;
   background: #0b1d2056;
 }
