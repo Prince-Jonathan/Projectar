@@ -16,7 +16,7 @@ const Bay = (props) => {
   return (
     <div>
       {backdrop}
-        <div className="task">
+        <div className="bay">
           <Tasks
             showTasks={props.showTasks}
             onShowTasks={props.onShowTasks}
