@@ -8,6 +8,7 @@ import Layout from "./components/layout/Layout";
 import Workspace from "./components/content/Workspace";
 import Projects from "./components/content/projects/Projects";
 import Project from "./components/content/project/Project";
+import Bay from "./components/bay/Bay";
 import Tasks from "./components/content/project/task/Tasks";
 
 import "./App.css";
@@ -74,7 +75,7 @@ const App = (props) => {
         </Route>
       </Switch>
       {showTasks ? (
-        <Tasks
+        <Bay
           showTasks={showTasks}
           onShowTasks={handleShowTasks}
           onCloseTasks={handleCloseTasks}

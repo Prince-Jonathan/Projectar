@@ -1,21 +1,3 @@
-.task {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  color: #10292e;
-
-  z-index: 200;
-}
-.task > .form-container{
-  margin:10px;
-}
-
 .form-container {
   display: flex;
   flex-direction: column;
