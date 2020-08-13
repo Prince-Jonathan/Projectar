@@ -1,10 +1,16 @@
-.project {
+.project{
+  display:flex;
+  flex-direction: row;
+}
+.left {
   display: flex;
   flex-flow: column wrap;
   align-items: flex-start;
   justify-content: space-evenly;
   height: 100%;
+  border-right:solid yellow;
+  margin-right: 5px;
 }
-.project > button{
+.left > button{
   margin:5px;
 }

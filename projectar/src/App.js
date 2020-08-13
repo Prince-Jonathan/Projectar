@@ -22,9 +22,8 @@ const App = (props) => {
 
   const baseUrl = " http://192.168.69.102:8050";
 
-  const fetchData = (url) => {
-    return axios.get(baseUrl + url);
-  };
+  const fetchData = (url) => axios.get(baseUrl + url);
+
   const postData = (url, data) => axios.post(baseUrl + url, data);
 
   useEffect(() => {

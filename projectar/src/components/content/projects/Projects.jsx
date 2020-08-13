@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Table from "../../table/Table";
 import Slate from "../slate/Slate";
 import { isMobile } from "../../Responsive";
+import OutstandingTask from "../project/task/OutstandingTask";
 
 import "./Projects.css";
 
@@ -65,12 +66,16 @@ const Projects = (props) => {
   const renderRowSubComponent = React.useCallback(
     ({ row }) => (
       <div className="project">
-        <button onClick={props.onShowTasks}>Tasks</button>
-        {setRowID(row.original.id)}
+        <div className="left">
+          {setRowID(row.original.id)}
 
-        <button>Report</button>
+          <button onClick={props.onShowTasks}>Add Task</button>
 
-        <button>Attendance</button>
+          <button>Report</button>
+
+          <button>Attendance</button>
+        </div>
+        <OutstandingTask />
       </div>
     ),
     []
