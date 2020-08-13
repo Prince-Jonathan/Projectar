@@ -19,7 +19,7 @@ const App = (props) => {
   const [showTasks, setShowTasks] = useState(false);
   const [selectedID, setSeletedID] = useState(0);
 
-  const baseUrl = " http://192.168.69.101:8050";
+  const baseUrl = " http://192.168.69.102:8050";
 
   const fetchData = (url) => {
     return axios.get(baseUrl + url);
