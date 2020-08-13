@@ -9,16 +9,10 @@ import OutstandingTask from "../project/task/OutstandingTask";
 import "./Projects.css";
 
 const Projects = (props) => {
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [rowID, setRowID] = useState(0);
 
-  useEffect(() => {
-    async function getData() {
-      let { data } = await props.fetchData("/api/project/all");
-      setData(data);
-    }
-    getData();
-  }, []);
+  const data = React.useMemo(() => props.data, [props.data]);
 
   useEffect(
     () => {

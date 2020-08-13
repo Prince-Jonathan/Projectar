@@ -16,6 +16,7 @@ import "./App.css";
 const App = (props) => {
   const alert = useAlert();
   const [name, setName] = useState("");
+  const [projects, setProjects] = useState([]);
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [selectedID, setSeletedID] = useState(0);
@@ -28,6 +29,7 @@ const App = (props) => {
 
   useEffect(() => {
     fetchData("/api").then(({ data }) => setName(data.name));
+    fetchData("/api/project/all").then(({ data }) => setProjects(data));
   }, []);
   const handleShowSideMenu = () => {
     setShowSideMenu((prevState) => !prevState);
@@ -67,6 +69,7 @@ const App = (props) => {
             fetchData={fetchData}
             onShowTasks={handleShowTasks}
             onSelect={(id) => setSeletedID(id)}
+            data={projects}
           />
         </Route>
         <Route path="*">
