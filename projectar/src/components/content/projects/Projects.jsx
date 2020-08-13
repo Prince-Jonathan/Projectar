@@ -9,7 +9,6 @@ import OutstandingTask from "../project/task/OutstandingTask";
 import "./Projects.css";
 
 const Projects = (props) => {
-  // const [data, setData] = useState([]);
   const [rowID, setRowID] = useState(0);
 
   const data = React.useMemo(() => props.data, [props.data]);
