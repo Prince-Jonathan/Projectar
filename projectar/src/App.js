@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { useAlert } from "react-alert";
+import { PortalWithState } from "react-portal";
 
 import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
 import Workspace from "./components/content/Workspace";
 import Projects from "./components/content/projects/Projects";
 import Project from "./components/content/project/Project";
+import Bay from "./components/bay/Bay";
 import Tasks from "./components/content/project/task/Tasks";
 
 import "./App.css";
@@ -19,7 +21,7 @@ const App = (props) => {
   const [showTasks, setShowTasks] = useState(false);
   const [selectedID, setSeletedID] = useState(0);
 
-  const baseUrl = " http://192.168.69.101:8050";
+  const baseUrl = "https://b37ed05dbeca.ngrok.io";
 
   const fetchData = (url) => {
     return axios.get(baseUrl + url);
@@ -74,7 +76,7 @@ const App = (props) => {
         </Route>
       </Switch>
       {showTasks ? (
-        <Tasks
+        <Bay
           showTasks={showTasks}
           onShowTasks={handleShowTasks}
           onCloseTasks={handleCloseTasks}
