@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { useAlert } from "react-alert";
-import { PortalWithState } from "react-portal";
 
 import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
