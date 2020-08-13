@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
-import MultiSelect from "react-multi-select-component";
+import Select from "react-select";
 
 import BackDrop from "../../../backdrop/Backdrop";
 import Outstanding from "./OutstandingTask";
@@ -14,16 +14,25 @@ const Tasks = (props) => {
     title: "",
     description: "",
     target: "",
+    personnel: null,
   });
-  const [selected, setSelected] = useState([]);
+
+  const [selectedOption, setSelectedOption] = useState({
+    isOpen: false,
+    isFixed: false,
+    portalPlacement: "top",
+  });
 
   const options = [
-    { label: "asdf ", value: "asdf" },
-    { label: "3ed ", value: "3ed" },
-    { label: "ales ", value: "ales", disabled: true },
-    { label: "max ", value: "max" },
-    { label: "say ", value: "say" },
-    { label: "Apple ", value: "Apple" },
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
   ];
 
   const handleChange = (event) => {
@@ -44,6 +53,11 @@ const Tasks = (props) => {
         })
       )
       .then(() => props.onCloseTasks());
+  };
+
+  const handleSelection = (selectedOption) => {
+    setState({ ...state, personnel: selectedOption });
+    console.log(`Option selected:`, selectedOption);
   };
 
   let backdrop = props.showTasks ? (
@@ -69,9 +83,14 @@ const Tasks = (props) => {
       <div className="wrapper">
         <div className="task">
           <form onSubmit={handleSubmit} className="form-container">
-            <h4>Assign Task To Specific Days</h4>
+            <span>
+              <strong>Assign Task To Specific Days</strong>
+            </span>
+            <div style={{ position: "fixed", zIndex: 120 }} />
+
             <input
-              autoFocus
+              // autoFocus
+              tabIndex="0"
               type="text"
               style={{ flex: "1" }}
               placeholder="Enter Title"
@@ -82,6 +101,7 @@ const Tasks = (props) => {
             />
 
             <textarea
+              tabIndex="0"
               type="text"
               style={{ flex: "1" }}
               placeholder="Enter Task Description"
@@ -96,19 +116,21 @@ const Tasks = (props) => {
               style={{
                 display: "flex",
                 alignContent: "center",
-                justifyContent: "center",
+                justifyContent: "space-around",
                 alignItems: "baseline",
-                margin: "5px",
+                margin: "10px",
               }}
             >
               <DatePicker
+                tabIndex="2"
                 selected={startDate.date}
                 onChange={(date) => setStartDate({ date })}
                 customInput={<ExampleCustomInput />}
               />
 
               <input
-                style={{ width: "75px", margin: "10px" }}
+                tabIndex="3"
+                style={{ width: "75px" }}
                 type="text"
                 placeholder="Target(%)"
                 name="target"
@@ -117,14 +139,22 @@ const Tasks = (props) => {
                 required
               />
             </div>
-            <div>
-              <MultiSelect
-                options={options}
-                value={selected}
-                onChange={setSelected}
-                labelledBy={"Assign to"}
-              />
-            </div>
+
+            <Select
+              isMulti
+              placeholder="Assign to:"
+              onChange={handleSelection}
+              options={options}
+              defaultValue={selectedOption.value}
+              isClearable
+              styles={{ menuPortal: (base) => ({ ...base, zIndex: 200 }) }}
+              menuPortalTarget={document.body}
+              isSearchable
+              name="color"
+              menuPosition={selectedOption.isFixed ? "fixed" : "absolute"}
+              menuPlacement={selectedOption.portalPlacement}
+            />
+
             <div
               style={{
                 display: "flex",

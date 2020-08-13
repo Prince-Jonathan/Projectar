@@ -30,7 +30,7 @@
   border: none;
   cursor: pointer;
   width: 50%;
-  margin-bottom: 10px;
+  margin: 10px 0px;
   opacity: 0.8;
 }
 .form-container .cancel {
