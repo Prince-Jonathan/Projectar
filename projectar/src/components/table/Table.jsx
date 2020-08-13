@@ -1,9 +1,19 @@
 import React from "react";
-import { useTable, useExpanded } from "react-table";
+import { useTable, useFilters, useExpanded } from "react-table";
+
+import ColumnFilter from "./filters/ColumnFilter";
 
 import "./Table.css";
 
 const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
+  const defaultColumn = React.useMemo(
+    () => ({
+      // setting up default Filter UI
+      Filter: ColumnFilter,
+    }),
+    []
+  );
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -16,8 +26,10 @@ const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
     {
       columns: userColumns,
       data,
+      defaultColumn,
     },
-    useExpanded
+    useExpanded,
+    useFilters
   );
   const test = () => {
     return <div>test</div>;
@@ -29,7 +41,12 @@ const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              <th {...column.getHeaderProps()}>
+                {column.render("Header")}
+                {/* Render the columns filter UI */}
+
+                <div>{column.canFilter ? column.render("Filter") : null}</div>
+              </th>
             ))}
           </tr>
         ))}
@@ -53,7 +70,7 @@ const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
               */}
               {row.isExpanded ? (
                 <tr className="subComp">
-                  <td  colSpan={visibleColumns.length}>
+                  <td colSpan={visibleColumns.length}>
                     {/*
                       Inside it, call our renderRowSubComponent function. In reality,
                       you could pass whatever you want as props to

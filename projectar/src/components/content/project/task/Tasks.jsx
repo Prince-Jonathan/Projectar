@@ -77,7 +77,6 @@ const Tasks = (props) => {
   );
 
   return (
-    // add an option button or combo box for selecting assigned to
     <div>
       {backdrop}
       <div className="wrapper">
@@ -86,7 +85,6 @@ const Tasks = (props) => {
             <span>
               <strong>Assign Task To Specific Days</strong>
             </span>
-            <div style={{ position: "fixed", zIndex: 120 }} />
 
             <input
               // autoFocus

@@ -82,10 +82,6 @@ const Projects = (props) => {
         data={data}
         renderRowSubComponent={renderRowSubComponent}
       />
-      <hr />
-      <div>
-        <strong>Click to Access Project</strong>
-      </div>
     </Slate>
   );
 };
