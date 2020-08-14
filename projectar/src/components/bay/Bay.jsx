@@ -16,15 +16,16 @@ const Bay = (props) => {
   return (
     <div>
       {backdrop}
-        <div className="bay">
-          <Tasks
-            showTasks={props.showTasks}
-            onShowTasks={props.onShowTasks}
-            onCloseTasks={props.onCloseTasks}
-            postData={props.postData}
-            selectedID={props.selectedID}
-            onAlert={props.onAlert}
-          />
+      <div className="bay">
+        <Tasks
+          showTasks={props.showTasks}
+          onShowTasks={props.onShowTasks}
+          onCloseTasks={props.onCloseTasks}
+          postData={props.postData}
+          selectedID={props.selectedID}
+          onAlert={props.onAlert}
+          onFetchTasks={props.onFetchTasks}
+        />
       </div>
     </div>
   );

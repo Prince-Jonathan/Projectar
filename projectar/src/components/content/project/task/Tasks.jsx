@@ -34,7 +34,6 @@ const Tasks = (props) => {
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
-    console.log(event.target.value);
   };
 
   const handleSubmit = (event) => {
@@ -53,13 +52,18 @@ const Tasks = (props) => {
           position: "bottom center",
         })
       )
-      .then(() => props.onCloseTasks());
-    console.log("tasks", task);
+      // .then(() => props.onFetchTasks())
+      .then(() => props.onCloseTasks())
+      .catch(() =>
+        props.onAlert("error", "Failed to Save Task", {
+          timeout: 3000,
+          position: "bottom center",
+        })
+      );
   };
 
   const handleSelection = (selectedOption) => {
     setState({ ...state, personnel: selectedOption });
-    console.log(`Option selected:`, selectedOption);
   };
 
   const ExampleCustomInput = ({ value, onClick }) => (

@@ -11,7 +11,7 @@ import "./Projects.css";
 const Projects = (props) => {
   const [rowID, setRowID] = useState(0);
 
-  const data = React.useMemo(() => props.data, [props.data]);
+  const data = React.useMemo(() => props.projects, [props.projects]);
 
   useEffect(
     () => {
@@ -19,6 +19,7 @@ const Projects = (props) => {
     },
     [rowID]
   );
+
   const columns = React.useMemo(
     () => {
       const column = [
@@ -68,7 +69,11 @@ const Projects = (props) => {
 
           <button>Attendance</button>
         </div>
-        <OutstandingTask />
+        {console.log("props", props.selectedID)}
+        <OutstandingTask
+          projectID={row.original.id}
+          onFetchData={props.onFetchData}
+        />
       </div>
     ),
     []

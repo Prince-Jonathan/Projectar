@@ -8,7 +8,7 @@
   align-items: flex-start;
   justify-content: space-evenly;
   height: 100%;
-  border-right:solid yellow;
+  border-right:solid #ffee00;
   margin-right: 5px;
 }
 .left > button{

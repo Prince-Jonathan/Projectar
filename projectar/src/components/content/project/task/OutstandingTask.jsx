@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const OutstandingTask = (props) => {
-  return (
-    <div style={{ }}>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore officiis,
-      autem quidem maiores illum dolorum alias totam beatae id natus explicabo
-      doloribus hic, ea blanditiis recusandae. Et aut adipisci deserunt!
-    </div>
-  );
+  const [tasks, setTasks] = useState([]);
+  
+  const fetchTasks = (projectId) =>
+    props
+      .onFetchData(`/api/project/task/${projectId}`)
+      .then(({ data }) => setTasks(data));
+  useEffect(() => {fetchTasks(props.projectID)}, [props.projectID]);
+  return <div style={{}}>{("number", tasks.length)}</div>;
 };
 
 export default OutstandingTask;
