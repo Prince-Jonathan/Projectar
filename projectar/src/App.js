@@ -21,15 +21,20 @@ const App = (props) => {
   const [showTasks, setShowTasks] = useState(false);
   const [selectedID, setSeletedID] = useState(0);
 
-  const baseUrl = " http://192.168.69.102:8050";
+  const baseUrl = " http://192.168.69.101:8050";
 
   const fetchData = (url) => axios.get(baseUrl + url);
-
   const postData = (url, data) => axios.post(baseUrl + url, data);
 
-  useEffect(() => {
+  const fetchUser = () =>
     fetchData("/api").then(({ data }) => setName(data.name));
+  const fetchProjects = () =>
     fetchData("/api/project/all").then(({ data }) => setProjects(data));
+
+
+  useEffect(() => {
+    fetchUser();
+    fetchProjects();
   }, []);
   const handleShowSideMenu = () => {
     setShowSideMenu((prevState) => !prevState);
@@ -53,6 +58,7 @@ const App = (props) => {
   const handleAlert = (method, msg, options) => {
     alert[method](msg, { ...options });
   };
+
   return (
     <Layout
       showSideMenu={showSideMenu}
@@ -66,10 +72,11 @@ const App = (props) => {
         </Route>
         <Route path="/all-projects">
           <Projects
-            fetchData={fetchData}
             onShowTasks={handleShowTasks}
             onSelect={(id) => setSeletedID(id)}
-            data={projects}
+            projects={projects}
+            selectedID={selectedID}
+            onFetchData={fetchData}
           />
         </Route>
         <Route path="*">
