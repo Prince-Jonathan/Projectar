@@ -61,22 +61,27 @@ const Projects = (props) => {
     ({ row }) => (
       <div className="project">
         <div className="left">
-          {setRowID(row.original.id)}
-
-          <button onClick={props.onShowTasks}>Add Task</button>
+          <button
+            onClick={() => {
+              setRowID(row.original.id);
+              props.onShowTasks();
+            }}
+          >
+            Add Task
+          </button>
 
           <button>Report</button>
 
           <button>Attendance</button>
         </div>
-        {console.log("props", props.selectedID)}
         <OutstandingTask
           projectID={row.original.id}
           onFetchData={props.onFetchData}
+          toggler={props.toggler}
         />
       </div>
     ),
-    []
+    [props.toggler]
   );
   return (
     <Slate>

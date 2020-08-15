@@ -20,8 +20,9 @@ const App = (props) => {
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [selectedID, setSeletedID] = useState(0);
+  const [toggler, setToggler] = useState(false);
 
-  const baseUrl = " http://192.168.69.101:8050";
+  const baseUrl = " http://192.168.69.100:8050";
 
   const fetchData = (url) => axios.get(baseUrl + url);
   const postData = (url, data) => axios.post(baseUrl + url, data);
@@ -30,7 +31,6 @@ const App = (props) => {
     fetchData("/api").then(({ data }) => setName(data.name));
   const fetchProjects = () =>
     fetchData("/api/project/all").then(({ data }) => setProjects(data));
-
 
   useEffect(() => {
     fetchUser();
@@ -58,7 +58,10 @@ const App = (props) => {
   const handleAlert = (method, msg, options) => {
     alert[method](msg, { ...options });
   };
-
+  const handleTaskUpdate = () => {
+    setToggler((prevState) => !prevState);
+    console.log("it has changed state")
+  };
   return (
     <Layout
       showSideMenu={showSideMenu}
@@ -77,6 +80,7 @@ const App = (props) => {
             projects={projects}
             selectedID={selectedID}
             onFetchData={fetchData}
+            toggler={toggler}
           />
         </Route>
         <Route path="*">
@@ -91,6 +95,7 @@ const App = (props) => {
           postData={postData}
           selectedID={selectedID}
           onAlert={handleAlert}
+          onTaskUpdate={handleTaskUpdate}
         />
       ) : null}
     </Layout>
