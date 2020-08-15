@@ -17,6 +17,7 @@ const App = (props) => {
   const alert = useAlert();
   const [name, setName] = useState("");
   const [projects, setProjects] = useState([]);
+  const [personnel, setPersonnel] = useState();
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [selectedID, setSeletedID] = useState(0);
@@ -31,10 +32,13 @@ const App = (props) => {
     fetchData("/api").then(({ data }) => setName(data.name));
   const fetchProjects = () =>
     fetchData("/api/project/all").then(({ data }) => setProjects(data));
+  const fetchPersonnel = () =>
+    fetchData("/api/user/all").then(({ data }) => setPersonnel(data));
 
   useEffect(() => {
     fetchUser();
     fetchProjects();
+    fetchPersonnel();
   }, []);
   const handleShowSideMenu = () => {
     setShowSideMenu((prevState) => !prevState);
@@ -60,7 +64,7 @@ const App = (props) => {
   };
   const handleTaskUpdate = () => {
     setToggler((prevState) => !prevState);
-    console.log("it has changed state")
+    console.log("it has changed state");
   };
   return (
     <Layout
@@ -96,6 +100,7 @@ const App = (props) => {
           selectedID={selectedID}
           onAlert={handleAlert}
           onTaskUpdate={handleTaskUpdate}
+          personnel={personnel}
         />
       ) : null}
     </Layout>

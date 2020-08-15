@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 
@@ -14,23 +14,19 @@ const Tasks = (props) => {
     personnel: null,
   });
 
+  var options = [];
+  const data = props.personnel;
+
+  data.map((p) => {
+    const { first_name: label, id: value } = p;
+    options.push({ label: label, value: value });
+  });
+
   const [selectedOption, setSelectedOption] = useState({
     isOpen: false,
     isFixed: false,
     portalPlacement: "top",
   });
-
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
 
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
@@ -80,6 +76,7 @@ const Tasks = (props) => {
 
   return (
     <div>
+      {console.log(props.personnel)}
       <form onSubmit={handleSubmit} className="form-container">
         <span>
           <strong>Assign Task To Specific Days</strong>

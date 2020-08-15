@@ -136,11 +136,12 @@ def all_users():
 	data = []
 	try:
 		users = User.query.order_by(User.id).all()
-		fetch(users, data)
-		return {
-			"success":True,
-			"data":data
-		}
+		# fetch(users, data)
+		# return {
+		# 	"success":True,
+		# 	"data":data
+		# }
+		return jsonify(Task.serialize_list(users))
 	except SQLAlchemyError as err:
 		print(err)
 		return {

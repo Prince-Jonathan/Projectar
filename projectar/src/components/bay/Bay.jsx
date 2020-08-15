@@ -26,6 +26,7 @@ const Bay = (props) => {
           onAlert={props.onAlert}
           onFetchTasks={props.onFetchTasks}
           onTaskUpdate={props.onTaskUpdate}
+          personnel={props.personnel}
         />
       </div>
     </div>
