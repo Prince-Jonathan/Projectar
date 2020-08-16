@@ -94,6 +94,10 @@ def add_task():
 	try:
 		db.session.add(task)
 		db.session.commit()
+
+		for personnel_id in data["personnel"]:
+			print("this is info: ",task.id,personnel_id)
+			enrol_user_task(task.id, personnel_id)
 		return {
 			"success":True,
 			"data":data
@@ -105,7 +109,6 @@ def add_task():
 			"success":False,
 			"msg":"Task:'%s' already exits" % data["title"]
 		} 
-
 
 @app.route('/api/user/detail/<int:user_id>')
 def get_user(user_id):
@@ -201,13 +204,15 @@ def enrol_user_proj(personnel_id, project_id):
 		return {
 			"success":False
 		}
-@app.route('/api/enrol/user/task/<int:personnel_id>/<int:task_id>')
-def enrol_user_task(personnel_id, task_id):
-	'''Passes two id arguments to  enrol a personnel to a task '''
+
+@app.route('/api/enrol/user/task/<int:task_id>/<int:personnel_id>')
+def enrol_user_task(task_id, personnel_id):
+	'''Passes task id and personnel id to enrol personnel to a task '''
+	print("inside enrolment")
 	try:
-		personnel = User.query.get_or_404(personnel_id)
-		task = Project.query.get_or_404(task_id)
-		personnel.tasks.append(task)
+		personnel=User.query.get_or_404(personnel_id)
+		task = Task.query.get_or_404(task_id)
+		task.personnel.append(personnel)
 		db.session.commit()
 		return {
 			"success":True,
@@ -218,6 +223,7 @@ def enrol_user_task(personnel_id, task_id):
 		return {
 			"success":False
 		}
+		
 @app.route('/api/project/task/<int:project_id>')
 def proj_tasks(project_id):
 	'''Get all tasks that project of id has assigned'''
@@ -246,14 +252,14 @@ def user_projs(personnel_id):
 		user = User.query.get(personnel_id)
 		msg = "does not exist"
 		if user is not None:
-			enrolments = user.projects
-			if len(enrolments) != 0:
-				# fetch(enrolments, data)
+			projects = user.projects
+			if len(projects) != 0:
+				# fetch(projects, data)
 				# return {
 				# 	"success":True,
 				# 	"data":data
 				# }
-				return jsonify(Task.serialize_list(enrolments))
+				return jsonify(Project.serialize_list(projects))
 			msg = "has not yet been enrolled to a project"
 		return {
 			"success":False,
@@ -273,18 +279,45 @@ def proj_users(project_id):
 		project = Project.query.get(project_id)
 		msg = "does not exist"
 		if project is not None:
-			enrolments = project.personnel
-			if len(enrolments[:]) != 0:
-				# fetch(enrolments, data)
+			users = project.personnel
+			if len(users[:]) != 0:
+				# fetch(users, data)
 				# return {
 				# 	"success":True,
 				# 	"data":data
 				# }
-				return jsonify(Task.serialize_list(enrolments))
+				return jsonify(User.serialize_list(users))
 			msg = "has not yet got enrolled users"
 		return {
 			"success":False,
 			"msg":"Project with ID: %d %s" % (project_id, msg)
+		}
+	except SQLAlchemyError as err:
+		print(err)
+		return{
+			"success":False
+		}
+
+@app.route('/api/task/enrolments/<int:task_id>')
+def task_users(task_id):
+	'''Get all users that have been enrolled to a task'''
+	data = []
+	try:
+		task = Task.query.get(task_id)
+		msg = "does not exist"
+		if task is not None:
+			personnel = task.personnel
+			if len(personnel[:]) != 0:
+				# fetch(personnel, data)
+				# return {
+				# 	"success":True,
+				# 	"data":data
+				# }
+				return jsonify(User.serialize_list(personnel))
+			msg = "has not yet got enrolled personnel"
+		return {
+			"success":False,
+			"msg":"Task with ID: %d %s" % (task_id, msg)
 		}
 	except SQLAlchemyError as err:
 		print(err)

@@ -14,12 +14,16 @@ const Tasks = (props) => {
     personnel: null,
   });
 
-  var options = [];
+  // var options = [];
   const data = props.personnel;
 
-  data.map((p) => {
-    const { first_name: label, id: value } = p;
-    options.push({ label: label, value: value });
+  // data.map((personnel) => {
+  //   const { first_name: firstName, last_name: lastName, id: value } = personnel;
+  //   options.push({ label: `${firstName} ${lastName}`, value: value });
+  // });
+  const options = data.map((personnel) => {
+    const { first_name: firstName, last_name: lastName, id: value } = personnel;
+    return { label: `${firstName} ${lastName}`, value: value };
   });
 
   const [selectedOption, setSelectedOption] = useState({
@@ -40,8 +44,10 @@ const Tasks = (props) => {
       timeout: 3000,
       position: "bottom center",
     });
+    console.log(task);
     props
       .postData("/api/task/add", task)
+      .then((data) => console.log(data))
       .then(() =>
         props.onAlert("success", "Task Saved", {
           timeout: 5000,
@@ -59,7 +65,8 @@ const Tasks = (props) => {
   };
 
   const handleSelection = (selectedOption) => {
-    setState({ ...state, personnel: selectedOption });
+    const personnel = selectedOption.map((option) => option.value);
+    setState({ ...state, personnel });
   };
 
   const ExampleCustomInput = ({ value, onClick }) => (
@@ -76,7 +83,6 @@ const Tasks = (props) => {
 
   return (
     <div>
-      {console.log(props.personnel)}
       <form onSubmit={handleSubmit} className="form-container">
         <span>
           <strong>Assign Task To Specific Days</strong>

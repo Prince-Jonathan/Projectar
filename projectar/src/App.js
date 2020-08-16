@@ -23,10 +23,20 @@ const App = (props) => {
   const [selectedID, setSeletedID] = useState(0);
   const [toggler, setToggler] = useState(false);
 
-  const baseUrl = " http://192.168.69.100:8050";
+  const baseUrl = "https://14f1e68cb745.ngrok.io";
 
-  const fetchData = (url) => axios.get(baseUrl + url);
-  const postData = (url, data) => axios.post(baseUrl + url, data);
+  const fetchData = (url, params) =>
+    axios.get(baseUrl + url, {
+      params: {
+        ...params,
+      },
+    });
+  const postData = (url, body, params) =>
+    axios.post(baseUrl + url, body, {
+      params: {
+        ...params,
+      },
+    });
 
   const fetchUser = () =>
     fetchData("/api").then(({ data }) => setName(data.name));

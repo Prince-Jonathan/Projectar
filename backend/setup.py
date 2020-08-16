@@ -39,7 +39,7 @@ class User(db.Model):
 	#date_created =  db.Column(db.DateTime, default=datetime.utcnow)	
 
 	def __repr__(self): 
-		return '<User %r>' % self.username	
+		return '<User %r>' % self.first_name	
 
 #Model Project Table
 class Project(db.Model):
@@ -65,9 +65,12 @@ class Task(db.Model):
 	child_task=db.relationship('Reassigned_Task', backref='parent_task', uselist=False)
 
 	def __repr__(self): 
-		return '<Task %r>' % self.name
+		return '<Task %r>' % self.title
 
 #Model Reassigned_Task Table
 class Reassigned_Task(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	parent_id=db.Column(db.Integer, db.ForeignKey('task.id'), unique=True)
+
+	def __repr__(self): 
+		return '<Reassigned_Task %r>' % self.parent_id

@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 
 const OutstandingTask = (props) => {
   const [tasks, setTasks] = useState([]);
-  const [count, setCount] = useState(0);
 
   const fetchTasks = (projectId) =>
     props
       .onFetchData(`/api/project/task/${projectId}`)
-      .then(({ data }) => setTasks(data));
+      .then(({ data }) => (data.msg ? null : setTasks(data)));
 
   useEffect(
     () => {
@@ -22,10 +21,14 @@ const OutstandingTask = (props) => {
   return (
     <div style={{}}>
       Outstanding Tasks:{" "}
-      <span style={{ color: "#ffee00", fontWeight: 700 }}>{oTasks.length}</span>{" "}
+      <span style={{ color: "#ffee00", fontWeight: 700 }}>
+        {oTasks.length || "-"}
+      </span>{" "}
       Completed Tasks:{" "}
       <span style={{ color: "white", fontWeight: 500 }}>
-        {tasks.length - oTasks.length}
+        {tasks.length - oTasks.length || (
+          <span style={{ color: "red" }}>---</span>
+        )}
       </span>
     </div>
   );
