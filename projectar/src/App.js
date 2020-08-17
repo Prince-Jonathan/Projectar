@@ -9,7 +9,7 @@ import Workspace from "./components/content/Workspace";
 import Projects from "./components/content/projects/Projects";
 import Project from "./components/content/project/Project";
 import Bay from "./components/bay/Bay";
-import Task from "./components/content/project/task/Task";
+import AddTask from "./components/content/project/task/AddTask";
 
 import "./App.css";
 
@@ -85,7 +85,14 @@ const App = (props) => {
     >
       <Switch>
         <Route path="/workspace">
-          <Workspace />
+          <Workspace
+            onShowTasks={handleShowTasks}
+            onSelect={(id) => setSeletedID(id)}
+            projects={projects}
+            selectedID={selectedID}
+            onFetchData={fetchData}
+            toggler={toggler}
+          />
         </Route>
         <Route path="/all-projects">
           <Projects

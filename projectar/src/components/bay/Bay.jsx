@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import Select from "react-select";
 
 import BackDrop from "../backdrop/Backdrop";
-import Task from "../content/project/task/Task";
+import AddTask from "../content/project/task/AddTask";
 
 import "./Bay.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -17,7 +17,7 @@ const Bay = (props) => {
     <div>
       {backdrop}
       <div className="bay">
-        <Task
+        <AddTask
           showTasks={props.showTasks}
           onShowTasks={props.onShowTasks}
           onCloseTasks={props.onCloseTasks}
