@@ -9,12 +9,12 @@ import "./Bay.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Bay = (props) => {
-  let backdrop = props.showBay ? <BackDrop onClick={props.onCloseBay} /> : null;
+  let backdrop = props.showBay ? <BackDrop /> : null;
 
   return (
     <div>
       {backdrop}
-      <div id="bay" className="bay">
+      <div onClick={props.onCloseBay}  id="bay" className="bay">
         {/* <Task
           showTasks={props.showTasks}
           onShowTasks={props.onShowTasks}
