@@ -7,9 +7,7 @@ import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
 import Workspace from "./components/content/Workspace";
 import Projects from "./components/content/projects/Projects";
-import Project from "./components/content/project/Project";
 import Bay from "./components/bay/Bay";
-import Tasks from "./components/content/project/task/Tasks";
 
 import "./App.css";
 
@@ -19,7 +17,7 @@ const App = (props) => {
   const [projects, setProjects] = useState([]);
   const [personnel, setPersonnel] = useState();
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const [showTasks, setShowTasks] = useState(false);
+  const [showBay, setShowBay] = useState(false);
   const [selectedID, setSeletedID] = useState(0);
   const [toggler, setToggler] = useState(false);
 
@@ -53,14 +51,14 @@ const App = (props) => {
   const handleShowSideMenu = () => {
     setShowSideMenu((prevState) => !prevState);
   };
-  const handleShowTasks = () => {
-    setShowTasks((prevState) => !prevState);
+  const handleShowBay = () => {
+    setShowBay((prevState) => !prevState);
   };
   const handleCloseSideMenu = () => {
     setShowSideMenu(false);
   };
-  const handleCloseTasks = () => {
-    setShowTasks(false);
+  const handleCloseBay = () => {
+    setShowBay(false);
   };
   const handlePopUpClick = (value, extras) => {
     const {
@@ -89,7 +87,7 @@ const App = (props) => {
         </Route>
         <Route path="/all-projects">
           <Projects
-            onShowTasks={handleShowTasks}
+            onShowBay={handleShowBay}
             onSelect={(id) => setSeletedID(id)}
             projects={projects}
             selectedID={selectedID}
@@ -101,11 +99,11 @@ const App = (props) => {
           <Redirect to="/" />
         </Route>
       </Switch>
-      {showTasks ? (
+      {showBay ? (
         <Bay
-          showTasks={showTasks}
-          onShowTasks={handleShowTasks}
-          onCloseTasks={handleCloseTasks}
+          showBay={showBay}
+          onShowBay={handleShowBay}
+          onCloseTasks={handleCloseBay}
           postData={postData}
           selectedID={selectedID}
           onAlert={handleAlert}

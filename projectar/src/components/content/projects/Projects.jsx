@@ -64,7 +64,7 @@ const Projects = (props) => {
           <button
             onClick={() => {
               setRowID(row.original.id);
-              props.onShowTasks();
+              props.onShowBay();
             }}
           >
             Add Task
