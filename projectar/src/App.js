@@ -19,11 +19,11 @@ const App = (props) => {
   const [projects, setProjects] = useState([]);
   const [personnel, setPersonnel] = useState();
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const [showTasks, setShowTasks] = useState(true);
+  const [showTasks, setShowTasks] = useState(false);
   const [selectedID, setSeletedID] = useState(0);
   const [toggler, setToggler] = useState(false);
 
-  const baseUrl = "https://14f1e68cb745.ngrok.io";
+  const baseUrl = "http://192.168.69.100:8050";
 
   const fetchData = (url, params) =>
     axios.get(baseUrl + url, {
@@ -88,14 +88,14 @@ const App = (props) => {
           <Workspace />
         </Route>
         <Route path="/all-projects">
-          {/* <Projects
+          <Projects
             onShowTasks={handleShowTasks}
             onSelect={(id) => setSeletedID(id)}
             projects={projects}
             selectedID={selectedID}
             onFetchData={fetchData}
             toggler={toggler}
-          /> */}
+          />
         </Route>
         <Route path="*">
           <Redirect to="/" />

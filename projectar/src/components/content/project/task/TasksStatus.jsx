@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const OutstandingTask = (props) => {
+const TasksStatus = (props) => {
   const [tasks, setTasks] = useState([]);
 
   const fetchTasks = (projectId) =>
@@ -35,4 +35,4 @@ const OutstandingTask = (props) => {
   );
 };
 
-export default OutstandingTask;
+export default TasksStatus;

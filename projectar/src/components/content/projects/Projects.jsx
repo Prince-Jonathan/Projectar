@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Table from "../../table/Table";
 import Slate from "../slate/Slate";
 import { isMobile } from "../../Responsive";
-import OutstandingTask from "../project/task/OutstandingTask";
+import TasksStatus from "../project/task/TasksStatus";
 
 import "./Projects.css";
 
@@ -74,7 +74,7 @@ const Projects = (props) => {
 
           <button>Attendance</button>
         </div>
-        <OutstandingTask
+        <TasksStatus
           projectID={row.original.id}
           onFetchData={props.onFetchData}
           toggler={props.toggler}
