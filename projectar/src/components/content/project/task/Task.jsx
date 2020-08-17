@@ -7,7 +7,7 @@ import { isMobile } from "../../../Responsive";
 import "./Task.css";
 import "react-datepicker/dist/react-datepicker.css";
 
-const Tasks = (props) => {
+const Task = (props) => {
   const [startDate, setStartDate] = useState({ date: new Date() });
   const [state, setState] = useState({
     title: "",
@@ -202,4 +202,4 @@ const Tasks = (props) => {
   );
 };
 
-export default Tasks;
+export default Task;

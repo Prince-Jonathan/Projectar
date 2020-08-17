@@ -9,7 +9,7 @@ import Workspace from "./components/content/Workspace";
 import Projects from "./components/content/projects/Projects";
 import Project from "./components/content/project/Project";
 import Bay from "./components/bay/Bay";
-import Tasks from "./components/content/project/task/Tasks";
+import Task from "./components/content/project/task/Task";
 
 import "./App.css";
 
