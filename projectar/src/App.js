@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { useAlert } from "react-alert";
+import { Portal } from "react-portal";
 
 import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
 import Workspace from "./components/content/Workspace";
 import Projects from "./components/content/projects/Projects";
 import Bay from "./components/bay/Bay";
+import Task from "./components/content/project/task/Task";
 
 import "./App.css";
 
@@ -81,6 +83,24 @@ const App = (props) => {
       name={name}
       onShowSideMenu={handleShowSideMenu}
     >
+      {showBay && (
+        <Portal
+          closeOnOutsideClick
+          closeOnEsc
+          node={document.getElementById("bay")}
+        >
+          <Task
+            showTasks={showBay}
+            onShowTasks={handleShowBay}
+            onCloseTasks={handleCloseBay}
+            postData={postData}
+            selectedID={selectedID}
+            onAlert={handleAlert}
+            onTaskUpdate={handleTaskUpdate}
+            personnel={personnel}
+          />
+        </Portal>
+      )}
       <Switch>
         <Route path="/workspace">
           <Workspace />
@@ -99,18 +119,7 @@ const App = (props) => {
           <Redirect to="/" />
         </Route>
       </Switch>
-      {showBay ? (
-        <Bay
-          showBay={showBay}
-          onShowBay={handleShowBay}
-          onCloseTasks={handleCloseBay}
-          postData={postData}
-          selectedID={selectedID}
-          onAlert={handleAlert}
-          onTaskUpdate={handleTaskUpdate}
-          personnel={personnel}
-        />
-      ) : null}
+      {showBay ? <Bay showBay={showBay} onCloseTasks={handleCloseBay} /> : null}
     </Layout>
   );
 };
