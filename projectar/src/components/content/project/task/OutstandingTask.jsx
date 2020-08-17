@@ -6,6 +6,7 @@ const OutstandingTask = (props) => {
   const fetchTasks = (projectId) =>
     props
       .onFetchData(`/api/project/task/${projectId}`)
+      //check if messsage exists: msg only exist on error
       .then(({ data }) => (data.msg ? null : setTasks(data)));
 
   useEffect(

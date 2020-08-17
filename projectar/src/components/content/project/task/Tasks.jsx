@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 
+import { isMobile } from "../../../Responsive";
+
 import "./Task.css";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -11,20 +13,22 @@ const Tasks = (props) => {
     title: "",
     description: "",
     target: "",
+    achieved: "",
     personnel: null,
   });
 
-  // var options = [];
-  const data = props.personnel;
+  // const data = props.personnel;
 
-  // data.map((personnel) => {
+  // const options = data.map((personnel) => {
   //   const { first_name: firstName, last_name: lastName, id: value } = personnel;
-  //   options.push({ label: `${firstName} ${lastName}`, value: value });
+  //   return { label: `${firstName} ${lastName}`, value: value };
   // });
-  const options = data.map((personnel) => {
-    const { first_name: firstName, last_name: lastName, id: value } = personnel;
-    return { label: `${firstName} ${lastName}`, value: value };
-  });
+
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
 
   const [selectedOption, setSelectedOption] = useState({
     isOpen: false,
@@ -90,7 +94,6 @@ const Tasks = (props) => {
 
         <input
           // autoFocus
-          tabIndex="0"
           type="text"
           style={{ flex: "1" }}
           placeholder="Enter Title"
@@ -101,7 +104,6 @@ const Tasks = (props) => {
         />
 
         <textarea
-          tabIndex="0"
           type="text"
           style={{ flex: "1" }}
           placeholder="Enter Task Description"
@@ -117,26 +119,48 @@ const Tasks = (props) => {
             display: "flex",
             alignContent: "center",
             justifyContent: "space-around",
-            alignItems: "baseline",
+            alignItems: "center",
             margin: "10px",
           }}
         >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignContent: "center",
+              justifyContent: "space-around",
+              alignItems: "baseline",
+              margin: "10px",
+            }}
+          >
+            <label>
+              <input
+                // style={{ width: "75px" }}
+                type="text"
+                placeholder="Target(%)"
+                name="target"
+                value={state.target}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              <input
+                style={{ flexBasis: "auto" }}
+                type="text"
+                placeholder="Achieved(%)"
+                name="achieved"
+                value={state.achieved}
+                onChange={handleChange}
+                required
+              />
+            </label>
+          </div>
           <DatePicker
-            tabIndex="2"
             selected={startDate.date}
             onChange={(date) => setStartDate({ date })}
             customInput={<ExampleCustomInput />}
-          />
-
-          <input
-            tabIndex="3"
-            style={{ width: "75px" }}
-            type="text"
-            placeholder="Target(%)"
-            name="target"
-            value={state.target}
-            onChange={handleChange}
-            required
+            withPortal={isMobile}
           />
         </div>
 
