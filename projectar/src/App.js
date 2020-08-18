@@ -17,6 +17,7 @@ const App = (props) => {
   const alert = useAlert();
   const [name, setName] = useState("");
   const [projects, setProjects] = useState([]);
+  const [projectTasks, setProjectTasks] = useState([]);
   const [personnel, setPersonnel] = useState();
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
@@ -42,12 +43,15 @@ const App = (props) => {
     fetchData("/api").then(({ data }) => setName(data.name));
   const fetchProjects = () =>
     fetchData("/api/project/all").then(({ data }) => setProjects(data));
+  const fetchProjectTasks = () =>
+    fetchData("/api/task/all").then(({ data }) => setProjectTasks(data));
   const fetchPersonnel = () =>
     fetchData("/api/user/all").then(({ data }) => setPersonnel(data));
 
   useEffect(() => {
     fetchUser();
     fetchProjects();
+    fetchProjectTasks();
     fetchPersonnel();
   }, []);
   const handleShowSideMenu = () => {
@@ -88,7 +92,7 @@ const App = (props) => {
           <Workspace
             onShowTasks={handleShowTasks}
             onSelect={(id) => setSeletedID(id)}
-            projects={projects}
+            projects={projectTasks}
             selectedID={selectedID}
             onFetchData={fetchData}
             toggler={toggler}

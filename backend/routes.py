@@ -96,7 +96,6 @@ def add_task():
 		db.session.commit()
 
 		for personnel_id in data["personnel"]:
-			print("this is info: ",task.id,personnel_id)
 			enrol_user_task(task.id, personnel_id)
 		return {
 			"success":True,
@@ -208,7 +207,6 @@ def enrol_user_proj(personnel_id, project_id):
 @app.route('/api/enrol/user/task/<int:task_id>/<int:personnel_id>')
 def enrol_user_task(task_id, personnel_id):
 	'''Passes task id and personnel id to enrol personnel to a task '''
-	print("inside enrolment")
 	try:
 		personnel=User.query.get_or_404(personnel_id)
 		task = Task.query.get_or_404(task_id)
@@ -223,7 +221,7 @@ def enrol_user_task(task_id, personnel_id):
 		return {
 			"success":False
 		}
-		
+
 @app.route('/api/project/task/<int:project_id>')
 def proj_tasks(project_id):
 	'''Get all tasks that project of id has assigned'''

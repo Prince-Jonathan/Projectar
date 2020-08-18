@@ -120,43 +120,19 @@ const AddTask = (props) => {
             display: "flex",
             alignContent: "center",
             justifyContent: "space-around",
-            alignItems: "center",
-            margin: "10px",
+            alignItems: "baseline",
+            margin: "5px",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignContent: "center",
-              justifyContent: "space-around",
-              alignItems: "baseline",
-              margin: "10px",
-            }}
-          >
-            <label>
-              <input
-                // style={{ width: "75px" }}
-                type="text"
-                placeholder="Target(%)"
-                name="target"
-                value={state.target}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <label>
-              <input
-                style={{ flexBasis: "auto" }}
-                type="text"
-                placeholder="Achieved(%)"
-                name="achieved"
-                value={state.achieved}
-                onChange={handleChange}
-                required
-              />
-            </label>
-          </div>
+          <input
+            // style={{ width: "75px" }}
+            type="text"
+            placeholder="Target(%)"
+            name="target"
+            value={state.target}
+            onChange={handleChange}
+            required
+          />
           <DatePicker
             selected={startDate.date}
             onChange={(date) => setStartDate({ date })}

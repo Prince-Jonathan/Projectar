@@ -97,7 +97,6 @@ const Task = (props) => {
           // autoFocus
           type="text"
           style={{ flex: "1" }}
-          placeholder="Enter Title"
           name="title"
           value={state.title}
           onChange={handleChange}
@@ -107,7 +106,6 @@ const Task = (props) => {
         <textarea
           type="text"
           style={{ flex: "1" }}
-          placeholder="Enter Task Description"
           name="description"
           value={state.description}
           onChange={handleChange}
@@ -121,7 +119,7 @@ const Task = (props) => {
             alignContent: "center",
             justifyContent: "space-around",
             alignItems: "center",
-            margin: "10px",
+            margin: "5px",
           }}
         >
           <div
@@ -131,14 +129,14 @@ const Task = (props) => {
               alignContent: "center",
               justifyContent: "space-around",
               alignItems: "baseline",
-              margin: "10px",
+              margin: "5px",
             }}
           >
             <label>
+              Target(%):
               <input
                 // style={{ width: "75px" }}
                 type="text"
-                placeholder="Target(%)"
                 name="target"
                 value={state.target}
                 onChange={handleChange}
@@ -146,10 +144,10 @@ const Task = (props) => {
               />
             </label>
             <label>
+              Achieved(%):
               <input
                 style={{ flexBasis: "auto" }}
                 type="text"
-                placeholder="Achieved(%)"
                 name="achieved"
                 value={state.achieved}
                 onChange={handleChange}
@@ -167,7 +165,6 @@ const Task = (props) => {
 
         <Select
           isMulti
-          placeholder="Assign to:"
           onChange={handleSelection}
           options={options}
           defaultValue={selectedOption.value}

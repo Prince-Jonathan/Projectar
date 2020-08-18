@@ -3,6 +3,7 @@ This script sets up flask and configures its working with sqlalchemy
 '''
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_cors import CORS
 from sqlalchemy.orm.attributes import instance_state
 from sqlalchemy.inspection import inspect
@@ -17,6 +18,9 @@ APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #initialising database with flask object
 DB = SQLAlchemy(APP)
+
+#initialising migration extension with flask object
+migrate = Migrate(APP, DB)
 
 #initialising onesignal client for notifications
 ONESIGNAL_CLIENT = AsyncClient(app_id="88669c69-3692-49b8-9458-93694b80eeef", rest_api_key="MTBiY2U2YmYtMGJiOS00NTM3LTgzZGMtMDAzMDhjNTQ2NDAx")

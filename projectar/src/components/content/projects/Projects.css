@@ -12,5 +12,5 @@
   margin-right: 5px;
 }
 .left > button{
-  margin:5px;
-}
+  margin:5px 5px 5px 0;
+} 

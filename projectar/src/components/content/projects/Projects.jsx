@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 import Table from "../../table/Table";
 import Slate from "../slate/Slate";
@@ -7,6 +8,49 @@ import { isMobile } from "../../Responsive";
 import TasksStatus from "../project/task/TasksStatus";
 
 import "./Projects.css";
+
+const Button = styled.button`
+  background: #faec25b9;
+  border: none;
+  border-bottom: 4px solid #10292e;
+  color: #10292e;
+  /* font-family: 'Open Sans', sans-serif; */
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+  font-size: 15px;
+  text-align: center;
+  box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  margin: 0 5px 0 5px;
+  border-radius: 12px;
+  background-color: #ffee00;
+
+  &::active {
+    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+const Styles = styled.div`
+  .project {
+    display: flex;
+    flex-direction: row;
+  }
+  .left {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    height: 100%;
+    border-right: solid #ffee00;
+    margin-right: 5px;
+  }
+  .left > button {
+    margin: 5px 5px 5px 0;
+  }
+  .delete {
+    color: white;
+    border-bottom: 2px solid #f44336;
+  }
+`;
 
 const Projects = (props) => {
   const [rowID, setRowID] = useState(0);
@@ -59,27 +103,29 @@ const Projects = (props) => {
   );
   const renderRowSubComponent = React.useCallback(
     ({ row }) => (
-      <div className="project">
-        <div className="left">
-          <button
-            onClick={() => {
-              setRowID(row.original.id);
-              props.onShowTasks();
-            }}
-          >
-            Add Task
-          </button>
+      <Styles>
+        <div className="project">
+          <div className="left">
+            <Button
+              onClick={() => {
+                setRowID(row.original.id);
+                props.onShowTasks();
+              }}
+            >
+              Add Task
+            </Button>
 
-          <button>Report</button>
+            <Button>Report</Button>
 
-          <button>Attendance</button>
+            <Button>Attendance</Button>
+          </div>
+          <TasksStatus
+            projectID={row.original.id}
+            onFetchData={props.onFetchData}
+            toggler={props.toggler}
+          />
         </div>
-        <TasksStatus
-          projectID={row.original.id}
-          onFetchData={props.onFetchData}
-          toggler={props.toggler}
-        />
-      </div>
+      </Styles>
     ),
     [props.toggler]
   );

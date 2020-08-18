@@ -2,6 +2,7 @@
 This script sets up the database...and that's all
 '''
 from flask import Flask,request,jsonify
+from flask_migrate import Migrate
 from flask import Flask,request
 from flask_sqlalchemy import SQLAlchemy 
 from datetime import datetime
@@ -12,6 +13,8 @@ app.config['SQLALCHEMY_DATABASE_URI']='postgresql://jona:jona132435@35.225.121.2
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #consumes lot of memory: set to fals
 
 db=SQLAlchemy(app)
+
+migrate = Migrate(app, db)
 
 #An enrolment relation table
 enrolment = db.Table('enrolment', 
@@ -33,7 +36,7 @@ class User(db.Model):
 	pin=db.Column(db.Integer, nullable=True)
 	role=db.Column(db.String(50), nullable=True)
 
-	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
+	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='joined'))
 	tasks = db.relationship('Task', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 
 	#date_created =  db.Column(db.DateTime, default=datetime.utcnow)	
@@ -73,4 +76,4 @@ class Reassigned_Task(db.Model):
 	parent_id=db.Column(db.Integer, db.ForeignKey('task.id'), unique=True)
 
 	def __repr__(self): 
-		return '<Reassigned_Task %r>' % self.parent_id
+		return '<Task %r>' % self.parent_id
