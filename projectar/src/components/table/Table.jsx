@@ -5,7 +5,7 @@ import ColumnFilter from "./filters/ColumnFilter";
 
 import "./Table.css";
 
-const Table = ({ columns: userColumns, data, renderRowSubComponent,returnData }) => {
+const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
   const defaultColumn = React.useMemo(
     () => ({
       // setting up default Filter UI
@@ -31,9 +31,7 @@ const Table = ({ columns: userColumns, data, renderRowSubComponent,returnData })
     useExpanded,
     useFilters
   );
-  const test = () => {
-    return <div>test</div>;
-  };
+
   const firstPageRows = rows.slice(0, 2);
   return (
     <table {...getTableProps()}>

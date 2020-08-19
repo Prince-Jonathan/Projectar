@@ -36,7 +36,7 @@ class User(db.Model):
 	pin=db.Column(db.Integer, nullable=True)
 	role=db.Column(db.String(50), nullable=True)
 
-	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='joined'))
+	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 	tasks = db.relationship('Task', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 
 	#date_created =  db.Column(db.DateTime, default=datetime.utcnow)	

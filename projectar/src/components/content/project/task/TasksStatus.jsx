@@ -24,7 +24,9 @@ const TasksStatus = (props) => {
   return (
     <div>
       <div
-        onClick={() => history.push(`/project/${props.projectID}`)}
+        onClick={() =>
+          history.push(`/project/${props.projectID}/outstanding-tasks`)
+        }
         style={{ cursor: "pointer" }}
       >
         Outstanding Tasks:{" "}
@@ -32,7 +34,11 @@ const TasksStatus = (props) => {
           {oTasks.length || "-"}
         </div>{" "}
       </div>
-      <div>
+      <div
+        onClick={() =>
+          history.push(`/project/${props.projectID}/completed-tasks`)
+        }
+      >
         Completed Tasks:{" "}
         <div style={{ color: "white", fontWeight: 500 }}>
           {tasks.length - oTasks.length || (

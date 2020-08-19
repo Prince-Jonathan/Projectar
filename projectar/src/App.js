@@ -26,7 +26,7 @@ const App = (props) => {
   const [isTaskUpdated, setIsTaskUpdated] = useState(false);
   const [isTaskCreated, setIsTaskCreated] = useState(false);
 
-  const baseUrl = "http://192.168.69.100:8050";
+  const baseUrl = "http://192.168.69.101:8050";
 
   const fetchData = (url, params) =>
     axios.get(baseUrl + url, {

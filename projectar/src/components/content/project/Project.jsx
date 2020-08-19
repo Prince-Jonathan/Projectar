@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Route, useRouteMatch, useParams, Switch } from "react-router-dom";
 import styled from "styled-components";
 
 import Table from "../../table/Table";
@@ -54,6 +54,9 @@ const Styles = styled.div`
 `;
 
 const Project = (props) => {
+  const { path } = useRouteMatch();
+  const { status } = useParams();
+
   const [rowID, setRowID] = useState(undefined);
   const { id } = useParams();
 
@@ -123,7 +126,6 @@ const Project = (props) => {
             >
               Edit
             </Button>
-
             <Button>Re-assign</Button>
 
             <Button className="delete">Delete</Button>
@@ -138,15 +140,37 @@ const Project = (props) => {
     ),
     []
   );
+  const outstandingTasks = data.filter(
+    (task) => parseInt(task.achieved) !== 100
+  );
+  const completedTasks = data.filter((task) => parseInt(task.achieved) === 100);
   return (
     <React.Fragment>
       <Styles>
         <Slate>
-          <Table
-            columns={columns}
-            data={data}
-            renderRowSubComponent={renderRowSubComponent}
-          />
+          <Switch>
+            <Route exact path={path}>
+              <Table
+                columns={columns}
+                data={data}
+                renderRowSubComponent={renderRowSubComponent}
+              />
+            </Route>
+            <Route path={`${path}/outstanding-tasks`}>
+              <Table
+                columns={columns}
+                data={outstandingTasks}
+                renderRowSubComponent={renderRowSubComponent}
+              />
+            </Route>
+            <Route path={`${path}/completed-tasks`}>
+              <Table
+                columns={columns}
+                data={completedTasks}
+                renderRowSubComponent={renderRowSubComponent}
+              />
+            </Route>
+          </Switch>
         </Slate>
       </Styles>
     </React.Fragment>
