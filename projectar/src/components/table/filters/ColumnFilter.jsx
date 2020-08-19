@@ -19,7 +19,11 @@ const ColumnFilter = ({
       onChange={(e) => {
         setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
       }}
-      placeholder={`Search ${count} ${count === 1 ? "record?" : "records..."}`}
+      placeholder={
+        count
+          ? `Search ${count} ${count === 1 ? "record?" : "records..."}`
+          : "There are no records..."
+      }
     />
   );
 };
