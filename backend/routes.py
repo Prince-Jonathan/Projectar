@@ -222,6 +222,25 @@ def enrol_user_task(task_id, personnel_id):
 			"success":False
 		}
 
+@app.route('/api/task/update/<int:task_id>', methods=['GET'])
+def update_task(task_id):
+	'''edits the task of the specifiend id'''
+	try:
+		task= Task.query.get_or_404(task_id)
+		
+		task.title=data["title"],
+		task.description=data["description"],
+		task.target=data["target"],
+		task.date=data["date"],
+		task.project=project
+		return jsonify(Task.serialize_list(task))
+	except SQLAlchemyError as err:
+		print(err)
+		db.session.rollback()
+		return {
+			"success":False
+		}
+
 @app.route('/api/project/task/<int:project_id>')
 def proj_tasks(project_id):
 	'''Get all tasks that project of id has assigned'''
