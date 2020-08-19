@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 const TasksStatus = (props) => {
   const [tasks, setTasks] = useState([]);
+  const history = useHistory();
 
   const fetchTasks = (projectId) =>
     props
@@ -20,17 +22,24 @@ const TasksStatus = (props) => {
     [tasks]
   );
   return (
-    <div style={{}}>
-      Outstanding Tasks:{" "}
-      <span style={{ color: "#ffee00", fontWeight: 700 }}>
-        {oTasks.length || "-"}
-      </span>{" "}
-      Completed Tasks:{" "}
-      <span style={{ color: "white", fontWeight: 500 }}>
-        {tasks.length - oTasks.length || (
-          <span style={{ color: "red" }}>---</span>
-        )}
-      </span>
+    <div>
+      <div
+        onClick={() => history.push(`/project/${props.projectID}`)}
+        style={{ cursor: "pointer" }}
+      >
+        Outstanding Tasks:{" "}
+        <div style={{ color: "#ffee00", fontWeight: 700 }}>
+          {oTasks.length || "-"}
+        </div>{" "}
+      </div>
+      <div>
+        Completed Tasks:{" "}
+        <div style={{ color: "white", fontWeight: 500 }}>
+          {tasks.length - oTasks.length || (
+            <span style={{ color: "red" }}>---</span>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

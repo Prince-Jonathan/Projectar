@@ -124,7 +124,7 @@ const Workspace = (props) => {
 
             <Button className="delete">Delete</Button>
           </div>
-          <Description description={row.original.description} />
+          <Description onFetchData={props.onFetchData} description={row.original.description} />
         </div>
       </Styles>
     ),
@@ -140,7 +140,6 @@ const Workspace = (props) => {
             renderRowSubComponent={renderRowSubComponent}
           />
         </Slate>
-        <Task />
       </Styles>
     </React.Fragment>
   );

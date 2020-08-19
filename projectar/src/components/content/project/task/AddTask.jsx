@@ -17,18 +17,18 @@ const AddTask = (props) => {
     personnel: null,
   });
 
-  // const data = props.personnel;
+  const data = props.personnel;
 
-  // const options = data.map((personnel) => {
-  //   const { first_name: firstName, last_name: lastName, id: value } = personnel;
-  //   return { label: `${firstName} ${lastName}`, value: value };
-  // });
+  const options = data.map((personnel) => {
+    const { first_name: firstName, last_name: lastName, id: value } = personnel;
+    return { label: `${firstName} ${lastName}`, value: value };
+  });
 
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
+  // const options = [
+  //   { value: "chocolate", label: "Chocolate" },
+  //   { value: "strawberry", label: "Strawberry" },
+  //   { value: "vanilla", label: "Vanilla" },
+  // ];
 
   const [selectedOption, setSelectedOption] = useState({
     isOpen: false,

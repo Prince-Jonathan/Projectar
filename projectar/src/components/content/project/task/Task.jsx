@@ -58,7 +58,7 @@ const Task = (props) => {
           position: "bottom center",
         })
       )
-      .then(() => props.onTaskUpdate())
+      .then(() => props.onTaskUpdate("setUpdateTask"))
       .then(() => props.onCloseTasks())
       .catch(() =>
         props.onAlert("error", "Failed to Save Task", {

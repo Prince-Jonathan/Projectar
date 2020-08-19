@@ -22,7 +22,9 @@ const App = (props) => {
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showTasks, setShowTasks] = useState(false);
   const [selectedID, setSeletedID] = useState(0);
-  const [toggler, setToggler] = useState(false);
+  //lots of code refactoring can be done...but at the expense of time
+  const [isTaskUpdated, setIsTaskUpdated] = useState(false);
+  const [isTaskCreated, setIsTaskCreated] = useState(false);
 
   const baseUrl = "http://192.168.69.100:8050";
 
@@ -76,9 +78,11 @@ const App = (props) => {
   const handleAlert = (method, msg, options) => {
     alert[method](msg, { ...options });
   };
+  const handleTaskCreated = () => {
+    setIsTaskCreated((prevState) => !prevState);
+  };
   const handleTaskUpdate = () => {
-    setToggler((prevState) => !prevState);
-    console.log("it has changed state");
+    setIsTaskUpdated((prevState) => !prevState);
   };
   return (
     <Layout
@@ -95,7 +99,17 @@ const App = (props) => {
             projects={projectTasks}
             selectedID={selectedID}
             onFetchData={fetchData}
-            toggler={toggler}
+            toggler={isTaskCreated}
+          />
+        </Route>
+        <Route path="/project/:id">
+          <Project
+            onShowTasks={handleShowTasks}
+            onSelect={(id) => setSeletedID(id)}
+            projects={projectTasks}
+            selectedID={selectedID}
+            onFetchData={fetchData}
+            toggler={isTaskCreated}
           />
         </Route>
         <Route path="/all-projects">
@@ -105,7 +119,7 @@ const App = (props) => {
             projects={projects}
             selectedID={selectedID}
             onFetchData={fetchData}
-            toggler={toggler}
+            toggler={isTaskCreated}
           />
         </Route>
         <Route path="*">
@@ -120,7 +134,7 @@ const App = (props) => {
           postData={postData}
           selectedID={selectedID}
           onAlert={handleAlert}
-          onTaskUpdate={handleTaskUpdate}
+          onTaskUpdate={handleTaskCreated}
           personnel={personnel}
         />
       ) : null}

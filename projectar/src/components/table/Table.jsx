@@ -5,7 +5,7 @@ import ColumnFilter from "./filters/ColumnFilter";
 
 import "./Table.css";
 
-const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
+const Table = ({ columns: userColumns, data, renderRowSubComponent,returnData }) => {
   const defaultColumn = React.useMemo(
     () => ({
       // setting up default Filter UI
