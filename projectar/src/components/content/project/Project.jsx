@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Route, useRouteMatch, useParams, Switch } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
+import {
+  Route,
+  useRouteMatch,
+  useParams,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 
 import Table from "../../table/Table";
 import Slate from "../slate/Slate";
@@ -33,6 +39,7 @@ const Styles = styled.div`
   .project {
     display: flex;
     flex-direction: row;
+    align-items: center;
   }
   .left {
     display: flex;
@@ -62,6 +69,17 @@ const Project = (props) => {
   const tasks = React.useMemo(() => props.tasks, [props.tasks]);
 
   const data = tasks.filter((task) => task.project_id === parseInt(id));
+
+  //respond appropriately to task delete alerting, with useEffect
+  useEffect(
+    () => {
+      props.onAlert("success", "Task Deleted", {
+        timeout: 5000,
+        position: "bottom center",
+      });
+    },
+    [props.tasks, deleteTask]
+  );
 
   //could disapper
   useEffect(
@@ -112,21 +130,14 @@ const Project = (props) => {
     },
     [isMobile]
   );
-  const deleteTask = (taskID) => {
+  const deleteTask = useCallback((taskID) => {
     props.onAlert("info", "Deleting...", {
       timeout: 3000,
       position: "bottom center",
     });
-    props
-      .onFetchData(`/api/task/delete/${taskID}`)
-      .then(() =>
-        props.onAlert("success", "Task Deleted", {
-          timeout: 5000,
-          position: "bottom center",
-        })
-      )
-      .then(() => props.toggler());
-  };
+    props.onFetchData(`/api/task/delete/${taskID}`).then(() => props.toggler());
+  }, []);
+
   const renderRowSubComponent = React.useCallback(
     ({ row }) => (
       <Styles>
@@ -188,6 +199,9 @@ const Project = (props) => {
                 data={completedTasks}
                 renderRowSubComponent={renderRowSubComponent}
               />
+            </Route>
+            <Route path={`${path}/*`}>
+              <Redirect to={path} />
             </Route>
           </Switch>
         </Slate>

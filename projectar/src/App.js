@@ -20,7 +20,7 @@ const App = (props) => {
   const [projectTasks, setProjectTasks] = useState([]);
   const [personnel, setPersonnel] = useState();
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const [showTasks, setShowTasks] = useState(false);
+  const [showTask, setShowTask] = useState(false);
   const [selectedID, setSeletedID] = useState(0);
   //lots of code refactoring can be done...but at the expense of time
   const [isTaskUpdated, setIsTaskUpdated] = useState(false);
@@ -66,14 +66,14 @@ const App = (props) => {
   const handleShowSideMenu = () => {
     setShowSideMenu((prevState) => !prevState);
   };
-  const handleShowTasks = () => {
-    setShowTasks((prevState) => !prevState);
+  const handleShowTask = () => {
+    setShowTask((prevState) => !prevState);
   };
   const handleCloseSideMenu = () => {
     setShowSideMenu(false);
   };
   const handleCloseTasks = () => {
-    setShowTasks(false);
+    setShowTask(false);
   };
   const handlePopUpClick = (value, extras) => {
     const {
@@ -87,6 +87,7 @@ const App = (props) => {
   };
   const handleTaskCreated = () => {
     setIsTaskCreated((prevState) => !prevState);
+    fetchProjectTasks();
   };
   const handleTaskUpdate = () => {
     setIsTaskUpdated((prevState) => !prevState);
@@ -104,7 +105,7 @@ const App = (props) => {
       <Switch>
         <Route path="/workspace">
           <Workspace
-            onShowTasks={handleShowTasks}
+            onShowTask={handleShowTask}
             onSelect={(id) => setSeletedID(id)}
             projects={projectTasks}
             selectedID={selectedID}
@@ -114,7 +115,7 @@ const App = (props) => {
         </Route>
         <Route path="/project/:id">
           <Project
-            onShowTasks={handleShowTasks}
+            onShowTask={handleShowTask}
             onSelect={(id) => setSeletedID(id)}
             tasks={projectTasks}
             selectedID={selectedID}
@@ -125,7 +126,7 @@ const App = (props) => {
         </Route>
         <Route path="/all-projects">
           <Projects
-            onShowTasks={handleShowTasks}
+            onShowTask={handleShowTask}
             onSelect={(id) => setSeletedID(id)}
             projects={projects}
             selectedID={selectedID}
@@ -137,10 +138,10 @@ const App = (props) => {
           <Redirect to="/" />
         </Route>
       </Switch>
-      {showTasks ? (
+      {showTask ? (
         <Bay
-          showTasks={showTasks}
-          onShowTasks={handleShowTasks}
+          showTask={showTask}
+          onShowTask={handleShowTask}
           onCloseTasks={handleCloseTasks}
           postData={postData}
           selectedID={selectedID}
