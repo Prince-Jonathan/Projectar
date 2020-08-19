@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 
@@ -6,6 +7,22 @@ import { isMobile } from "../../../Responsive";
 
 import "./Task.css";
 import "react-datepicker/dist/react-datepicker.css";
+
+const Button = styled.button`
+  border: none;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  margin: 0 5px 0 5px;
+  border-radius: 12px;
+  background-color: #10292e;
+
+  &::active {
+    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.2);
+  }
+`;
 
 const AddTask = (props) => {
   const [startDate, setStartDate] = useState({ date: new Date() });
@@ -74,7 +91,7 @@ const AddTask = (props) => {
   };
 
   const CustomInput = ({ value, onClick }) => (
-    <button
+    <Button
       type="button"
       style={{ cursor: "pointer" }}
       required
@@ -83,7 +100,7 @@ const AddTask = (props) => {
       value={value}
     >
       {value}
-    </button>
+    </Button>
   );
 
   return (
@@ -163,16 +180,16 @@ const AddTask = (props) => {
             justifyContent: "center",
           }}
         >
-          <button type="submit" className="btn">
+          <Button type="submit" className="btn">
             Save
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             className="btn cancel"
             onClick={props.onCloseTasks}
           >
             Close
-          </button>
+          </Button>
         </div>
       </form>
     </div>

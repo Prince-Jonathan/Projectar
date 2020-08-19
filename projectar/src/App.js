@@ -25,6 +25,7 @@ const App = (props) => {
   //lots of code refactoring can be done...but at the expense of time
   const [isTaskUpdated, setIsTaskUpdated] = useState(false);
   const [isTaskCreated, setIsTaskCreated] = useState(false);
+  const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   const baseUrl = "http://192.168.69.101:8050";
 
@@ -56,6 +57,12 @@ const App = (props) => {
     fetchProjectTasks();
     fetchPersonnel();
   }, []);
+  useEffect(
+    () => {
+      fetchProjectTasks();
+    },
+    [isTaskDeleted]
+  );
   const handleShowSideMenu = () => {
     setShowSideMenu((prevState) => !prevState);
   };
@@ -84,6 +91,9 @@ const App = (props) => {
   const handleTaskUpdate = () => {
     setIsTaskUpdated((prevState) => !prevState);
   };
+  const handleTaskDelete = () => {
+    setIsTaskDeleted((prevState) => !prevState);
+  };
   return (
     <Layout
       showSideMenu={showSideMenu}
@@ -106,10 +116,11 @@ const App = (props) => {
           <Project
             onShowTasks={handleShowTasks}
             onSelect={(id) => setSeletedID(id)}
-            projects={projectTasks}
+            tasks={projectTasks}
             selectedID={selectedID}
             onFetchData={fetchData}
-            toggler={isTaskCreated}
+            onAlert={handleAlert}
+            toggler={handleTaskDelete}
           />
         </Route>
         <Route path="/all-projects">

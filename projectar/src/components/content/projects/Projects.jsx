@@ -33,6 +33,7 @@ const Styles = styled.div`
   .project {
     display: flex;
     flex-direction: row;
+    align-items: center;
   }
   .left {
     display: flex;

@@ -15,7 +15,6 @@ const Button = styled.button`
   border: none;
   border-bottom: 4px solid #10292e;
   color: #10292e;
-  /* font-family: 'Open Sans', sans-serif; */
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
   font-size: 15px;
   text-align: center;
@@ -60,7 +59,7 @@ const Project = (props) => {
   const [rowID, setRowID] = useState(undefined);
   const { id } = useParams();
 
-  const tasks = React.useMemo(() => props.projects, [props.projects]);
+  const tasks = React.useMemo(() => props.tasks, [props.tasks]);
 
   const data = tasks.filter((task) => task.project_id === parseInt(id));
 
@@ -113,6 +112,21 @@ const Project = (props) => {
     },
     [isMobile]
   );
+  const deleteTask = (taskID) => {
+    props.onAlert("info", "Deleting...", {
+      timeout: 3000,
+      position: "bottom center",
+    });
+    props
+      .onFetchData(`/api/task/delete/${taskID}`)
+      .then(() =>
+        props.onAlert("success", "Task Deleted", {
+          timeout: 5000,
+          position: "bottom center",
+        })
+      )
+      .then(() => props.toggler());
+  };
   const renderRowSubComponent = React.useCallback(
     ({ row }) => (
       <Styles>
@@ -128,7 +142,12 @@ const Project = (props) => {
             </Button>
             <Button>Re-assign</Button>
 
-            <Button className="delete">Delete</Button>
+            <Button
+              onClick={() => deleteTask(row.original.id)}
+              className="delete"
+            >
+              Delete
+            </Button>
           </div>
           <Description
             onFetchData={props.onFetchData}

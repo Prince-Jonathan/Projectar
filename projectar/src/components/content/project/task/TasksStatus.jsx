@@ -1,5 +1,22 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+
+const Button = styled.button`
+  border: none;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 12px;
+  background-color: #10292e;
+
+  &::active {
+    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.2);
+  }
+`;
 
 const TasksStatus = (props) => {
   const [tasks, setTasks] = useState([]);
@@ -23,7 +40,7 @@ const TasksStatus = (props) => {
   );
   return (
     <div>
-      <div
+      <Button
         onClick={() =>
           history.push(`/project/${props.projectID}/outstanding-tasks`)
         }
@@ -33,19 +50,23 @@ const TasksStatus = (props) => {
         <div style={{ color: "#ffee00", fontWeight: 700 }}>
           {oTasks.length || "-"}
         </div>{" "}
-      </div>
-      <div
+      </Button>
+      <Button
         onClick={() =>
           history.push(`/project/${props.projectID}/completed-tasks`)
         }
       >
         Completed Tasks:{" "}
         <div style={{ color: "white", fontWeight: 500 }}>
-          {tasks.length - oTasks.length || (
+          {tasks.length - oTasks.length ? (
+            <span style={{ color: "#00ff00" }}>
+              {tasks.length - oTasks.length}
+            </span>
+          ) : (
             <span style={{ color: "red" }}>---</span>
           )}
         </div>
-      </div>
+      </Button>
     </div>
   );
 };

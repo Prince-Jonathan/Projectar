@@ -323,6 +323,22 @@ def task_users(task_id):
 			"success":False
 		}
 
+@app.route('/api/task/delete/<int:task_id>')
+def del_task(task_id):
+	'''Delete task of specified id'''
+	try:
+		task=Task.query.get_or_404(task_id)
+		db.session.delete(task)
+		db.session.commit()
+		return {
+			"success":True
+		}
+	except SQLAlchemyError as err:
+		print(err)
+		return{
+			"success":False
+		}
+
 @app.route('/api/login', methods=['POST'])
 def login():
 	'''login authentication'''
