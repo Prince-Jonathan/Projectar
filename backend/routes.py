@@ -222,18 +222,30 @@ def enrol_user_task(task_id, personnel_id):
 			"success":False
 		}
 
-@app.route('/api/task/update/<int:task_id>', methods=['GET'])
+@app.route('/api/task/update/<int:task_id>', methods=['POST'])
 def update_task(task_id):
 	'''edits the task of the specifiend id'''
+	data = request.get_json()
 	try:
 		task= Task.query.get_or_404(task_id)
-		
-		task.title=data["title"],
-		task.description=data["description"],
-		task.target=data["target"],
-		task.date=data["date"],
-		task.project=project
-		return jsonify(Task.serialize_list(task))
+
+		task.title=data["title"]
+		task.description=data["description"]
+		task.target=data["target"]
+		task.date=data["date"]
+
+		for personnel in task.personnel[:]:
+			print("deleting",personnel)
+			task.personnel.remove(personnel)
+		db.session.commit()
+		for personnel_id in data["personnel"]:
+			print("adding",personnel_id)
+			enrol_user_task(task.id, personnel_id)
+		db.session.commit()
+		return {
+			"success":True,
+			"data":data
+		} 
 	except SQLAlchemyError as err:
 		print(err)
 		db.session.rollback()

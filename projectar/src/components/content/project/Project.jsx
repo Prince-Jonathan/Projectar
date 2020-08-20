@@ -60,34 +60,14 @@ const Styles = styled.div`
 `;
 
 const Project = (props) => {
-  const { path } = useRouteMatch();
+  const { path, url } = useRouteMatch();
   const { status } = useParams();
 
-  const [rowID, setRowID] = useState(undefined);
   const { id } = useParams();
 
   const tasks = React.useMemo(() => props.tasks, [props.tasks]);
 
   const data = tasks.filter((task) => task.project_id === parseInt(id));
-
-  //respond appropriately to task delete alerting, with useEffect
-  useEffect(
-    () => {
-      props.onAlert("success", "Task Deleted", {
-        timeout: 5000,
-        position: "bottom center",
-      });
-    },
-    [props.tasks, deleteTask]
-  );
-
-  //could disapper
-  useEffect(
-    () => {
-      props.onSelect(rowID);
-    },
-    [rowID]
-  );
 
   const columns = React.useMemo(
     () => {
@@ -131,11 +111,20 @@ const Project = (props) => {
     [isMobile]
   );
   const deleteTask = useCallback((taskID) => {
+    console.log("its the component");
     props.onAlert("info", "Deleting...", {
       timeout: 3000,
       position: "bottom center",
     });
-    props.onFetchData(`/api/task/delete/${taskID}`).then(() => props.toggler());
+    props
+      .onFetchData(`/api/task/delete/${taskID}`)
+      .then(() => props.toggler())
+      .then(() =>
+        props.onAlert("success", "Task Deleted", {
+          timeout: 5000,
+          position: "bottom center",
+        })
+      );
   }, []);
 
   const renderRowSubComponent = React.useCallback(
@@ -145,8 +134,7 @@ const Project = (props) => {
           <div className="left">
             <Button
               onClick={() => {
-                setRowID(row.original.id);
-                props.onShowTasks();
+                props.onShowTask(row.original.id);
               }}
             >
               Edit
@@ -201,7 +189,7 @@ const Project = (props) => {
               />
             </Route>
             <Route path={`${path}/*`}>
-              <Redirect to={path} />
+              <Redirect to={url} />
             </Route>
           </Switch>
         </Slate>

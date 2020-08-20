@@ -34,18 +34,36 @@ const AddTask = (props) => {
     personnel: null,
   });
 
-  const data = props.personnel;
+  // const fetchPersonnel = (taskID) =>
+  //   props
+  //     .onFetchData(`/api/task/enrolments/${taskID}`)
+  //     //check if messsage exists: msg only exist on error
+  //     .then(({ data }) => (data.msg ? null : setPersonnel(data)));
 
+  // useEffect(() => {
+  //   fetchPersonnel(props.selectedTaskID);
+  // }, []);
+  const data = props.personnel;
   const options = data.map((personnel) => {
     const { first_name: firstName, last_name: lastName, id: value } = personnel;
     return { label: `${firstName} ${lastName}`, value: value };
   });
-
   // const options = [
   //   { value: "chocolate", label: "Chocolate" },
   //   { value: "strawberry", label: "Strawberry" },
   //   { value: "vanilla", label: "Vanilla" },
   // ];
+
+  let task;
+  useEffect(
+    () => {
+      task = props.tasks.filter((t) => parseInt(t.id) === props.selectedTaskID);
+      console.log("query move", props.selectedTaskID);
+      setState(task[0]);
+      setStartDate({ date: new Date(task[0].date) });
+    },
+    [props.selectedTaskID, props.tasks]
+  );
 
   const [selectedOption, setSelectedOption] = useState({
     isOpen: false,
@@ -61,23 +79,25 @@ const AddTask = (props) => {
     event.preventDefault();
 
     let task = { ...state, ...startDate, project_id: props.selectedID };
-    props.onAlert("info", "Saving...", {
+    props.onAlert("info", "Updating...", {
       timeout: 3000,
       position: "bottom center",
     });
+    console.log("this is the outgoing", task);
     props
-      .postData("/api/task/add", task)
-      .then((data) => console.log(data))
+      .postData(`/api/task/update/${props.selectedTaskID}`, task)
+      .then((data) => console.log("returned from post", data))
       .then(() =>
-        props.onAlert("success", "Task Saved", {
+        props.onAlert("success", "Task Updated", {
           timeout: 5000,
           position: "bottom center",
         })
       )
       .then(() => props.onTaskUpdate())
+      // .then(() => props.resetSelectedTaskID())
       .then(() => props.onCloseTasks())
       .catch(() =>
-        props.onAlert("error", "Failed to Save Task", {
+        props.onAlert("error", "Failed to Update Task", {
           timeout: 3000,
           position: "bottom center",
         })
@@ -113,7 +133,7 @@ const AddTask = (props) => {
           // autoFocus
           type="text"
           style={{ flex: "1" }}
-          placeholder="Enter Title"
+          placeholder={state.title}
           name="title"
           value={state.title}
           onChange={handleChange}
@@ -123,7 +143,7 @@ const AddTask = (props) => {
         <textarea
           type="text"
           style={{ flex: "1" }}
-          placeholder="Enter Task Description"
+          placeholder={state.description}
           name="description"
           value={state.description}
           onChange={handleChange}
@@ -143,7 +163,7 @@ const AddTask = (props) => {
           <input
             // style={{ width: "75px" }}
             type="text"
-            placeholder="Target(%)"
+            placeholder={state.target}
             name="target"
             value={state.target}
             onChange={handleChange}
@@ -185,7 +205,10 @@ const AddTask = (props) => {
           <Button
             type="button"
             className="btn cancel"
-            onClick={props.onCloseTasks}
+            onClick={() => {
+              props.onCloseTasks();
+              // props.resetSelectedTaskID();
+            }}
           >
             Close
           </Button>

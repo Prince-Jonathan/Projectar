@@ -21,7 +21,8 @@ const App = (props) => {
   const [personnel, setPersonnel] = useState();
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showTask, setShowTask] = useState(false);
-  const [selectedID, setSeletedID] = useState(0);
+  const [selectedID, setSeletedID] = useState(undefined);
+  const [selectedTaskID, setSeletedTaskID] = useState(undefined);
   //lots of code refactoring can be done...but at the expense of time
   const [isTaskUpdated, setIsTaskUpdated] = useState(false);
   const [isTaskCreated, setIsTaskCreated] = useState(false);
@@ -57,12 +58,7 @@ const App = (props) => {
     fetchProjectTasks();
     fetchPersonnel();
   }, []);
-  useEffect(
-    () => {
-      fetchProjectTasks();
-    },
-    [isTaskDeleted]
-  );
+
   const handleShowSideMenu = () => {
     setShowSideMenu((prevState) => !prevState);
   };
@@ -93,7 +89,8 @@ const App = (props) => {
     setIsTaskUpdated((prevState) => !prevState);
   };
   const handleTaskDelete = () => {
-    setIsTaskDeleted((prevState) => !prevState);
+    // setIsTaskDeleted((prevState) => !prevState);
+    fetchProjectTasks();
   };
   return (
     <Layout
@@ -115,10 +112,12 @@ const App = (props) => {
         </Route>
         <Route path="/project/:id">
           <Project
-            onShowTask={handleShowTask}
-            onSelect={(id) => setSeletedID(id)}
+            onShowTask={(id) => {
+              handleShowTask();
+              setSeletedTaskID(id);
+            }}
             tasks={projectTasks}
-            selectedID={selectedID}
+            selectedTaskID={selectedTaskID}
             onFetchData={fetchData}
             onAlert={handleAlert}
             toggler={handleTaskDelete}
@@ -145,9 +144,13 @@ const App = (props) => {
           onCloseTasks={handleCloseTasks}
           postData={postData}
           selectedID={selectedID}
+          selectedTaskID={selectedTaskID}
           onAlert={handleAlert}
           onTaskUpdate={handleTaskCreated}
           personnel={personnel}
+          tasks={projectTasks}
+          resetSelectedTaskID={() => setSeletedTaskID(undefined)}
+          onFetchData={fetchData}
         />
       ) : null}
     </Layout>
