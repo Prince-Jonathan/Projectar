@@ -37,7 +37,7 @@ def add_user():
 		email=data["email"],
 		phone_number=data["phone_number"],
 		username=data["username"].lower(),
-		pin=data["pin"],
+		password=data["password"],
 		role=data["role"]
 	)
 	try: 
@@ -375,7 +375,7 @@ def login():
 	'''login authentication'''
 	details = request.get_json()
 	try:
-		usrn = User.query.filter_by(username=details["username"], pin=details["pincode"]).first() 
+		usrn = User.query.filter_by(username=details["username"], password=details["password"]).first() 
 		if usrn is not None:
 			return redirect(url_for('get_user', user_id=usrn.id))
 		return "Username: \"%s\" does not exits" % details["username"]

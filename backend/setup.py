@@ -2,7 +2,8 @@
 This script sets up the database...and that's all
 '''
 from flask import Flask,request,jsonify
-from flask_migrate import Migrate
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager
 from flask import Flask,request
 from flask_sqlalchemy import SQLAlchemy 
 from datetime import datetime
@@ -15,6 +16,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #consumes lot of memory: se
 db=SQLAlchemy(app)
 
 migrate = Migrate(app, db)
+
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
 
 #An enrolment relation table
 enrolment = db.Table('enrolment', 
@@ -33,7 +37,7 @@ class User(db.Model):
 	email=db.Column(db.String(200), nullable=True)
 	phone_number=db.Column(db.Integer, nullable=True)
 	username=db.Column(db.String(100), nullable=True)
-	pin=db.Column(db.Integer, nullable=True)
+	password=db.Column(db.String(50), nullable=True)
 	role=db.Column(db.String(50), nullable=True)
 
 	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
@@ -77,3 +81,6 @@ class Reassigned_Task(db.Model):
 
 	def __repr__(self): 
 		return '<Task %r>' % self.parent_id
+
+if __name__ == '__main__':
+    manager.run()

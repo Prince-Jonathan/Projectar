@@ -22,7 +22,7 @@ class User(db.Model, Serializer):
 	email=db.Column(db.String(200), nullable=True)
 	phone_number=db.Column(db.Integer, nullable=True)
 	username=db.Column(db.String(100), nullable=True)
-	pin=db.Column(db.Integer, nullable=True)
+	password=db.Column(db.String(50), nullable=True)
 	role=db.Column(db.String(50), nullable=True)
 
 	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
