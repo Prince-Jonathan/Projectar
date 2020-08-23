@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { useAlert } from "react-alert";
+import Button from "react-bootstrap/Button";
 
 import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
@@ -9,13 +10,16 @@ import Workspace from "./components/content/Workspace";
 import Projects from "./components/content/projects/Projects";
 import Project from "./components/content/project/Project";
 import Bay from "./components/bay/Bay";
-import Login from "./components/content/Login";
 import AddTask from "./components/content/project/task/AddTask";
+import Login from "./components/content/Login";
+import PrivateRoute from "./components/content/PrivateRoute";
+import { Column, Row } from "./components/Grid";
 
 import "./App.css";
 
 const App = (props) => {
   const alert = useAlert();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [name, setName] = useState("");
   const [projects, setProjects] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
@@ -29,7 +33,7 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "http://localhost:8050";
+  const baseUrl = "http://192.168.69.100:8050";
 
   const fetchData = (url, params) =>
     axios.get(baseUrl + url, {
@@ -59,6 +63,10 @@ const App = (props) => {
     fetchProjectTasks();
     fetchPersonnel();
   }, []);
+
+  const handleAuthenticate = () => {
+    setIsAuthenticated(true);
+  };
 
   const handleShowSideMenu = () => {
     setShowSideMenu((prevState) => !prevState);
@@ -96,7 +104,7 @@ const App = (props) => {
   return (
     <React.Fragment>
       <Switch>
-        <Route exact path="/">
+        <PrivateRoute exact path="/" isAuthenticated={isAuthenticated}>
           <Layout
             showSideMenu={showSideMenu}
             aside={<Aside onPopUpClick={handlePopUpClick} />}
@@ -158,9 +166,19 @@ const App = (props) => {
               />
             ) : null}
           </Layout>
-        </Route>
+        </PrivateRoute>
         <Route path="/login">
-          <Login postData={postData} onAlert={handleAlert} />
+          <Row
+            alignItems="center"
+            justifyContent="center"
+            style={{ backgroundColor: "#10292e" }}
+          >
+            <Login
+              postData={postData}
+              onAlert={handleAlert}
+              authenticate={handleAuthenticate}
+            />
+          </Row>
         </Route>
       </Switch>
     </React.Fragment>

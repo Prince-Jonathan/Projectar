@@ -21,8 +21,11 @@ const Layout = (props) => {
   return (
     <div>
       <Default>
-        <Row backgroundColor={bgcolor}>
-          <Column className="aside" backgroundColor={bgcolor}>
+        <Row flexDirection="column" backgroundColor={bgcolor}>
+          <Column>
+            <Toolbar onClick={props.onShowSideMenu} />
+          </Column>
+          <Column className={asideClass.join(" ")} backgroundColor={bgcolor}>
             {props.aside}
           </Column>
           <Column xs="2" sm="3" md="4" lg="5" className="section">
@@ -35,6 +38,7 @@ const Layout = (props) => {
               </Column>
             </Row>
           </Column>
+          {backdrop}
         </Row>
       </Default>
       <Mobile>

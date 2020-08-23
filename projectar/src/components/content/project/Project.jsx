@@ -105,6 +105,11 @@ const Project = (props) => {
           Filter: SliderFilter,
           filter: filterGreaterThan,
         },
+        {
+          Header: "Date Scheduled",
+          accessor: "date",
+          Filter: () => null,
+        },
       ];
       return isMobile ? column.splice(0, 2) : column;
     },

@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
-const Button = styled.button`
-  border: none;
-  color: white;
-  font-size: 15px;
-  text-align: center;
-  box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  margin: 5px;
-  border-radius: 12px;
-  background-color: #10292e;
+// const Button = styled.button`
+//   border: none;
+//   color: white;
+//   font-size: 15px;
+//   text-align: center;
+//   box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
+//   cursor: pointer;
+//   margin: 5px;
+//   border-radius: 12px;
+//   background-color: #10292e;
 
-  &::active {
-    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.2);
-  }
-`;
+//   &::active {
+//     box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.2);
+//   }
+// `;
 
 const TasksStatus = (props) => {
   const [tasks, setTasks] = useState([]);
@@ -52,6 +53,7 @@ const TasksStatus = (props) => {
         </div>{" "}
       </Button>
       <Button
+      className="btn btn-success"
         onClick={() =>
           history.push(`/project/${props.projectID}/completed-tasks`)
         }
