@@ -18,7 +18,7 @@ import "./App.css";
 
 const App = (props) => {
   const alert = useAlert();
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [name, setName] = useState("");
   const [projects, setProjects] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
