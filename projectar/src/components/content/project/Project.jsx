@@ -53,10 +53,6 @@ const Styles = styled.div`
   .left > button {
     margin: 5px 5px 5px 0;
   }
-  .delete {
-    color: white;
-    border-bottom: 2px solid #f44336;
-  }
 `;
 
 const Project = (props) => {
@@ -148,7 +144,6 @@ const Project = (props) => {
 
             <Button
               onClick={() => deleteTask(row.original.id)}
-              className="delete"
             >
               Delete
             </Button>
