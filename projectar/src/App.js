@@ -122,7 +122,7 @@ const App = (props) => {
           name={name}
           onShowSideMenu={handleShowSideMenu}
         >
-          <PrivateRoute isAuthenticated={isAuthenticated} path="/">
+          <PrivateRoute exact isAuthenticated={isAuthenticated} path="/">
             <Workspace
               onShowTask={handleShowTask}
               onSelect={(id) => setSeletedID(id)}
