@@ -3,7 +3,7 @@ const items = [
   { divider: true, label: "Main navigation", value: "main-nav" },
   {
     label: "Workspace",
-    value: "workspace",
+    value: "",
     icon: "fa-home",
   },
   {

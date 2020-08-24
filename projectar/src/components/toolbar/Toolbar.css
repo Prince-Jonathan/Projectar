@@ -9,7 +9,8 @@
   justify-content: flex-start;
   align-items: center;
 }
-
-.toolbar .button {
-  
+.right {
+  margin-left: auto;
+  margin-right: 8%;
+  color: black;
 }

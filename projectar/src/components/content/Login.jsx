@@ -10,8 +10,8 @@ const Login = (props) => {
   let location = useLocation();
 
   let { from } = location.state || { from: { pathname: "/" } };
-  let login = () => {
-    props.authenticate();
+  let login = (user) => {
+    props.authenticate(user);
     history.replace(from);
   };
 
@@ -28,24 +28,11 @@ const Login = (props) => {
       .postData("/api/login", userInfo)
       .then(({ data }) => {
         if (data.success) {
-          setUser(data.data);
-          console.log(data.data);
+          login(data.data);
         } else {
           throw "Incorrect credentials";
         }
       })
-      .then((data) => {
-        login();
-        return data;
-      })
-      .then((data) =>
-        props.onAlert("success", "welcome", {
-          timeout: 5000,
-          position: "bottom center",
-        })
-      )
-      //   .then(() => history.push("/"))
-      //   // .then(() => props.resetSelectedTaskID())
       .catch((e) =>
         props.onAlert("error", e, {
           timeout: 3000,

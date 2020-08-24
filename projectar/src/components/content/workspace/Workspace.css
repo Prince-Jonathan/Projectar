@@ -1,0 +1,44 @@
+.circular {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: white;
+  color: #10292e;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 5px;
+  outline: none;
+
+  -webkit-box-shadow: 0 8px 6px -6px black; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 0 8px 6px -6px black; /* Firefox 3.5 - 3.6 */
+  box-shadow: 0 8px 6px -6px black; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+.text {
+  font-size: 15px;
+}
+
+.slate {
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+
+  height: 250px;
+  /* max-width: 800px; */
+  padding: 5px;
+  margin: 30px 0px;
+  color: #10292e;
+  border-radius: 5px;
+  background-color: #d7e0c3;
+
+  -webkit-box-shadow: 0 8px 6px -6px black; /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 0 8px 6px -6px black; /* Firefox 3.5 - 3.6 */
+  box-shadow: 0 8px 6px -6px black; /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+}

@@ -64,7 +64,7 @@ const TasksStatus = (props) => {
               {tasks.length - oTasks.length}
             </span>
           ) : (
-            <span style={{ color: "red" }}>---</span>
+            <span style={{ color: "red" }}>--</span>
           )}
         </div>
       </Button>

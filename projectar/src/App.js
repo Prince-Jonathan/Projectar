@@ -5,7 +5,7 @@ import { useAlert } from "react-alert";
 
 import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
-import Workspace from "./components/content/Workspace";
+import Workspace from "./components/content/workspace/Workspace";
 import Projects from "./components/content/projects/Projects";
 import Project from "./components/content/project/Project";
 import Bay from "./components/bay/Bay";
@@ -19,7 +19,7 @@ import "./App.css";
 const App = (props) => {
   const alert = useAlert();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [name, setName] = useState("");
+  const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
   const [personnel, setPersonnel] = useState();
@@ -47,8 +47,6 @@ const App = (props) => {
       },
     });
 
-  const fetchUser = () =>
-    fetchData("/api").then(({ data }) => setName(data.name));
   const fetchProjects = () =>
     fetchData("/api/project/all").then(({ data }) => setProjects(data));
   const fetchProjectTasks = () =>
@@ -57,14 +55,14 @@ const App = (props) => {
     fetchData("/api/user/all").then(({ data }) => setPersonnel(data));
 
   useEffect(() => {
-    fetchUser();
     fetchProjects();
     fetchProjectTasks();
     fetchPersonnel();
   }, []);
 
-  const handleAuthenticate = () => {
+  const handleAuthenticate = (user) => {
     setIsAuthenticated(true);
+    setUser(user);
   };
 
   const handleShowSideMenu = () => {
@@ -119,7 +117,7 @@ const App = (props) => {
         <Layout
           showSideMenu={showSideMenu}
           aside={<Aside onPopUpClick={handlePopUpClick} />}
-          name={name}
+          name={user.first_name}
           onShowSideMenu={handleShowSideMenu}
         >
           <PrivateRoute exact isAuthenticated={isAuthenticated} path="/">

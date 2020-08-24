@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import DrawerToggleButton from "./button/DrawerToggleButton";
 
@@ -8,9 +9,12 @@ const Toolbar = (props) => {
   return (
     <div className="toolbar">
       <div className="button">
-        <DrawerToggleButton onClick={props.onClick}/>
+        <DrawerToggleButton onClick={props.onClick} />
       </div>
       <div className="Logo">Projectar Logo</div>
+      <Link to="/login" className="right">
+        <i class="fa fa-user-o" aria-hidden="true" /> Logout
+      </Link>
     </div>
   );
 };
