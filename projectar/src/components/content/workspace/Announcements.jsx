@@ -29,7 +29,7 @@ const Announcements = (props) => {
         aria-hidden="true"
       />
       <div>
-        Make announcement to appreciate teams, share important information or
+        Project status of project, make announcement to appreciate teams, share important information or
         wish on birthdays
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { SimpleLoginForm } from "simple-login-form";
 
-import "simple-login-form/dist/index.css";
+import "./Login.css";
 
 const Login = (props) => {
   const [user, setUser] = useState({});

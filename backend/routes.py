@@ -377,7 +377,7 @@ def login():
 	try:
 		usrn = User.query.filter_by(username=details["username"], password=details["password"]).first() 
 		if usrn is not None:
-			return redirect(url_for('get_user', user_id=usrn.id))
+			return get_user(usrn.id)
 		return "Username: \"%s\" does not exist" % details["username"]
 	except SQLAlchemyError as err:
 		print(err)

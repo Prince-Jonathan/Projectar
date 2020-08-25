@@ -131,13 +131,15 @@ const Projects = (props) => {
     [props.toggler]
   );
   return (
-    <Slate>
-      <Table
-        columns={columns}
-        data={data}
-        renderRowSubComponent={renderRowSubComponent}
-      />
-    </Slate>
+    <React.Fragment>
+      <Slate>
+        <Table
+          columns={columns}
+          data={data}
+          renderRowSubComponent={renderRowSubComponent}
+        />
+      </Slate>
+    </React.Fragment>
   );
 };
 

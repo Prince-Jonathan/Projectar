@@ -56,7 +56,7 @@ const Workspace = (props) => {
             <Element
               flabel="Recent"
               slabel="Reports"
-              icon="fa fa-archive fa-lg"
+              icon="fa fa-folder-open-o fa-lg"
             />
           </Style>
           <Announcements />

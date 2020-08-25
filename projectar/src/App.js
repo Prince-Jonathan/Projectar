@@ -10,7 +10,7 @@ import Projects from "./components/content/projects/Projects";
 import Project from "./components/content/project/Project";
 import Bay from "./components/bay/Bay";
 import AddTask from "./components/content/project/task/AddTask";
-import Login from "./components/content/Login";
+import Login from "./components/content/login/Login";
 import PrivateRoute from "./components/content/PrivateRoute";
 import { Column, Row } from "./components/Grid";
 
@@ -32,7 +32,7 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "http://192.168.69.100:8050";
+  const baseUrl = "https://5c31dff09fd5.ngrok.io";
 
   const fetchData = (url, params) =>
     axios.get(baseUrl + url, {
