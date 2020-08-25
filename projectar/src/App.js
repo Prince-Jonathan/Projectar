@@ -7,6 +7,7 @@ import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
 import Workspace from "./components/content/workspace/Workspace";
 import Projects from "./components/content/projects/Projects";
+import Personnel from "./components/content/projects/Personnel";
 import Project from "./components/content/project/Project";
 import Bay from "./components/bay/Bay";
 import AddTask from "./components/content/project/task/AddTask";
@@ -127,6 +128,18 @@ const App = (props) => {
               onShowTask={handleShowTask}
               onSelect={(id) => setSeletedID(id)}
               projects={projectTasks}
+              selectedID={selectedID}
+              onFetchData={fetchData}
+              toggler={isTaskCreated}
+            />
+          </PrivateRoute>
+          <PrivateRoute
+            isAuthenticated={isAuthenticated}
+            path="/personnel"
+          >
+            <Personnel
+              onSelect={(id) => setSeletedID(id)}
+              personnel={personnel}
               selectedID={selectedID}
               onFetchData={fetchData}
               toggler={isTaskCreated}

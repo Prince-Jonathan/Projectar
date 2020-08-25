@@ -354,6 +354,33 @@ def task_users(task_id):
 			"success":False
 		}
 
+@app.route('/api/user/tasks/<int:user_id>')
+def user_tasks(user_id):
+	'''Get all users that have been enrolled to a task'''
+	data = []
+	try:
+		user = User.query.get(user_id)
+		msg = "does not exist"
+		if user is not None:
+			tasks = user.tasks
+			if len(tasks[:]) != 0:
+				# fetch(tasks, data)
+				# return {
+				# 	"success":True,
+				# 	"data":data
+				# }
+				return jsonify(Task.serialize_list(tasks))
+			msg = "has not yet got enrolled tasks"
+		return {
+			"success":False,
+			"msg":"User with ID: %d %s" % (user_id, msg)
+		}
+	except SQLAlchemyError as err:
+		print(err)
+		return{
+			"success":False
+		}
+
 @app.route('/api/task/delete/<int:task_id>')
 def del_task(task_id):
 	'''Delete task of specified id'''
