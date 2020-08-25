@@ -13,12 +13,14 @@ import AddTask from "./components/content/project/task/AddTask";
 import Login from "./components/content/login/Login";
 import PrivateRoute from "./components/content/PrivateRoute";
 import { Column, Row } from "./components/Grid";
+import Report from "./components/content/reports/Report";
+import Attendance from "./components/content/attendance/Attendance";
 
 import "./App.css";
 
 const App = (props) => {
   const alert = useAlert();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
@@ -32,7 +34,7 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "https://5c31dff09fd5.ngrok.io";
+  const baseUrl = "http://localhost:8050";
 
   const fetchData = (url, params) =>
     axios.get(baseUrl + url, {
@@ -152,6 +154,12 @@ const App = (props) => {
               onFetchData={fetchData}
               toggler={isTaskCreated}
             />
+          </PrivateRoute>
+          <PrivateRoute isAuthenticated={isAuthenticated} path="/reports">
+            <Report />
+          </PrivateRoute>
+          <PrivateRoute isAuthenticated={isAuthenticated} path="/">
+            <Attendance />
           </PrivateRoute>
           <Route path="*">
             <Redirect to="/" />

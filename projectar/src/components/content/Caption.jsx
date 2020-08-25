@@ -2,8 +2,11 @@ import React from "react";
 
 const Caption = (props) => {
   const wrapper = {
-    margin: "15px",
+    display: "flex",
+    justifyContent: "flex-start",
+    margin: "5px",
     fontSize: 25,
+    marginRight: "auto",
   };
   const text = {
     color: "white",
@@ -11,12 +14,10 @@ const Caption = (props) => {
     fontWeight: 900,
   };
 
-  let name = props.name ? `${props.name}` : "User";
   return (
     <div style={wrapper}>
-      <span style={text}>{greet}, </span>
-      {name}
-      <span style={text}>!</span>
+      <span style={text}>{props.flabel} </span> {props.slabel}
+      <span style={text}>{props.tlabel}</span>
     </div>
   );
 };

@@ -15,6 +15,7 @@ import Task from "../project/task/Task";
 import SliderFilter from "../../table/filters/SliderFilter";
 import filterGreaterThan from "../../table/filters/filterGreaterThan";
 import Description from "../project/task/Description";
+import Caption from "../Caption";
 
 const Button = styled.button`
   background: #faec25b9;
@@ -142,11 +143,7 @@ const Project = (props) => {
             </Button>
             <Button>Re-assign</Button>
 
-            <Button
-              onClick={() => deleteTask(row.original.id)}
-            >
-              Delete
-            </Button>
+            <Button onClick={() => deleteTask(row.original.id)}>Delete</Button>
           </div>
           <Description
             onFetchData={props.onFetchData}
@@ -165,6 +162,7 @@ const Project = (props) => {
   return (
     <React.Fragment>
       <Styles>
+        <Caption flabel="Tasks" slabel="List" />
         <Slate>
           <Switch>
             <Route exact path={path}>

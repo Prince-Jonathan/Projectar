@@ -2,9 +2,10 @@ import React from "react";
 
 import "./Workspace.css";
 
-const Element = ({ icon, flabel, slabel }) => {
+const Element = ({ icon, flabel, slabel, onClick }) => {
   return (
     <div
+      onClick={onClick}
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       {" "}

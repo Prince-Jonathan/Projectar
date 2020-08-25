@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import { Row, Column } from "../../Grid";
@@ -37,13 +37,20 @@ const Style = styled.div`
 // tempStyle=
 
 const Workspace = (props) => {
+  const history = useHistory();
   return (
     <div>
       <Row>
         <Column>
           <Style>
-            <Element flabel="Add" slabel="Task" icon="fa fa-tasks fa-lg" />
             <Element
+              onClick={() => history.push("/")}
+              flabel="Add"
+              slabel="Task"
+              icon="fa fa-tasks fa-lg"
+            />
+            <Element
+              onClick={() => history.push("/project/1")}
               flabel="View"
               slabel="Tasks"
               icon="fa fa-file-text-o  fa-lg"
@@ -54,11 +61,13 @@ const Workspace = (props) => {
               icon="fa fa-users fa-lg"
             />
             <Element
+              onClick={() => history.push("/reports")}
               flabel="Recent"
               slabel="Reports"
               icon="fa fa-folder-open-o fa-lg"
             />
           </Style>
+
           <Announcements />
         </Column>
       </Row>

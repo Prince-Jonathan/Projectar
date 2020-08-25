@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import Table from "../../table/Table";
 import Slate from "../slate/Slate";
 import { isMobile } from "../../Responsive";
 import TasksStatus from "../project/task/TasksStatus";
+import Caption from "../Caption";
 
 import "./Projects.css";
 
@@ -54,6 +55,7 @@ const Styles = styled.div`
 `;
 
 const Projects = (props) => {
+  const history = useHistory();
   const [rowID, setRowID] = useState(0);
 
   const data = React.useMemo(() => props.projects, [props.projects]);
@@ -116,7 +118,7 @@ const Projects = (props) => {
               Add Task
             </Button>
 
-            <Button>Report</Button>
+            <Button onClick={() => history.push("/reports")}>Report</Button>
 
             <Button>Attendance</Button>
           </div>
@@ -132,6 +134,7 @@ const Projects = (props) => {
   );
   return (
     <React.Fragment>
+      <Caption flabel="Projects" slabel="List" />
       <Slate>
         <Table
           columns={columns}

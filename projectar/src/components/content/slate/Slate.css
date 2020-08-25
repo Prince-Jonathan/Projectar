@@ -1,12 +1,12 @@
 .slate {
   position: relative;
 
-  max-height: 525px;
+  max-height: 515px;
   min-height:min-content;
   /* max-width: 800px; */
   min-width: min-content;
   padding: 5px;
-  margin: 30px 0px;
+  margin: 15px 0px;
   color: #10292e;
   border-radius: 5px;
   background-color: #d7e0c3;
