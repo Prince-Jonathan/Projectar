@@ -92,13 +92,13 @@ const PersonnelTasks = (props) => {
           Filter: () => null,
         },
       ];
-      return isMobile ? column.splice(0, 2) : column;
+      return isMobile ? column.splice(0, 1) : column;
     },
     [isMobile]
   );
   return (
     <React.Fragment>
-      <Caption flabel="Tasks" slabel={` -${props.personnelName}`} />
+      <Caption flabel="Tasks" slabel={`-${props.personnelName}`} />
       <Slate>
         {console.log(data)}
         <Table columns={columns} data={data} />

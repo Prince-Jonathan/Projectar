@@ -14,10 +14,9 @@ import Slate from "../slate/Slate";
 import { isMobile } from "../../Responsive";
 import SliderFilter from "../../table/filters/SliderFilter";
 import filterGreaterThan from "../../table/filters/filterGreaterThan";
-import Description from "../project/task/Description";
+import Description from "./task/Description";
 import Caption from "../Caption";
 import Task from "./task/Task";
-import AllTasks from "./AllTasks";
 
 const Button = styled.button`
   background: #faec25b9;
@@ -58,15 +57,14 @@ const Styles = styled.div`
   }
 `;
 
-const Project = (props) => {
+const AllTasks = (props) => {
   const { path, url } = useRouteMatch();
   const { status } = useParams();
   const history = useHistory();
   const [selectedTaskID, setSelectedTaskID] = useState(undefined);
   const { id } = useParams();
 
-  const tasks = React.useMemo(() => props.tasks, [props.tasks]);
-  const data = tasks.filter((task) => task.project_id === parseInt(id));
+  const data = React.useMemo(() => props.tasks, [props.tasks]);
 
   data.sort((a, b) => {
     let dateA = new Date(a.date),
@@ -163,16 +161,10 @@ const Project = (props) => {
     ),
     []
   );
-  // const outstandingTasks = data.filter(
-  //   (task) => parseInt(task.achieved) !== 100
-  // );
+  const outstandingTasks = data.filter(
+    (task) => parseInt(task.achieved) !== 100
+  );
   const completedTasks = data.filter((task) => parseInt(task.achieved) === 100);
-
-  const handleClick = ({ row }) => {
-    setSelectedTaskID(row.original.id);
-    // setPersonnelName(row.original.first_name + " " + row.original.last_name);
-    history.push(`${url}/outstanding-tasks/${row.original.id}/execute`);
-  };
 
   return (
     <React.Fragment>
@@ -193,7 +185,6 @@ const Project = (props) => {
               columns={columns}
               data={data}
               renderRowSubComponent={renderRowSubComponent}
-              clickable={handleClick}
               selectedTaskID={selectedTaskID}
             />
           </Route>
@@ -205,15 +196,6 @@ const Project = (props) => {
               renderRowSubComponent={renderRowSubComponent}
             />
           </Route>
-          <Route path={`${path}/tasks`}>
-            <AllTasks
-              tasks={props.tasks}
-              selectedTaskID={props.selectedTaskID}
-              onFetchData={props.onFetchData}
-              onAlert={props.onAlert}
-              toggler={props.toggler}
-            />
-          </Route>
           <Route path={`${path}/*`}>
             <Redirect to={url} />
           </Route>
@@ -223,4 +205,4 @@ const Project = (props) => {
   );
 };
 
-export default Project;
+export default AllTasks;

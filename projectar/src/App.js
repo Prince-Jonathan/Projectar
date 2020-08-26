@@ -9,6 +9,7 @@ import Workspace from "./components/content/workspace/Workspace";
 import Projects from "./components/content/projects/Projects";
 import Personnel from "./components/content/projects/Personnel";
 import Project from "./components/content/project/Project";
+import AllTasks from "./components/content/project/AllTasks";
 import Bay from "./components/bay/Bay";
 import AddTask from "./components/content/project/task/AddTask";
 import Login from "./components/content/login/Login";

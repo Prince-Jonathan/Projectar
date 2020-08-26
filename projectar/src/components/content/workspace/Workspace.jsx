@@ -50,7 +50,7 @@ const Workspace = (props) => {
               icon="fa fa-tasks fa-lg"
             />
             <Element
-              onClick={() => history.push("/project/1")}
+              onClick={() => history.push("/project/all/tasks")}
               flabel="View"
               slabel="Tasks"
               icon="fa fa-file-text-o  fa-lg"

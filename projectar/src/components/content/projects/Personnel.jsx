@@ -92,7 +92,7 @@ const Personnel = (props) => {
           accessor: "role",
         },
       ];
-      return isMobile ? column.splice(0, 2) : column;
+      return isMobile ? column.splice(0, 1) : column;
     },
     [isMobile]
   );
