@@ -62,14 +62,19 @@ const Table = ({
           return (
             // Use a React.Fragment here so the table markup is still valid
             <React.Fragment {...row.getRowProps()}>
-              <tr
-                className="mainComp"
-                style={cursor}
-                onClick={() => (clickable ? clickable({ row }) : null)}
-              >
+              <tr className="mainComp" style={cursor}>
                 {row.cells.map((cell) => {
                   return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td
+                      onClick={() =>
+                        clickable && cell.column.id !== "expander"
+                          ? clickable({ row })
+                          : null
+                      }
+                      {...cell.getCellProps()}
+                    >
+                      {cell.render("Cell")}
+                    </td>
                   );
                 })}
               </tr>

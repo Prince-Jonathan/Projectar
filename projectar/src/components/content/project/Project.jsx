@@ -6,16 +6,17 @@ import {
   useParams,
   Switch,
   Redirect,
+  useHistory,
 } from "react-router-dom";
 
 import Table from "../../table/Table";
 import Slate from "../slate/Slate";
 import { isMobile } from "../../Responsive";
-import Task from "../project/task/Task";
 import SliderFilter from "../../table/filters/SliderFilter";
 import filterGreaterThan from "../../table/filters/filterGreaterThan";
 import Description from "../project/task/Description";
 import Caption from "../Caption";
+import Task from "./task/Task";
 
 const Button = styled.button`
   background: #faec25b9;
@@ -59,12 +60,18 @@ const Styles = styled.div`
 const Project = (props) => {
   const { path, url } = useRouteMatch();
   const { status } = useParams();
-
+  const history = useHistory();
+  const [selectedTaskID, setSelectedTaskID] = useState(undefined);
   const { id } = useParams();
 
   const tasks = React.useMemo(() => props.tasks, [props.tasks]);
-
   const data = tasks.filter((task) => task.project_id === parseInt(id));
+
+  data.sort((a, b) => {
+    let dateA = new Date(a.date),
+      dateB = new Date(b.date);
+    return dateA - dateB;
+  });
 
   const columns = React.useMemo(
     () => {
@@ -155,42 +162,52 @@ const Project = (props) => {
     ),
     []
   );
-  const outstandingTasks = data.filter(
-    (task) => parseInt(task.achieved) !== 100
-  );
+  // const outstandingTasks = data.filter(
+  //   (task) => parseInt(task.achieved) !== 100
+  // );
   const completedTasks = data.filter((task) => parseInt(task.achieved) === 100);
+
+  const handleClick = ({ row }) => {
+    setSelectedTaskID(row.original.id);
+    // setPersonnelName(row.original.first_name + " " + row.original.last_name);
+    history.push(`${url}/outstanding-tasks/${row.original.id}/execute`);
+  };
+
   return (
     <React.Fragment>
       <Styles>
-        <Caption flabel="Tasks" slabel="List" />
-        <Slate>
-          <Switch>
-            <Route exact path={path}>
+        <Switch>
+          <Route exact path={path}>
+            <Caption flabel="Tasks" slabel="List" />
+            <Slate>
               <Table
                 columns={columns}
                 data={data}
                 renderRowSubComponent={renderRowSubComponent}
               />
-            </Route>
-            <Route path={`${path}/outstanding-tasks`}>
-              <Table
-                columns={columns}
-                data={outstandingTasks}
-                renderRowSubComponent={renderRowSubComponent}
-              />
-            </Route>
-            <Route path={`${path}/completed-tasks`}>
-              <Table
-                columns={columns}
-                data={completedTasks}
-                renderRowSubComponent={renderRowSubComponent}
-              />
-            </Route>
-            <Route path={`${path}/*`}>
-              <Redirect to={url} />
-            </Route>
-          </Switch>
-        </Slate>
+            </Slate>
+          </Route>
+          <Route path={`${path}/outstanding-tasks`}>
+            <Task
+              columns={columns}
+              data={data}
+              renderRowSubComponent={renderRowSubComponent}
+              clickable={handleClick}
+              selectedTaskID={selectedTaskID}
+            />
+          </Route>
+          <Route path={`${path}/completed-tasks`}>
+            <Caption flabel="Tasks" slabel=" -Completed" />
+            <Table
+              columns={columns}
+              data={completedTasks}
+              renderRowSubComponent={renderRowSubComponent}
+            />
+          </Route>
+          <Route path={`${path}/*`}>
+            <Redirect to={url} />
+          </Route>
+        </Switch>
       </Styles>
     </React.Fragment>
   );

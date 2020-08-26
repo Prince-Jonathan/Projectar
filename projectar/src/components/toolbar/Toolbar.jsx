@@ -11,7 +11,9 @@ const Toolbar = (props) => {
       <div className="button">
         <DrawerToggleButton onClick={props.onClick} />
       </div>
-      <div className="Logo">Projectar Logo</div>
+      <div className="Logo">
+        <img src={props.logo} alt="Projectar Logo" width="50" height="50"/>
+      </div>
       <Link to="/login" className="right">
         <i class="fa fa-user-o" aria-hidden="true" /> Logout
       </Link>

@@ -19,6 +19,9 @@ import Attendance from "./components/content/attendance/Attendance";
 
 import "./App.css";
 
+import Logo2 from "./logos/logo4.png";
+import Logo from "./logos/logo2.png";
+
 const App = (props) => {
   const alert = useAlert();
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -35,7 +38,7 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "http://localhost:8050";
+  const baseUrl = "http://192.168.69.101:8050";
 
   const fetchData = (url, params) =>
     axios.get(baseUrl + url, {
@@ -114,6 +117,7 @@ const App = (props) => {
               postData={postData}
               onAlert={handleAlert}
               authenticate={handleAuthenticate}
+              logo={Logo}
             />
           </Row>
         </Route>
@@ -122,6 +126,7 @@ const App = (props) => {
           aside={<Aside onPopUpClick={handlePopUpClick} />}
           name={user.first_name}
           onShowSideMenu={handleShowSideMenu}
+          logo={Logo2}
         >
           <PrivateRoute exact isAuthenticated={isAuthenticated} path="/">
             <Workspace
@@ -133,10 +138,7 @@ const App = (props) => {
               toggler={isTaskCreated}
             />
           </PrivateRoute>
-          <PrivateRoute
-            isAuthenticated={isAuthenticated}
-            path="/personnel"
-          >
+          <PrivateRoute isAuthenticated={isAuthenticated} path="/personnel">
             <Personnel
               onSelect={(id) => setSeletedID(id)}
               personnel={personnel}

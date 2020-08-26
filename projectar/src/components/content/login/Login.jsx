@@ -45,7 +45,7 @@ const Login = (props) => {
       <SimpleLoginForm
         getUserInfo={sendUserInfoToDatabase}
         style={formStyle}
-        // photoIcon={}
+        photoIcon={props.logo}
       />
     </React.Fragment>
   );

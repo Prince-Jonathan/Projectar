@@ -61,6 +61,12 @@ const PersonnelTasks = (props) => {
 
   const data = React.useMemo(() => props.tasks, [props.tasks]);
 
+  data.sort((a, b) => {
+    let dateA = new Date(a.date),
+      dateB = new Date(b.date);
+    return dateA - dateB;
+  });
+
   const columns = React.useMemo(
     () => {
       const column = [

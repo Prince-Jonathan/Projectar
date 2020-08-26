@@ -1,21 +1,54 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
+import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 
 import { isMobile } from "../../../Responsive";
+import Report from "../../reports/Report";
+import Slate from "../../slate/Slate";
+import Table from "./../../../table/Table";
+import Caption from "../../Caption";
 
 import "./Task.css";
 import "react-datepicker/dist/react-datepicker.css";
 
+const Button = styled.button`
+  border: none;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  margin: 0 5px 0 5px;
+  border-radius: 12px;
+  background-color: #10292e;
+
+  &::active {
+    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.2);
+  }
+`;
+
 const Task = (props) => {
   const [startDate, setStartDate] = useState({ date: new Date() });
   const [state, setState] = useState({
-    title: "",
+    title: "this",
     description: "",
     target: "",
     achieved: "",
     personnel: null,
   });
+  const { url, path } = useRouteMatch();
+  let task = useMemo(
+    () =>
+      props.data.filter(
+        (task) =>
+          parseInt(task.id) === props.selectedTaskID &&
+          parseInt(task.achieved) === 100
+      ),
+    [props.selectedTaskID, props.data]
+  );
+  console.log("the new task", task);
 
   // const data = props.personnel;
 
@@ -74,7 +107,7 @@ const Task = (props) => {
   };
 
   const CustomInput = ({ value, onClick }) => (
-    <button
+    <Button
       type="button"
       style={{ cursor: "pointer" }}
       required
@@ -83,119 +116,138 @@ const Task = (props) => {
       value={value}
     >
       {value}
-    </button>
+    </Button>
   );
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="form-container">
-        <span>
-          <strong>Assign Task To Specific Days</strong>
-        </span>
+      <Switch>
+        <Route exact path={path}>
+          <Caption flabel="Tasks" slabel=" -Outstanding" />
+          <Slate>
+            <Table
+              columns={props.columns}
+              data={props.data}
+              renderRowSubComponent={props.renderRowSubComponent}
+              clickable={props.clickable}
+            />
+          </Slate>
+        </Route>
+        <Route path={`${path}/:id/execute/`}>
+          <Caption flabel="Task" slabel=" -Outstanding" />
+          <Slate>
+            <form onSubmit={handleSubmit} className="form-container">
+              <span>
+                <strong>Execute Task</strong>
+              </span>
 
-        <input
-          // autoFocus
-          type="text"
-          style={{ flex: "1" }}
-          name="title"
-          value={state.title}
-          onChange={handleChange}
-          required
-        />
-
-        <textarea
-          type="text"
-          style={{ flex: "1" }}
-          name="description"
-          value={state.description}
-          onChange={handleChange}
-          required
-          rows="5"
-          cols="37"
-        />
-        <div
-          style={{
-            display: "flex",
-            alignContent: "center",
-            justifyContent: "space-around",
-            alignItems: "center",
-            margin: "5px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignContent: "center",
-              justifyContent: "space-around",
-              alignItems: "baseline",
-              margin: "5px",
-            }}
-          >
-            <label>
-              Target(%):
               <input
-                // style={{ width: "75px" }}
                 type="text"
-                name="target"
-                value={state.target}
-                onChange={handleChange}
+                style={{ flex: "1", backgroundColor: "#B2BEB5" }}
+                name="title"
+                placeholder="{state.title}"
+                value={state.title}
                 required
               />
-            </label>
-            <label>
-              Achieved(%):
-              <input
-                style={{ flexBasis: "auto" }}
+
+              <textarea
                 type="text"
-                name="achieved"
-                value={state.achieved}
-                onChange={handleChange}
+                style={{ flex: "1", backgroundColor: "#B2BEB5" }}
+                name="description"
+                placeholder={state.description}
+                value={state.description}
                 required
+                rows="5"
+                cols="37"
               />
-            </label>
-          </div>
-          <DatePicker
-            selected={startDate.date}
-            onChange={(date) => setStartDate({ date })}
-            customInput={<CustomInput />}
-            withPortal={isMobile}
-          />
-        </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignContent: "center",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  margin: "5px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignContent: "center",
+                    justifyContent: "space-around",
+                    alignItems: "baseline",
+                    margin: "5px",
+                  }}
+                >
+                  <label>
+                    Target(%):
+                    <input
+                      style={{ backgroundColor: "#B2BEB5" }}
+                      type="text"
+                      name="target"
+                      placeholder={state.target}
+                      value={state.target}
+                      required
+                    />
+                  </label>
+                  <label>
+                    Achieved(%):
+                    <input
+                      style={{ flexBasis: "auto", backgroundColor: "#B2BEB5" }}
+                      type="text"
+                      name="achieved"
+                      value={state.achieved}
+                      onChange={handleChange}
+                      required
+                    />
+                  </label>
+                </div>
+                <DatePicker
+                  selected={startDate.date}
+                  onChange={(date) => setStartDate({ date })}
+                  customInput={<CustomInput />}
+                  withPortal={isMobile}
+                />
+              </div>
 
-        <Select
-          isMulti
-          onChange={handleSelection}
-          options={options}
-          defaultValue={selectedOption.value}
-          isClearable
-          styles={{ menuPortal: (base) => ({ ...base, zIndex: 200 }) }}
-          menuPortalTarget={document.body}
-          isSearchable
-          name="color"
-          menuPosition={selectedOption.isFixed ? "fixed" : "absolute"}
-          menuPlacement={selectedOption.portalPlacement}
-        />
+              <Select
+                isMulti
+                onChange={handleSelection}
+                options={options}
+                defaultValue={selectedOption.value}
+                isClearable
+                styles={{ menuPortal: (base) => ({ ...base, zIndex: 200 }) }}
+                menuPortalTarget={document.body}
+                isSearchable
+                name="color"
+                menuPosition={selectedOption.isFixed ? "fixed" : "absolute"}
+                menuPlacement={selectedOption.portalPlacement}
+              />
 
-        <div
-          style={{
-            display: "flex",
-            alignContent: "center",
-            justifyContent: "center",
-          }}
-        >
-          <button type="submit" className="btn">
-            Save
-          </button>
-          <button
-            type="button"
-            className="btn cancel"
-            onClick={props.onCloseTasks}
-          >
-            Close
-          </button>
-        </div>
-      </form>
+              <div
+                style={{
+                  display: "flex",
+                  alignContent: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {console.log("outsanding state in focus:", state)}
+                <Button type="submit" className="btn">
+                  Save
+                </Button>
+                <Button
+                  type="button"
+                  className="btn cancel"
+                  onClick={props.onCloseTasks}
+                >
+                  Close
+                </Button>
+              </div>
+              <Report />
+            </form>
+          </Slate>
+        </Route>
+      </Switch>
     </div>
   );
 };

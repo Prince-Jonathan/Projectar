@@ -52,7 +52,6 @@ const TasksStatus = (props) => {
         </div>{" "}
       </Button>
       <Button
-      className="btn btn-success"
         onClick={() =>
           history.push(`/project/${props.projectID}/completed-tasks`)
         }
