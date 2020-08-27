@@ -169,6 +169,9 @@ const App = (props) => {
               onFetchData={fetchData}
               onAlert={handleAlert}
               toggler={handleTaskDelete}
+              onTaskUpdate={handleTaskCreated}
+              onAlert={handleAlert}
+              postData={postData}
             />
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/all-projects">

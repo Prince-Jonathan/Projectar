@@ -14,7 +14,6 @@ const Login = (props) => {
     props.authenticate(user);
     history.replace(from);
   };
-
   const formStyle = {
     maxWidth: "350px",
     maxHeight: "525px",
@@ -23,23 +22,29 @@ const Login = (props) => {
   };
   const sendUserInfoToDatabase = (userInfo, event) => {
     event.preventDefault();
-
-    props
-      .postData("/api/login", userInfo)
-      .then(({ data }) => {
-        if (data.success) {
-          //expecting obj
-          login(data.message[0]);
-        } else {
-          throw "Incorrect credentials";
-        }
-      })
-      .catch((e) =>
-        props.onAlert("error", e, {
-          timeout: 3000,
-          position: "bottom center",
+    if (userInfo.username === "" || userInfo.password === "") {
+      props.onAlert("error", "Both Fields Required", {
+        timeout: 3000,
+        position: "bottom center",
+      });
+    } else {
+      props
+        .postData("/api/login", userInfo)
+        .then(({ data }) => {
+          if (data.success) {
+            //expecting obj
+            login(data.message[0]);
+          } else {
+            throw "Incorrect credentials";
+          }
         })
-      );
+        .catch((e) =>
+          props.onAlert("error", e, {
+            timeout: 3000,
+            position: "bottom center",
+          })
+        );
+    }
   };
   return (
     <React.Fragment>

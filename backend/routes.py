@@ -235,14 +235,17 @@ def update_task(task_id):
 		task.description=data["description"]
 		task.target=data["target"]
 		task.date=data["date"]
+		if data["achieved"] is not None:
+			task.achieved=data["achieved"]
 
 		for personnel in task.personnel[:]:
 			print("deleting",personnel)
 			task.personnel.remove(personnel)
 		db.session.commit()
-		for personnel_id in data["personnel"]:
-			print("adding",personnel_id)
-			enrol_user_task(task.id, personnel_id)
+		if data["personnel"] is not None:
+			for personnel_id in data["personnel"]:
+				print("adding",personnel_id)
+				enrol_user_task(task.id, personnel_id)
 		db.session.commit()
 		return {
 			"success":True,

@@ -195,6 +195,9 @@ const Project = (props) => {
               renderRowSubComponent={renderRowSubComponent}
               clickable={handleClick}
               selectedTaskID={selectedTaskID}
+              onTaskUpdate={props.onTaskUpdate}
+              onAlert={props.onAlert}
+              postData={props.postData}
             />
           </Route>
           <Route path={`${path}/completed-tasks`}>

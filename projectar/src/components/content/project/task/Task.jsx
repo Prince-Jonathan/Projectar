@@ -88,23 +88,24 @@ const Task = (props) => {
     event.preventDefault();
 
     let task = { ...state, ...startDate, project_id: props.selectedID };
-    props.onAlert("info", "Saving...", {
+    props.onAlert("info", "Executing...", {
       timeout: 3000,
       position: "bottom center",
     });
     props
-      .postData("/api/task/add", task)
-      .then((data) => console.log(data))
+      .postData(`/api/task/update/${props.selectedTaskID}`, task)
+      .then((data) => console.log("returned from post", data))
       .then(() =>
-        props.onAlert("success", "Task Saved", {
+        props.onAlert("success", "Task Executed", {
           timeout: 5000,
           position: "bottom center",
         })
       )
-      .then(() => props.onTaskUpdate("setUpdateTask"))
-      .then(() => props.onCloseTasks())
+      .then(() => props.onTaskUpdate())
+      // .then(() => props.resetSelectedTaskID())
+      .then(() => handleClose())
       .catch(() =>
-        props.onAlert("error", "Failed to Save Task", {
+        props.onAlert("error", "Failed to Execute Task", {
           timeout: 3000,
           position: "bottom center",
         })
@@ -128,7 +129,9 @@ const Task = (props) => {
       {value}
     </Button>
   );
-
+  const handleClose = () => {
+    history.goBack();
+  };
   return (
     <div>
       <Switch>
@@ -248,7 +251,7 @@ const Task = (props) => {
                 <Button
                   type="button"
                   className="btn cancel"
-                  onClick={() => history.goBack()}
+                  onClick={handleClose}
                 >
                   Close
                 </Button>
