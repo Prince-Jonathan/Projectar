@@ -16,7 +16,10 @@ const Caption = (props) => {
 
   return (
     <div style={wrapper}>
-      <span style={text}>{props.flabel} </span> {props.slabel}
+      <span style={text} {...props}>
+        {props.flabel}{" "}
+      </span>{" "}
+      {props.slabel}
       <span style={text}>{props.tlabel}</span>
     </div>
   );

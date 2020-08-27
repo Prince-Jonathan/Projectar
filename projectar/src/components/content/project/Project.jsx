@@ -67,6 +67,8 @@ const Project = (props) => {
 
   const tasks = React.useMemo(() => props.tasks, [props.tasks]);
   const data = tasks.filter((task) => task.project_id === parseInt(id));
+  const projects = React.useMemo(() => props.projects, [props.projects]);
+  const project = projects.filter((project) => project.id === parseInt(id));
 
   data.sort((a, b) => {
     let dateA = new Date(a.date),
@@ -198,6 +200,7 @@ const Project = (props) => {
               onTaskUpdate={props.onTaskUpdate}
               onAlert={props.onAlert}
               postData={props.postData}
+              project={project}
             />
           </Route>
           <Route path={`${path}/completed-tasks`}>

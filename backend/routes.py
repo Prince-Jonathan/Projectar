@@ -439,20 +439,24 @@ def project_verbose(proj_id):
 @app.route('/api/login', methods=['POST'])
 def login():
 	'''login authentication'''
-	details = request.get_json()
-	usrn = User.query.filter_by(username=details["username"], password=details["password"]).all() 
-	if usrn is not None:
-		try:
+	details = request.get_json()	
+	try:
+		usrn = User.query.filter_by(username=details["username"], password=details["password"]).all() 
+		if len(usrn) !=0 :
 			message= User.serialize_list(usrn)
 			return {
 				"success":True,
 				"message":message
 			}
-		except SQLAlchemyError as err:
-			print(err)
-			return {
-				"success":False	
+		return {
+				"success":False,
+				"message":"Access Denied"
 			}
+	except SQLAlchemyError as err:
+		print(err)
+		return {
+			"success":False	
+		}
 
 @app.route('/api/v1/authenticate', methods=['POST'])
 def authenticate():

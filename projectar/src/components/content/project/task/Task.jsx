@@ -138,6 +138,10 @@ const Task = (props) => {
       <Switch>
         <Route exact path={path}>
           <Caption flabel="Tasks" slabel=" -Outstanding" />
+          <Caption
+            flabel={props.project[0].name}
+            style={{ fontSize: 15, color: "white" }}
+          />
           <Slate>
             <Table
               columns={props.columns}

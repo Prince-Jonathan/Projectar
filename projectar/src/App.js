@@ -41,7 +41,7 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "http://10.20.102.127:8050";
+  const baseUrl = "http://192.168.69.102:8050";
 
   const data = [
     { name: "Keanu Reeves", profession: "Actor" },
@@ -172,6 +172,7 @@ const App = (props) => {
               onTaskUpdate={handleTaskCreated}
               onAlert={handleAlert}
               postData={postData}
+              projects={projects}
             />
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/all-projects">
