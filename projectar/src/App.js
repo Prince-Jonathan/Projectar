@@ -27,7 +27,7 @@ import Logo from "./logos/logo2.png";
 
 const App = (props) => {
   const alert = useAlert();
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
@@ -41,7 +41,7 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "http://192.168.69.100:8050";
+  const baseUrl = "http://10.20.102.127:8050";
 
   const data = [
     { name: "Keanu Reeves", profession: "Actor" },

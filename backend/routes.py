@@ -5,6 +5,7 @@ import asyncio
 from flask import request, redirect, url_for,jsonify
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
+import requests
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client
 from models import Project, User, Task
 from modules import fetch, log
@@ -436,13 +437,23 @@ def project_verbose(proj_id):
 def login():
 	'''login authentication'''
 	details = request.get_json()
-	try:
-		usrn = User.query.filter_by(username=details["username"], password=details["password"]).first() 
-		if usrn is not None:
-			return get_user(usrn.id)
-		return "Username: \"%s\" does not exist" % details["username"]
-	except SQLAlchemyError as err:
-		print(err)
-		return{
-				"success":False
-		}
+	usrn = User.query.filter_by(username=details["username"], password=details["password"]).all() 
+	if usrn is not None:
+		try:
+			message= User.serialize_list(usrn)
+			return {
+				"success":True,
+				"message":message
+			}
+		except SQLAlchemyError as err:
+			print(err)
+			return {
+				"success":False	
+			}
+
+@app.route('/api/v1/authenticate', methods=['POST'])
+def authenticate():
+	'''login authentication'''
+	pload= request.get_json()
+	r = requests.post("https://b0703c0633fb.ngrok.io/v1/authenticate", data=pload)
+	return r.json()

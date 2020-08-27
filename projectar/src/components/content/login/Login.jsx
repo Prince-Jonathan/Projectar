@@ -28,7 +28,8 @@ const Login = (props) => {
       .postData("/api/login", userInfo)
       .then(({ data }) => {
         if (data.success) {
-          login(data.data);
+          //expecting obj
+          login(data.message[0]);
         } else {
           throw "Incorrect credentials";
         }

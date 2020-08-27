@@ -23,20 +23,23 @@ const Button = styled.button`
   }
 `;
 const Export = (props) => {
-  let tasks;
-  let personnel;
+  // let tasks;
+  // let personnel;
+  const [tasks, setTasks] = useState([]);
+  const [personnel, setPersonnel] = useState([]);
 
   const fetchVerbose = (projectID) => {
     props.onFetchData(`/api/project/verbose/${projectID}`).then(({ data }) => {
-      tasks = data.tasks_list;
-      personnel = data.personnel_list;
-      console.log("this is verbose personnel:", personnel);
+      // tasks = data.tasks_list;
+      // personnel = data.personnel_list;
+      setTasks(data.tasks_list);
+      setPersonnel(data.personnel_list);
     });
   };
 
-  //   useEffect(() => {
-  fetchVerbose(props.projectID);
-  //   }, []);
+  useEffect(() => {
+    fetchVerbose(props.projectID);
+  }, []);
 
   const exportPDF = () => {
     const unit = "pt";
@@ -79,7 +82,7 @@ const Export = (props) => {
       body: data,
     };
 
-    var splitTitle = doc.splitTextToSize(title, 580);
+    var splitTitle = doc.splitTextToSize(title, 450);
     // doc.text(15, 20, splitTitle);
     doc.text(splitTitle, marginLeft, 40);
     doc.autoTable(content);
@@ -88,7 +91,9 @@ const Export = (props) => {
 
   return (
     <div>
-      <Button onClick={() => exportPDF()}>{props.caption}</Button>
+      <Button onClick={() => exportPDF()} disabled={!tasks.length}>
+        {!tasks.length ? "Loading..." : props.caption}
+      </Button>
     </div>
   );
 };

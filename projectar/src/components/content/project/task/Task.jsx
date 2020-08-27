@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Switch, Route, useRouteMatch } from "react-router-dom";
+import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
@@ -30,6 +30,8 @@ const Button = styled.button`
 `;
 
 const Task = (props) => {
+  const history = useHistory();
+
   const [startDate, setStartDate] = useState({ date: new Date() });
   const [state, setState] = useState({
     title: "Submit WBS",
@@ -40,11 +42,24 @@ const Task = (props) => {
   });
   const { url, path } = useRouteMatch();
   let task = useMemo(
-    () =>
-      props.data.filter((task) => parseInt(task.id) === props.selectedTaskID),
+    () => {
+      // setState({ ...task });
+      return props.data.filter(
+        (task) => parseInt(task.id) === props.selectedTaskID
+      );
+    },
     [props.selectedTaskID, props.data]
   );
-  console.log("the new task", task);
+  useEffect(
+    () => {
+      // setStartDate({ date: new Date(task[0].date) });
+      setState({ ...task[0] });
+      try {
+        setStartDate({ date: new Date(task[0].date) });
+      } catch (error) {}
+    },
+    [task]
+  );
 
   // const data = props.personnel;
 
@@ -77,7 +92,6 @@ const Task = (props) => {
       timeout: 3000,
       position: "bottom center",
     });
-    console.log(task);
     props
       .postData("/api/task/add", task)
       .then((data) => console.log(data))
@@ -141,9 +155,9 @@ const Task = (props) => {
                 type="text"
                 style={{ flex: "1", backgroundColor: "#B2BEB5" }}
                 name="title"
-                placeholder="{state.title}"
+                placeholder={state.title}
                 value={state.title}
-                required
+                readOnly
               />
 
               <textarea
@@ -155,6 +169,7 @@ const Task = (props) => {
                 required
                 rows="5"
                 cols="37"
+                readOnly
               />
               <div
                 style={{
@@ -183,7 +198,7 @@ const Task = (props) => {
                       name="target"
                       placeholder={state.target}
                       value={state.target}
-                      required
+                      readOnly
                     />
                   </label>
                   <label>
@@ -200,9 +215,9 @@ const Task = (props) => {
                 </div>
                 <DatePicker
                   selected={startDate.date}
-                  onChange={(date) => setStartDate({ date })}
                   customInput={<CustomInput />}
                   withPortal={isMobile}
+                  disabled
                 />
               </div>
 
@@ -227,14 +242,13 @@ const Task = (props) => {
                   justifyContent: "center",
                 }}
               >
-                {console.log("outsanding state in focus:", state)}
                 <Button type="submit" className="btn">
                   Save
                 </Button>
                 <Button
                   type="button"
                   className="btn cancel"
-                  onClick={props.onCloseTasks}
+                  onClick={() => history.goBack()}
                 >
                   Close
                 </Button>
