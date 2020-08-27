@@ -34,9 +34,9 @@ const Task = (props) => {
 
   const [startDate, setStartDate] = useState({ date: new Date() });
   const [state, setState] = useState({
-    title: "Submit WBS",
-    description: "Consider all proceedings and instructions",
-    target: "100%",
+    title: "",
+    description: "",
+    target: "",
     achieved: "",
     personnel: null,
   });
@@ -50,6 +50,7 @@ const Task = (props) => {
     },
     [props.selectedTaskID, props.data]
   );
+
   useEffect(
     () => {
       // setStartDate({ date: new Date(task[0].date) });
