@@ -7,6 +7,7 @@ import Slate from "../slate/Slate";
 import { isMobile } from "../../Responsive";
 import TasksStatus from "../project/task/TasksStatus";
 import Caption from "../Caption";
+import Export from "../Export";
 
 import "./Projects.css";
 
@@ -118,8 +119,12 @@ const Projects = (props) => {
               Add Task
             </Button>
 
-            <Button onClick={() => history.push("/reports")}>Report</Button>
-
+            <Export
+              projectID={row.original.id}
+              onFetchData={props.onFetchData}
+              caption="Report"
+              title={`${row.original.name}- Report`}
+            />
             <Button>Attendance</Button>
           </div>
           <TasksStatus

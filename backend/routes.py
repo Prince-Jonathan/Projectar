@@ -4,6 +4,7 @@ This Script holds all routes to endpoints
 import asyncio
 from flask import request, redirect, url_for,jsonify
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import text
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client
 from models import Project, User, Task
 from modules import fetch, log
@@ -396,6 +397,40 @@ def del_task(task_id):
 		return{
 			"success":False
 		}
+
+@app.route('/api/project/verbose/<int:proj_id>')
+def project_verbose(proj_id):
+  '''Delete task of specified id'''
+  try:
+    plist = []
+    # pnames = ""
+    project = Project.query.get(proj_id)
+    msg = "does not exist"
+    if project is not None:
+      tasks = project.tasks
+      if len(tasks) == 0:
+        print("jeff")
+    for task in tasks:
+      temp_ = ''
+      task_users = User.serialize_list(task.personnel)
+      # print(task_users)
+      for task_user in task_users:
+        temp_ += task_user['first_name'] + " " + task_user['last_name']
+        if not task_users[-1]==task_user:
+        	temp_+=", "
+      plist.append(temp_)
+      # plist.append(User.serialize_list(task.personnel))
+      # for
+    return {
+    "success":True,
+    "tasks_list":Task.serialize_list(tasks),
+    "personnel_list":plist
+    }
+  except SQLAlchemyError as err:
+    print(err)
+    return{
+    "success":False
+    }
 
 @app.route('/api/login', methods=['POST'])
 def login():

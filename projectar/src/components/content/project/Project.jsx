@@ -106,7 +106,7 @@ const Project = (props) => {
         },
         {
           Header: "Achieved (%)",
-          accessor: "Achieved",
+          accessor: "achieved",
           Filter: SliderFilter,
           filter: filterGreaterThan,
         },
@@ -163,9 +163,9 @@ const Project = (props) => {
     ),
     []
   );
-  // const outstandingTasks = data.filter(
-  //   (task) => parseInt(task.achieved) !== 100
-  // );
+  const outstandingTasks = data.filter(
+    (task) => parseInt(task.achieved) !== 100
+  );
   const completedTasks = data.filter((task) => parseInt(task.achieved) === 100);
 
   const handleClick = ({ row }) => {
@@ -191,7 +191,7 @@ const Project = (props) => {
           <Route path={`${path}/outstanding-tasks`}>
             <Task
               columns={columns}
-              data={data}
+              data={outstandingTasks}
               renderRowSubComponent={renderRowSubComponent}
               clickable={handleClick}
               selectedTaskID={selectedTaskID}

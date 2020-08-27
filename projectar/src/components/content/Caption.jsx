@@ -4,7 +4,7 @@ const Caption = (props) => {
   const wrapper = {
     display: "flex",
     justifyContent: "flex-start",
-    margin: "5px",
+    // margin: "1px",
     fontSize: 25,
     marginRight: "auto",
   };

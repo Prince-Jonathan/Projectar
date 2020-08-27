@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { useAlert } from "react-alert";
+import { jsPDF } from "jspdf";
 
 import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
@@ -17,10 +18,11 @@ import PrivateRoute from "./components/content/PrivateRoute";
 import { Column, Row } from "./components/Grid";
 import Report from "./components/content/reports/Report";
 import Attendance from "./components/content/attendance/Attendance";
+import Export from "./components/content/Export";
 
 import "./App.css";
 
-import Logo2 from "./logos/logo4.png";
+import Logo2 from "./logos/tagg.png";
 import Logo from "./logos/logo2.png";
 
 const App = (props) => {
@@ -39,8 +41,16 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "http://192.168.69.101:8050";
+  const baseUrl = "http://192.168.69.100:8050";
 
+  const data = [
+    { name: "Keanu Reeves", profession: "Actor" },
+    { name: "Lionel Messi", profession: "Football Player" },
+    { name: "Cristiano Ronaldo", profession: "Football Player" },
+    { name: "Jack Nicklaus", profession: "Golf Player" },
+  ];
+
+  const headers = ["NAME", "PROFESSION"];
   const fetchData = (url, params) =>
     axios.get(baseUrl + url, {
       params: {

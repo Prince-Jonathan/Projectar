@@ -32,20 +32,16 @@ const Button = styled.button`
 const Task = (props) => {
   const [startDate, setStartDate] = useState({ date: new Date() });
   const [state, setState] = useState({
-    title: "this",
-    description: "",
-    target: "",
+    title: "Submit WBS",
+    description: "Consider all proceedings and instructions",
+    target: "100%",
     achieved: "",
     personnel: null,
   });
   const { url, path } = useRouteMatch();
   let task = useMemo(
     () =>
-      props.data.filter(
-        (task) =>
-          parseInt(task.id) === props.selectedTaskID &&
-          parseInt(task.achieved) === 100
-      ),
+      props.data.filter((task) => parseInt(task.id) === props.selectedTaskID),
     [props.selectedTaskID, props.data]
   );
   console.log("the new task", task);
