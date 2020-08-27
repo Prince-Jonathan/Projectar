@@ -205,11 +205,17 @@ const Project = (props) => {
           </Route>
           <Route path={`${path}/completed-tasks`}>
             <Caption flabel="Tasks" slabel=" -Completed" />
-            <Table
-              columns={columns}
-              data={completedTasks}
-              renderRowSubComponent={renderRowSubComponent}
+            <Caption
+              flabel={project[0].name}
+              style={{ fontSize: 15, color: "white" }}
             />
+            <Slate>
+              <Table
+                columns={columns}
+                data={completedTasks}
+                renderRowSubComponent={renderRowSubComponent}
+              />
+            </Slate>
           </Route>
           <Route path={`${path}/tasks`}>
             <AllTasks

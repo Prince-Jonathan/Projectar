@@ -87,30 +87,39 @@ const Task = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    let task = { ...state, ...startDate, project_id: props.selectedID };
-    props.onAlert("info", "Executing...", {
-      timeout: 3000,
-      position: "bottom center",
-    });
-    props
-      .postData(`/api/task/update/${props.selectedTaskID}`, task)
-      .then((data) => console.log("returned from post", data))
-      .then(() =>
-        props.onAlert("success", "Task Executed", {
-          timeout: 5000,
-          position: "bottom center",
-        })
-      )
-      .then(() => props.onTaskUpdate())
-      // .then(() => props.resetSelectedTaskID())
-      .then(() => handleClose())
-      .catch(() =>
-        props.onAlert("error", "Failed to Execute Task", {
-          timeout: 3000,
-          position: "bottom center",
-        })
-      );
+    if (
+      parseInt(state.achieved) > parseInt(state.target) ||
+      parseInt(state.achieved) > 100
+    ) {
+      props.onAlert("error", "Invalid Achieved Input", {
+        timeout: 3000,
+        position: "bottom center",
+      });
+    } else {
+      let task = { ...state, ...startDate, project_id: props.selectedID };
+      props.onAlert("info", "Executing...", {
+        timeout: 3000,
+        position: "bottom center",
+      });
+      props
+        .postData(`/api/task/update/${props.selectedTaskID}`, task)
+        .then((data) => console.log("returned from post", data))
+        .then(() =>
+          props.onAlert("success", "Task Executed", {
+            timeout: 5000,
+            position: "bottom center",
+          })
+        )
+        .then(() => props.onTaskUpdate())
+        // .then(() => props.resetSelectedTaskID())
+        .then(() => handleClose())
+        .catch(() =>
+          props.onAlert("error", "Failed to Execute Task", {
+            timeout: 3000,
+            position: "bottom center",
+          })
+        );
+    }
   };
 
   const handleSelection = (selectedOption) => {
