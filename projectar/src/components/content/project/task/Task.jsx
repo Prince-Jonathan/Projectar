@@ -70,9 +70,10 @@ const Task = (props) => {
   // });
 
   const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
+    { value: 1, label: "Jonathan Nkansah" },
+    { value: 2, label: "Alex Bentum" },
+    { value: 3, label: "Kofi Tei" },
+    { value: 4, label: "Ben Ten" },
   ];
 
   const [selectedOption, setSelectedOption] = useState({
@@ -111,6 +112,11 @@ const Task = (props) => {
           })
         )
         .then(() => props.onTaskUpdate())
+        .then(() => {
+          if (parseInt(state.achieved) === parseInt(state.target)) {
+            props.postData("/api/notify/completed-task", task);
+          }
+        })
         // .then(() => props.resetSelectedTaskID())
         .then(() => handleClose())
         .catch(() =>

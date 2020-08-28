@@ -10,11 +10,22 @@ from app import APP as app, DB as db, ONESIGNAL_CLIENT as client
 from models import Project, User, Task
 from modules import fetch, log
 
-async def create_note():
+# async def create_note(note):
+#     notification_body = {
+# 			'contents': {'tr': 'Yeni bildirim', 'en': 'New notification'},
+# 			'included_segments': ['Subscribed Users'],
+# 			"headings": {"en": "Title of Message"},
+# 	}
+#     response = await client.send_notification(notification_body)
+#     return response.body
+
+# loop = asyncio.get_event_loop()
+async def create_note(note,status):
     notification_body = {
-			'contents': {'tr': 'Yeni bildirim', 'en': 'New notification'},
+			'contents': {'en': note["description"]},
 			'included_segments': ['Subscribed Users'],
-			"headings": {"en": "Title of Message"},
+			"headings": {"en":status+": "+note["title"]},
+			'url':"https://projectar.devcodes.co/"
 	}
     response = await client.send_notification(notification_body)
     return response.body
@@ -25,9 +36,20 @@ loop = asyncio.get_event_loop()
 def api():
 	return {"name":"Max"}
 
-@app.route('/api/notify')
-def notify():
-	return loop.run_until_complete(create_note())
+@app.route('/api/notify/edited-task', methods=['POST'])
+def notify_edit():
+	note=request.get_json()
+	return loop.run_until_complete(create_note(note,"Updated Task"))
+
+@app.route('/api/notify/completed-task', methods=['POST'])
+def notify_complete():
+	note=request.get_json()
+	return loop.run_until_complete(create_note(note,"Completed Task"))
+
+@app.route('/api/notify/new-task', methods=['POST'])
+def notify_new():
+	note=request.get_json()
+	return loop.run_until_complete(create_note(note,"New Task"))
 
 @app.route('/api/user/add', methods=['POST'])
 def add_user():

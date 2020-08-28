@@ -41,7 +41,8 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "http://192.168.69.101:8050";
+  // const baseUrl = "http://192.168.69.100:8050";
+  const baseUrl = "https://4ec697312d36.ngrok.io";
 
   const data = [
     { name: "Keanu Reeves", profession: "Actor" },

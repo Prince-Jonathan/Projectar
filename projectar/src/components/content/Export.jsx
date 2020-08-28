@@ -72,7 +72,7 @@ const Export = (props) => {
       task.title,
       task.description,
       task.personnel,
-      parseInt(task.target),
+      task.target ? parseInt(task.target) : "-",
       task.achieved ? parseInt(task.achieved) : "-",
     ]);
 
@@ -82,13 +82,13 @@ const Export = (props) => {
       body: data,
     };
 
-    var splitTitle = doc.splitTextToSize(title, 450);
+    var splitTitle = doc.splitTextToSize(title, 550);
     // doc.text(15, 20, splitTitle);
     var imageData = new Image();
     imageData.src = props.logo;
-    doc.addImage(imageData, "png", 40, 0, 50, 50);
+    doc.addImage(imageData, "png", 140, 0, 50, 50);
     var logoLabel = "THE AUTOMATION GHANA GROUP";
-    doc.text(logoLabel, 90, 30);
+    doc.text(logoLabel, 190, 30);
     doc.text(splitTitle, marginLeft, 56);
     doc.autoTable(content);
     doc.save(`${props.title}.pdf`);
