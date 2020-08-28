@@ -123,7 +123,8 @@ const Projects = (props) => {
               projectID={row.original.id}
               onFetchData={props.onFetchData}
               caption="Report"
-              title={`${row.original.name}- Report`}
+              title={`${row.original.name} - Tasks List [Target vs. Achieved]`}
+              logo={props.logo}
             />
             <Button>Attendance</Button>
           </div>

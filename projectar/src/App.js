@@ -41,7 +41,7 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "http://192.168.69.102:8050";
+  const baseUrl = "http://192.168.69.101:8050";
 
   const data = [
     { name: "Keanu Reeves", profession: "Actor" },
@@ -183,6 +183,7 @@ const App = (props) => {
               selectedID={selectedID}
               onFetchData={fetchData}
               toggler={isTaskCreated}
+              logo={Logo2}
             />
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/reports">
