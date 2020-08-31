@@ -206,7 +206,13 @@ const Project = (props) => {
           <Route path={`${path}/completed-tasks`}>
             <Caption flabel="Tasks" slabel=" -Completed" />
             <Caption
-              flabel={project[0].name}
+              flabel={() => {
+                if (typeof project === "undefined") {
+                  return null;
+                } else {
+                  return project[0].name;
+                }
+              }}
               style={{ fontSize: 15, color: "white" }}
             />
             <Slate>
