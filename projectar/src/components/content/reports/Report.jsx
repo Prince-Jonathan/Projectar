@@ -19,7 +19,14 @@ const App = (props) => {
         <CKEditor
           editor={ClassicEditor}
           data="<p><i>What will you want to report?</i></p>"
+          onInit={(editor) => {
+            // You can store the "editor" and use when it is needed.
+            console.log("Editor is ready to use!", editor);
+          }}
           onChange={handleOnChange}
+          config={{
+            ckfinder: { uploadUrl: "https://b09c7aa0e615.ngrok.io/upload" },
+          }}
           onBlur={(event, editor) => {
             console.log("Blur.", editor);
           }}
