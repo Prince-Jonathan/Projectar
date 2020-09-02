@@ -10,7 +10,8 @@ const App = (props) => {
   const [value, setValue] = useState("");
   const handleOnChange = (event, editor) => {
     const data = editor.getData();
-    console.log({ event, editor, data });
+    setValue(data);
+    // console.log({ event, editor, data });
   };
   return (
     <React.Fragment>
@@ -19,22 +20,23 @@ const App = (props) => {
         <CKEditor
           editor={ClassicEditor}
           data="<p><i>What will you want to report?</i></p>"
-          onInit={(editor) => {
-            // You can store the "editor" and use when it is needed.
-            console.log("Editor is ready to use!", editor);
-          }}
+          // onInit={(editor) => {
+          //   // You can store the "editor" and use when it is needed.
+          //   console.log("Editor is ready to use!", editor);
+          // }}
           onChange={handleOnChange}
           config={{
-            ckfinder: { uploadUrl: "https://b09c7aa0e615.ngrok.io/upload" },
+            ckfinder: { uploadUrl: "http://localhost:3001/upload" },
           }}
-          onBlur={(event, editor) => {
-            console.log("Blur.", editor);
-          }}
-          onFocus={(event, editor) => {
-            console.log("Focus.", editor);
-          }}
+          // onBlur={(event, editor) => {
+          //   console.log("Blur.", editor);
+          // }}
+          // onFocus={(event, editor) => {
+          //   console.log("Focus.", editor);
+          // }}
         />
       </div>
+      <button onClick={() => console.log(value)}>Log</button>
     </React.Fragment>
   );
 };

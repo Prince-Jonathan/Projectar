@@ -45,6 +45,7 @@ textarea:focus {
 }
 .form-container .btn:hover,
 .open-button:hover {
+  color: #ffee00;
   opacity: 1;
 }
 .form-container input[type="text"] {

@@ -21,14 +21,14 @@ import Attendance from "./components/content/attendance/Attendance";
 import Export from "./components/content/Export";
 
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import Logo2 from "./logos/tagg.png";
 import Logo from "./logos/logo2.png";
 
 const App = (props) => {
   const alert = useAlert();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
@@ -43,7 +43,8 @@ const App = (props) => {
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   // const baseUrl = "http://192.168.103.56:8050";
-  const baseUrl = " https://f9260826d01a.ngrok.io";
+  // const baseUrl = " https://f9260826d01a.ngrok.io";
+  const baseUrl = "http://localhost:8050";
 
   const fetchData = (url, params) =>
     axios.get(baseUrl + url, {
