@@ -9,8 +9,7 @@ import "./Reports.css";
 const App = (props) => {
   const [value, setValue] = useState("");
   const handleOnChange = (event, editor) => {
-    const data = editor.getData();
-    setValue(data);
+    setValue(editor.getData());
     // console.log({ event, editor, data });
   };
   return (
@@ -19,6 +18,7 @@ const App = (props) => {
       <div className="report-wrapper">
         <CKEditor
           editor={ClassicEditor}
+          name="comment"
           data="<p><i>What will you want to report?</i></p>"
           // onInit={(editor) => {
           //   // You can store the "editor" and use when it is needed.

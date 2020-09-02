@@ -166,7 +166,7 @@ const Project = (props) => {
     []
   );
   const outstandingTasks = data.filter(
-    (task) => parseInt(task.achieved) !== 100
+    (task) => parseInt(task.achieved) !== parseInt(task.target)
   );
   const completedTasks = data.filter((task) => parseInt(task.achieved) === 100);
 

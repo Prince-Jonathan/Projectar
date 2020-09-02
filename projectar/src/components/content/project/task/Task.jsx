@@ -3,6 +3,8 @@ import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 import { isMobile } from "../../../Responsive";
 import Report from "../../reports/Report";
@@ -40,7 +42,10 @@ const Task = (props) => {
     achieved: "",
     personnel: null,
   });
+  const [comment, setComment] = useState("");
+
   const { url, path } = useRouteMatch();
+
   let task = useMemo(
     () => {
       // setState({ ...task });
@@ -85,6 +90,9 @@ const Task = (props) => {
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
+  const handleEditorChange = (event, editor) => {
+    setComment(editor.getData());
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -97,7 +105,13 @@ const Task = (props) => {
         position: "bottom center",
       });
     } else {
-      let task = { ...state, ...startDate, project_id: props.selectedID };
+      let task = {
+        ...state,
+        ...startDate,
+        project_id: props.selectedID,
+        comment: comment,
+      };
+      console.log("the executing task", task);
       props.onAlert("info", "Executing...", {
         timeout: 3000,
         position: "bottom center",
@@ -276,7 +290,26 @@ const Task = (props) => {
                   Close
                 </Button>
               </div>
-              <Report />
+              <div className="report-wrapper">
+                <CKEditor
+                  editor={ClassicEditor}
+                  data="<p><i>What will you want to report?</i></p>"
+                  // onInit={(editor) => {
+                  //   // You can store the "editor" and use when it is needed.
+                  //   console.log("Editor is ready to use!", editor);
+                  // }}
+                  onChange={handleEditorChange}
+                  config={{
+                    ckfinder: { uploadUrl: "http://localhost:3001/upload" },
+                  }}
+                  // onBlur={(event, editor) => {
+                  //   console.log("Blur.", editor);
+                  // }}
+                  // onFocus={(event, editor) => {
+                  //   console.log("Focus.", editor);
+                  // }}
+                />
+              </div>
             </form>
           </Slate>
         </Route>
