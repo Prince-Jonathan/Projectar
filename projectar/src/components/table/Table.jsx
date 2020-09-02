@@ -5,7 +5,12 @@ import ColumnFilter from "./filters/ColumnFilter";
 
 import "./Table.css";
 
-const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
+const Table = ({
+  columns: userColumns,
+  data,
+  renderRowSubComponent,
+  clickable,
+}) => {
   const defaultColumn = React.useMemo(
     () => ({
       // setting up default Filter UI
@@ -32,6 +37,8 @@ const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
     useFilters
   );
 
+  const cursor = clickable ? { cursor: "pointer" } : null;
+
   const firstPageRows = rows.slice(0, 2);
   return (
     <table {...getTableProps()}>
@@ -55,10 +62,19 @@ const Table = ({ columns: userColumns, data, renderRowSubComponent }) => {
           return (
             // Use a React.Fragment here so the table markup is still valid
             <React.Fragment {...row.getRowProps()}>
-              <tr className="mainComp">
+              <tr className="mainComp" style={cursor}>
                 {row.cells.map((cell) => {
                   return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td
+                      onClick={() =>
+                        clickable && cell.column.id !== "expander"
+                          ? clickable({ row })
+                          : null
+                      }
+                      {...cell.getCellProps()}
+                    >
+                      {cell.render("Cell")}
+                    </td>
                   );
                 })}
               </tr>

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import Table from "../../table/Table";
 import Slate from "../slate/Slate";
 import { isMobile } from "../../Responsive";
 import TasksStatus from "../project/task/TasksStatus";
+import Caption from "../Caption";
+import Export from "../Export";
 
 import "./Projects.css";
 
@@ -54,6 +56,7 @@ const Styles = styled.div`
 `;
 
 const Projects = (props) => {
+  const history = useHistory();
   const [rowID, setRowID] = useState(0);
 
   const data = React.useMemo(() => props.projects, [props.projects]);
@@ -116,8 +119,13 @@ const Projects = (props) => {
               Add Task
             </Button>
 
-            <Button>Report</Button>
-
+            <Export
+              projectID={row.original.id}
+              onFetchData={props.onFetchData}
+              caption="Report"
+              title={`${row.original.name} - Tasks List [Target vs. Achieved]`}
+              logo={props.logo}
+            />
             <Button>Attendance</Button>
           </div>
           <TasksStatus
@@ -131,13 +139,16 @@ const Projects = (props) => {
     [props.toggler]
   );
   return (
-    <Slate>
-      <Table
-        columns={columns}
-        data={data}
-        renderRowSubComponent={renderRowSubComponent}
-      />
-    </Slate>
+    <React.Fragment>
+      <Caption flabel="Projects" slabel="List" />
+      <Slate>
+        <Table
+          columns={columns}
+          data={data}
+          renderRowSubComponent={renderRowSubComponent}
+        />
+      </Slate>
+    </React.Fragment>
   );
 };
 

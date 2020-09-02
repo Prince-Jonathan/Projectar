@@ -2,21 +2,34 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { useAlert } from "react-alert";
+import { jsPDF } from "jspdf";
 
 import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
-import Workspace from "./components/content/Workspace";
+import Workspace from "./components/content/workspace/Workspace";
 import Projects from "./components/content/projects/Projects";
+import Personnel from "./components/content/projects/Personnel";
 import Project from "./components/content/project/Project";
+import AllTasks from "./components/content/project/AllTasks";
 import Bay from "./components/bay/Bay";
-import Login from "./components/content/Login";
 import AddTask from "./components/content/project/task/AddTask";
+import Login from "./components/content/login/Login";
+import PrivateRoute from "./components/content/PrivateRoute";
+import { Column, Row } from "./components/Grid";
+import Report from "./components/content/reports/Report";
+import Attendance from "./components/content/attendance/Attendance";
+import Export from "./components/content/Export";
 
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import Logo2 from "./logos/tagg.png";
+import Logo from "./logos/logo2.png";
 
 const App = (props) => {
   const alert = useAlert();
-  const [name, setName] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
   const [personnel, setPersonnel] = useState();
@@ -29,6 +42,8 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
+  // const baseUrl = "http://192.168.103.56:8050";
+  // const baseUrl = " https://f9260826d01a.ngrok.io";
   const baseUrl = "http://localhost:8050";
 
   const fetchData = (url, params) =>
@@ -44,8 +59,6 @@ const App = (props) => {
       },
     });
 
-  const fetchUser = () =>
-    fetchData("/api").then(({ data }) => setName(data.name));
   const fetchProjects = () =>
     fetchData("/api/project/all").then(({ data }) => setProjects(data));
   const fetchProjectTasks = () =>
@@ -54,11 +67,15 @@ const App = (props) => {
     fetchData("/api/user/all").then(({ data }) => setPersonnel(data));
 
   useEffect(() => {
-    fetchUser();
     fetchProjects();
     fetchProjectTasks();
     fetchPersonnel();
   }, []);
+
+  const handleAuthenticate = (user) => {
+    setIsAuthenticated(true);
+    setUser(user);
+  };
 
   const handleShowSideMenu = () => {
     setShowSideMenu((prevState) => !prevState);
@@ -96,72 +113,101 @@ const App = (props) => {
   return (
     <React.Fragment>
       <Switch>
-        <Route exact path="/">
-          <Layout
-            showSideMenu={showSideMenu}
-            aside={<Aside onPopUpClick={handlePopUpClick} />}
-            name={name}
-            onShowSideMenu={handleShowSideMenu}
+        <Route exact path="/login">
+          <Row
+            alignItems="center"
+            justifyContent="center"
+            style={{ backgroundColor: "#10292e" }}
           >
-            <Switch>
-              <Route path="/workspace">
-                <Workspace
-                  onShowTask={handleShowTask}
-                  onSelect={(id) => setSeletedID(id)}
-                  projects={projectTasks}
-                  selectedID={selectedID}
-                  onFetchData={fetchData}
-                  toggler={isTaskCreated}
-                />
-              </Route>
-              <Route path="/project/:id">
-                <Project
-                  onShowTask={(id) => {
-                    handleShowTask();
-                    setSeletedTaskID(id);
-                  }}
-                  tasks={projectTasks}
-                  selectedTaskID={selectedTaskID}
-                  onFetchData={fetchData}
-                  onAlert={handleAlert}
-                  toggler={handleTaskDelete}
-                />
-              </Route>
-              <Route path="/all-projects">
-                <Projects
-                  onShowTask={handleShowTask}
-                  onSelect={(id) => setSeletedID(id)}
-                  projects={projects}
-                  selectedID={selectedID}
-                  onFetchData={fetchData}
-                  toggler={isTaskCreated}
-                />
-              </Route>
-              <Route path="*">
-                <Redirect to="/" />
-              </Route>
-            </Switch>
-            {showTask ? (
-              <Bay
-                showTask={showTask}
-                onShowTask={handleShowTask}
-                onCloseTasks={handleCloseTasks}
-                postData={postData}
-                selectedID={selectedID}
-                selectedTaskID={selectedTaskID}
-                onAlert={handleAlert}
-                onTaskUpdate={handleTaskCreated}
-                personnel={personnel}
-                tasks={projectTasks}
-                resetSelectedTaskID={() => setSeletedTaskID(undefined)}
-                onFetchData={fetchData}
-              />
-            ) : null}
-          </Layout>
+            <Login
+              postData={postData}
+              onAlert={handleAlert}
+              authenticate={handleAuthenticate}
+              logo={Logo}
+            />
+          </Row>
         </Route>
-        <Route path="/login">
-          <Login postData={postData} onAlert={handleAlert} />
-        </Route>
+        <Layout
+          showSideMenu={showSideMenu}
+          aside={<Aside onPopUpClick={handlePopUpClick} />}
+          name={user.first_name}
+          onShowSideMenu={handleShowSideMenu}
+          logo={Logo2}
+        >
+          <PrivateRoute exact isAuthenticated={isAuthenticated} path="/">
+            <Workspace
+              onShowTask={handleShowTask}
+              onSelect={(id) => setSeletedID(id)}
+              projects={projectTasks}
+              selectedID={selectedID}
+              onFetchData={fetchData}
+              toggler={isTaskCreated}
+            />
+          </PrivateRoute>
+          <PrivateRoute isAuthenticated={isAuthenticated} path="/personnel">
+            <Personnel
+              onSelect={(id) => setSeletedID(id)}
+              personnel={personnel}
+              selectedID={selectedID}
+              onFetchData={fetchData}
+              toggler={isTaskCreated}
+            />
+          </PrivateRoute>
+          <PrivateRoute isAuthenticated={isAuthenticated} path="/project/:id">
+            <Project
+              onShowTask={(id) => {
+                handleShowTask();
+                setSeletedTaskID(id);
+              }}
+              tasks={projectTasks}
+              selectedTaskID={selectedTaskID}
+              onFetchData={fetchData}
+              onAlert={handleAlert}
+              toggler={handleTaskDelete}
+              onTaskUpdate={handleTaskCreated}
+              onAlert={handleAlert}
+              postData={postData}
+              projects={projects}
+            />
+          </PrivateRoute>
+          <PrivateRoute isAuthenticated={isAuthenticated} path="/all-projects">
+            <Projects
+              onShowTask={handleShowTask}
+              onSelect={(id) => setSeletedID(id)}
+              projects={projects}
+              selectedID={selectedID}
+              onFetchData={fetchData}
+              toggler={isTaskCreated}
+              logo={Logo2}
+            />
+          </PrivateRoute>
+          <PrivateRoute isAuthenticated={isAuthenticated} path="/reports">
+            <Report />
+          </PrivateRoute>
+          <PrivateRoute isAuthenticated={isAuthenticated} path="/">
+            <Attendance />
+          </PrivateRoute>
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+
+          {showTask ? (
+            <Bay
+              showTask={showTask}
+              onShowTask={handleShowTask}
+              onCloseTasks={handleCloseTasks}
+              postData={postData}
+              selectedID={selectedID}
+              selectedTaskID={selectedTaskID}
+              onAlert={handleAlert}
+              onTaskUpdate={handleTaskCreated}
+              personnel={personnel}
+              tasks={projectTasks}
+              resetSelectedTaskID={() => setSeletedTaskID(undefined)}
+              onFetchData={fetchData}
+            />
+          ) : null}
+        </Layout>
       </Switch>
     </React.Fragment>
   );

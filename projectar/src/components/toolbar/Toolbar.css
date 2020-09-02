@@ -5,11 +5,19 @@
   display: flex;
   width: 100;
   background: #ffee00;
-  height: 50px;
+  /* height: 6.5vh; */
   justify-content: flex-start;
   align-items: center;
-}
+  min-height: max-content;
 
-.toolbar .button {
-  
+  position: relative;
+  z-index: 100;
+  -webkit-box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Firefox 3.5 - 3.6 */
+  box-shadow: 0px 0 20px rgb(0, 0, 0, 10.8); /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}
+.right {
+  margin-left: auto;
+  margin-right: 8%;
+  color: black;
 }

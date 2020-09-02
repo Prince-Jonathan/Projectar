@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Text:wght@100;300;400;500;600;700;800;900&display=swap");
+
+/* ::-moz-placeholder {
+  color: rgb(243, 242, 242);
+}
+
+:-ms-input-placeholder {
+  color: rgb(243, 242, 242);
+}
+
+::-ms-input-placeholder {
+  color: rgb(243, 242, 242);
+}
+
+::placeholder {
+  color: rgb(243, 242, 242);
+} */
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+._rJjlp {
+  padding-top: 15px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+._3i9jh {
+}
+
+._3i9jh h1 {
+  color: rgb(243, 242, 242);
+  text-align: center;
+  font-family: "Open Sans", sans-serif;
+  font-weight: lighter;
+  align-self: flex-start;
+  content: "";
+  /* font-size:10vh; */
+  visibility: hidden;
+}
+._rJjlp img {
+  border-radius: 50%;
+  width: 240px;
+  height: 240px;
+  align-self: center;
+
+  -webkit-filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(12px 12px 7px rgba(0, 0, 0, 0.5));
+}
+
+._3ctdA form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+._3ctdA form input[type="text"],
+._3ctdA form input[type="password"] {
+  background-color: transparent;
+  width: 250px;
+  height: 30px;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  color: rgb(243, 242, 242);
+}
+
+._2_797 {
+  border-bottom: 2px solid rgb(243, 242, 242);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+._2_797 img {
+  -o-object-fit: contain;
+  object-fit: contain;
+  width: 17px;
+}
+
+._3mZ6m {
+  color: rgb(243, 242, 242);
+  display: flex;
+}
+
+._3mZ6m input {
+  margin-right: 10px;
+}
+
+._1_cjN {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+  height: 80px;
+}
+
+._1_cjN button {
+  width: 3em;
+  height: 3em;
+  background-color: rgb(243, 242, 242);
+  border: none;
+  border-radius: 30px;
+  transition: 0.5s ease-out;
+  font-family: "Big Shoulders Text", cursive;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgb(117, 117, 117);
+}
+
+._1_cjN button:hover {
+  width: 6em;
+  transition: 0.5s ease-out;
+  color: #9198e5;
+}
+
+._2Ip7F {
+  font-size: 14px;
+  text-align: center;
+}
+
+._2Ip7F p a {
+  color: rgb(243, 242, 242);
+  transition: 0.2s ease-in-out;
+}
+
+._2Ip7F p a:hover {
+  font-weight: bold;
+  transition: 0.2s ease-in-out;
+}

@@ -75,6 +75,7 @@ const AddTask = (props) => {
         })
       )
       .then(() => props.onTaskUpdate())
+      .then(()=>props.postData("/api/notify/new-task", task))
       .then(() => props.onCloseTasks())
       .catch(() =>
         props.onAlert("error", "Failed to Save Task", {

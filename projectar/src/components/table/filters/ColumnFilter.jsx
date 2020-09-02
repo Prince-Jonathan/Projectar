@@ -15,6 +15,7 @@ const ColumnFilter = ({
   const count = preFilteredRows.length;
   return (
     <Input
+      style={{ color: "black !important" }}
       value={filterValue || ""}
       onChange={(e) => {
         setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely

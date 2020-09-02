@@ -94,6 +94,7 @@ const AddTask = (props) => {
         })
       )
       .then(() => props.onTaskUpdate())
+      .then(()=>props.postData("/api/notify/edited-task", task))
       // .then(() => props.resetSelectedTaskID())
       .then(() => props.onCloseTasks())
       .catch(() =>

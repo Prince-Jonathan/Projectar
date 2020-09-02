@@ -6,15 +6,18 @@ import {
   useParams,
   Switch,
   Redirect,
+  useHistory,
 } from "react-router-dom";
 
 import Table from "../../table/Table";
 import Slate from "../slate/Slate";
 import { isMobile } from "../../Responsive";
-import Task from "../project/task/Task";
 import SliderFilter from "../../table/filters/SliderFilter";
 import filterGreaterThan from "../../table/filters/filterGreaterThan";
 import Description from "../project/task/Description";
+import Caption from "../Caption";
+import Task from "./task/Task";
+import AllTasks from "./AllTasks";
 
 const Button = styled.button`
   background: #faec25b9;
@@ -53,21 +56,25 @@ const Styles = styled.div`
   .left > button {
     margin: 5px 5px 5px 0;
   }
-  .delete {
-    color: white;
-    border-bottom: 2px solid #f44336;
-  }
 `;
 
 const Project = (props) => {
   const { path, url } = useRouteMatch();
   const { status } = useParams();
-
+  const history = useHistory();
+  const [selectedTaskID, setSelectedTaskID] = useState(undefined);
   const { id } = useParams();
 
   const tasks = React.useMemo(() => props.tasks, [props.tasks]);
-
   const data = tasks.filter((task) => task.project_id === parseInt(id));
+  const projects = React.useMemo(() => props.projects, [props.projects]);
+  const project = projects.filter((project) => project.id === parseInt(id));
+
+  data.sort((a, b) => {
+    let dateA = new Date(a.date),
+      dateB = new Date(b.date);
+    return dateA - dateB;
+  });
 
   const columns = React.useMemo(
     () => {
@@ -101,9 +108,14 @@ const Project = (props) => {
         },
         {
           Header: "Achieved (%)",
-          accessor: "Achieved",
+          accessor: "achieved",
           Filter: SliderFilter,
           filter: filterGreaterThan,
+        },
+        {
+          Header: "Date Scheduled",
+          accessor: "date",
+          Filter: () => null,
         },
       ];
       return isMobile ? column.splice(0, 2) : column;
@@ -141,12 +153,7 @@ const Project = (props) => {
             </Button>
             <Button>Re-assign</Button>
 
-            <Button
-              onClick={() => deleteTask(row.original.id)}
-              className="delete"
-            >
-              Delete
-            </Button>
+            <Button onClick={() => deleteTask(row.original.id)}>Delete</Button>
           </div>
           <Description
             onFetchData={props.onFetchData}
@@ -162,37 +169,73 @@ const Project = (props) => {
     (task) => parseInt(task.achieved) !== 100
   );
   const completedTasks = data.filter((task) => parseInt(task.achieved) === 100);
+
+  const handleClick = ({ row }) => {
+    setSelectedTaskID(row.original.id);
+    // setPersonnelName(row.original.first_name + " " + row.original.last_name);
+    history.push(`${url}/outstanding-tasks/${row.original.id}/execute`);
+  };
+
   return (
     <React.Fragment>
       <Styles>
-        <Slate>
-          <Switch>
-            <Route exact path={path}>
+        <Switch>
+          <Route exact path={path}>
+            <Caption flabel="Tasks" slabel="List" />
+            <Slate>
               <Table
                 columns={columns}
                 data={data}
                 renderRowSubComponent={renderRowSubComponent}
               />
-            </Route>
-            <Route path={`${path}/outstanding-tasks`}>
-              <Table
-                columns={columns}
-                data={outstandingTasks}
-                renderRowSubComponent={renderRowSubComponent}
-              />
-            </Route>
-            <Route path={`${path}/completed-tasks`}>
+            </Slate>
+          </Route>
+          <Route path={`${path}/outstanding-tasks`}>
+            <Task
+              columns={columns}
+              data={outstandingTasks}
+              renderRowSubComponent={renderRowSubComponent}
+              clickable={handleClick}
+              selectedTaskID={selectedTaskID}
+              onTaskUpdate={props.onTaskUpdate}
+              onAlert={props.onAlert}
+              postData={props.postData}
+              project={project}
+            />
+          </Route>
+          <Route path={`${path}/completed-tasks`}>
+            <Caption flabel="Tasks" slabel=" -Completed" />
+            <Caption
+              flabel={() => {
+                if (typeof project === "undefined") {
+                  return null;
+                } else {
+                  return project[0].name;
+                }
+              }}
+              style={{ fontSize: 15, color: "white" }}
+            />
+            <Slate>
               <Table
                 columns={columns}
                 data={completedTasks}
                 renderRowSubComponent={renderRowSubComponent}
               />
-            </Route>
-            <Route path={`${path}/*`}>
-              <Redirect to={url} />
-            </Route>
-          </Switch>
-        </Slate>
+            </Slate>
+          </Route>
+          <Route path={`${path}/tasks`}>
+            <AllTasks
+              tasks={props.tasks}
+              selectedTaskID={props.selectedTaskID}
+              onFetchData={props.onFetchData}
+              onAlert={props.onAlert}
+              toggler={props.toggler}
+            />
+          </Route>
+          <Route path={`${path}/*`}>
+            <Redirect to={url} />
+          </Route>
+        </Switch>
       </Styles>
     </React.Fragment>
   );

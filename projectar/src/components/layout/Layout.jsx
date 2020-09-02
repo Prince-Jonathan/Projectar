@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 import { Default, Mobile } from "../Responsive";
 import { Row, Column } from "../Grid";
 import Wall from "../content/Wall";
+import Greeting from "../content/Greeting";
 import Toolbar from "../toolbar/Toolbar";
 import BackDrop from "../backdrop/Backdrop";
 
@@ -21,13 +22,19 @@ const Layout = (props) => {
   return (
     <div>
       <Default>
-        <Row backgroundColor={bgcolor}>
-          <Column className="aside" backgroundColor={bgcolor}>
+        <Row flexDirection="column" backgroundColor={bgcolor}>
+          <Column>
+            <Toolbar onClick={props.onShowSideMenu} logo={props.logo} />
+          </Column>
+          <Column className={asideClass.join(" ")} backgroundColor={bgcolor}>
             {props.aside}
           </Column>
           <Column xs="2" sm="3" md="4" lg="5" className="section">
             <Row justifyContent="space-evenly">
               <Column>
+                <Route exact path="/">
+                  <Greeting name={props.name} />
+                </Route>
                 {props.children}
                 <Route path="/">
                   <Wall name={props.name} />
@@ -35,12 +42,13 @@ const Layout = (props) => {
               </Column>
             </Row>
           </Column>
+          {backdrop}
         </Row>
       </Default>
       <Mobile>
         <Row flexDirection="column" backgroundColor={bgcolor}>
           <Column>
-            <Toolbar onClick={props.onShowSideMenu} />
+            <Toolbar onClick={props.onShowSideMenu} logo={props.logo}/>
           </Column>
           <Column>
             <Row justifyContent="space-evenly">
@@ -51,6 +59,9 @@ const Layout = (props) => {
                 {props.aside}
               </Column>
               <Column className="section pad">
+                <Route exact path="/">
+                  <Greeting name={props.name} />
+                </Route>
                 {props.children}
                 <Wall name={props.name} />
               </Column>

@@ -4,15 +4,28 @@ This Script holds all routes to endpoints
 import asyncio
 from flask import request, redirect, url_for,jsonify
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import text
+import requests
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client
 from models import Project, User, Task
 from modules import fetch, log
 
-async def create_note():
+# async def create_note(note):
+#     notification_body = {
+# 			'contents': {'tr': 'Yeni bildirim', 'en': 'New notification'},
+# 			'included_segments': ['Subscribed Users'],
+# 			"headings": {"en": "Title of Message"},
+# 	}
+#     response = await client.send_notification(notification_body)
+#     return response.body
+
+# loop = asyncio.get_event_loop()
+async def create_note(note,status):
     notification_body = {
-			'contents': {'tr': 'Yeni bildirim', 'en': 'New notification'},
+			'contents': {'en': note["description"]},
 			'included_segments': ['Subscribed Users'],
-			"headings": {"en": "Title of Message"},
+			"headings": {"en":status+": "+note["title"]},
+			'url':"https://projectar.devcodes.co/"
 	}
     response = await client.send_notification(notification_body)
     return response.body
@@ -23,9 +36,20 @@ loop = asyncio.get_event_loop()
 def api():
 	return {"name":"Max"}
 
-@app.route('/api/notify')
-def notify():
-	return loop.run_until_complete(create_note())
+@app.route('/api/notify/edited-task', methods=['POST'])
+def notify_edit():
+	note=request.get_json()
+	return loop.run_until_complete(create_note(note,"Updated Task"))
+
+@app.route('/api/notify/completed-task', methods=['POST'])
+def notify_complete():
+	note=request.get_json()
+	return loop.run_until_complete(create_note(note,"Completed Task"))
+
+@app.route('/api/notify/new-task', methods=['POST'])
+def notify_new():
+	note=request.get_json()
+	return loop.run_until_complete(create_note(note,"New Task"))
 
 @app.route('/api/user/add', methods=['POST'])
 def add_user():
@@ -233,14 +257,17 @@ def update_task(task_id):
 		task.description=data["description"]
 		task.target=data["target"]
 		task.date=data["date"]
+		if data["achieved"] is not None:
+			task.achieved=data["achieved"]
 
 		for personnel in task.personnel[:]:
 			print("deleting",personnel)
 			task.personnel.remove(personnel)
 		db.session.commit()
-		for personnel_id in data["personnel"]:
-			print("adding",personnel_id)
-			enrol_user_task(task.id, personnel_id)
+		if data["personnel"] is not None:
+			for personnel_id in data["personnel"]:
+				print("adding",personnel_id)
+				enrol_user_task(task.id, personnel_id)
 		db.session.commit()
 		return {
 			"success":True,
@@ -354,6 +381,33 @@ def task_users(task_id):
 			"success":False
 		}
 
+@app.route('/api/user/tasks/<int:user_id>')
+def user_tasks(user_id):
+	'''Get all users that have been enrolled to a task'''
+	data = []
+	try:
+		user = User.query.get(user_id)
+		msg = "does not exist"
+		if user is not None:
+			tasks = user.tasks
+			if len(tasks[:]) != 0:
+				# fetch(tasks, data)
+				# return {
+				# 	"success":True,
+				# 	"data":data
+				# }
+				return jsonify(Task.serialize_list(tasks))
+			msg = "has not yet got enrolled tasks"
+		return {
+			"success":False,
+			"msg":"User with ID: %d %s" % (user_id, msg)
+		}
+	except SQLAlchemyError as err:
+		print(err)
+		return{
+			"success":False
+		}
+
 @app.route('/api/task/delete/<int:task_id>')
 def del_task(task_id):
 	'''Delete task of specified id'''
@@ -370,17 +424,65 @@ def del_task(task_id):
 			"success":False
 		}
 
+@app.route('/api/project/verbose/<int:proj_id>')
+def project_verbose(proj_id):
+  '''Delete task of specified id'''
+  try:
+    plist = []
+    # pnames = ""
+    project = Project.query.get(proj_id)
+    msg = "does not exist"
+    if project is not None:
+      tasks = project.tasks
+      if len(tasks) == 0:
+        print("jeff")
+    for task in tasks:
+      temp_ = ''
+      task_users = User.serialize_list(task.personnel)
+      # print(task_users)
+      for task_user in task_users:
+        temp_ += task_user['first_name'] + " " + task_user['last_name']
+        if not task_users[-1]==task_user:
+        	temp_+=", "
+      plist.append(temp_)
+      # plist.append(User.serialize_list(task.personnel))
+      # for
+    return {
+    "success":True,
+    "tasks_list":Task.serialize_list(tasks),
+    "personnel_list":plist
+    }
+  except SQLAlchemyError as err:
+    print(err)
+    return{
+    "success":False
+    }
+
 @app.route('/api/login', methods=['POST'])
 def login():
 	'''login authentication'''
-	details = request.get_json()
+	details = request.get_json()	
 	try:
-		usrn = User.query.filter_by(username=details["username"], password=details["password"]).first() 
-		if usrn is not None:
-			return redirect(url_for('get_user', user_id=usrn.id))
-		return "Username: \"%s\" does not exits" % details["username"]
+		usrn = User.query.filter_by(username=details["username"], password=details["password"]).all() 
+		if len(usrn) !=0 :
+			message= User.serialize_list(usrn)
+			return {
+				"success":True,
+				"message":message
+			}
+		return {
+				"success":False,
+				"message":"Access Denied"
+			}
 	except SQLAlchemyError as err:
 		print(err)
-		return{
-				"success":False
+		return {
+			"success":False	
 		}
+
+@app.route('/api/v1/authenticate', methods=['POST'])
+def authenticate():
+	'''login authentication'''
+	pload= request.get_json()
+	r = requests.post("https://b0703c0633fb.ngrok.io/v1/authenticate", data=pload)
+	return r.json()

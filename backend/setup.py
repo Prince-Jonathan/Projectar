@@ -67,6 +67,7 @@ class Task(db.Model):
 	description=db.Column(db.String(500), nullable=False)
 	target=db.Column(db.String(5), nullable=False)
 	achieved=db.Column(db.String(5), nullable=True)
+	comment=db.Column(db.String(2000),nullable=True)
 	date =  db.Column(db.DateTime)
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
 	child_task=db.relationship('Reassigned_Task', backref='parent_task', uselist=False)
