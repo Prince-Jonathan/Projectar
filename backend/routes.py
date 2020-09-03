@@ -257,6 +257,7 @@ def update_task(task_id):
 		task.description=data["description"]
 		task.target=data["target"]
 		task.date=data["date"]
+		task.comment=data["comment"]
 		if data["achieved"] is not None:
 			task.achieved=data["achieved"]
 

@@ -43,7 +43,7 @@ const App = (props) => {
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   // const baseUrl = "http://192.168.103.56:8050";
-  const baseUrl = " https://3bcd8eb14328.ngrok.io";
+  const baseUrl = "https://245b48dad9ee.ngrok.io";
   // const baseUrl = "http://localhost:8050";
 
   const fetchData = (url, params) =>

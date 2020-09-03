@@ -74,7 +74,8 @@ app.post("/upload", MultipartyMiddleWare, (req, res) => {
     fs.rename(tempFilePath, targetPath, (err) => {
       res.status(200).json({
         uploaded: true,
-        url: `http://localhost:3001/${tempFile.originalFilename}`,
+        // url: `http://localhost:3001/${tempFile.originalFilename}`,
+        url: ` https://70088f6d1e9f.ngrok.io/${tempFile.originalFilename}`,
       });
 
       if (err) return console.log(err);

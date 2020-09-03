@@ -158,6 +158,7 @@ const Project = (props) => {
           <Description
             onFetchData={props.onFetchData}
             description={row.original.description}
+            comment={row.original.comment}
             taskID={row.original.id}
           />
         </div>
@@ -168,7 +169,9 @@ const Project = (props) => {
   const outstandingTasks = data.filter(
     (task) => parseInt(task.achieved) !== parseInt(task.target)
   );
-  const completedTasks = data.filter((task) => parseInt(task.achieved) === 100);
+  const completedTasks = data.filter(
+    (task) => parseInt(task.achieved) === parseInt(task.target)
+  );
 
   const handleClick = ({ row }) => {
     setSelectedTaskID(row.original.id);

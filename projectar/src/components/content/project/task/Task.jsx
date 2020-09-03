@@ -111,7 +111,6 @@ const Task = (props) => {
         project_id: props.selectedID,
         comment: comment,
       };
-      console.log("the executing task", task);
       props.onAlert("info", "Executing...", {
         timeout: 3000,
         position: "bottom center",

@@ -54,6 +54,12 @@ const Styles = styled.div`
     border-bottom: 2px solid #f44336;
   }
 `;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: ${props=>props.isMobile ? "row" : "column"};
+  justify-content: space-around;
+  flex-wrap: wrap;
+`;
 
 const Projects = (props) => {
   const history = useHistory();
@@ -140,14 +146,16 @@ const Projects = (props) => {
   );
   return (
     <React.Fragment>
-      <Caption flabel="Projects" slabel="List" />
-      <Slate>
-        <Table
-          columns={columns}
-          data={data}
-          renderRowSubComponent={renderRowSubComponent}
-        />
-      </Slate>
+      <Wrapper isMobile={isMobile}>
+        <Caption flabel="Projects" slabel="List" />
+        <Slate>
+          <Table
+            columns={columns}
+            data={data}
+            renderRowSubComponent={renderRowSubComponent}
+          />
+        </Slate>
+      </Wrapper>
     </React.Fragment>
   );
 };
