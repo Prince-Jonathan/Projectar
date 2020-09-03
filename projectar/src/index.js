@@ -7,12 +7,12 @@ import AlertTemplate from "react-alert-template-basic";
 import App from "./App";
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <AlertProvider template={AlertTemplate}>
         <App />
       </AlertProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
+    </BrowserRouter>,
+
   document.getElementById("react-root")
 );

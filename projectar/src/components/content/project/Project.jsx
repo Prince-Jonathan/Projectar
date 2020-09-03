@@ -18,6 +18,7 @@ import Description from "../project/task/Description";
 import Caption from "../Caption";
 import Task from "./task/Task";
 import AllTasks from "./AllTasks";
+import Attendance from "../attendance/Attendance";
 
 const Button = styled.button`
   background: #faec25b9;
@@ -192,6 +193,9 @@ const Project = (props) => {
                 renderRowSubComponent={renderRowSubComponent}
               />
             </Slate>
+          </Route>
+          <Route path={`${path}/attendance`}>
+            <Attendance personnel={props.personnel} />
           </Route>
           <Route path={`${path}/outstanding-tasks`}>
             <Task

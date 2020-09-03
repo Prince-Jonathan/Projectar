@@ -17,7 +17,6 @@ import Login from "./components/content/login/Login";
 import PrivateRoute from "./components/content/PrivateRoute";
 import { Column, Row } from "./components/Grid";
 import Report from "./components/content/reports/Report";
-import Attendance from "./components/content/attendance/Attendance";
 import Export from "./components/content/Export";
 
 import "./App.css";
@@ -43,7 +42,7 @@ const App = (props) => {
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   // const baseUrl = "http://192.168.103.56:8050";
-  const baseUrl = "https://245b48dad9ee.ngrok.io";
+  const baseUrl = "https://4c4597692fd2.ngrok.io";
   // const baseUrl = "http://localhost:8050";
 
   const fetchData = (url, params) =>
@@ -168,6 +167,7 @@ const App = (props) => {
               onAlert={handleAlert}
               postData={postData}
               projects={projects}
+              personnel={personnel}
             />
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/all-projects">
@@ -183,9 +183,6 @@ const App = (props) => {
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/reports">
             <Report />
-          </PrivateRoute>
-          <PrivateRoute isAuthenticated={isAuthenticated} path="/">
-            <Attendance />
           </PrivateRoute>
           <Route path="*">
             <Redirect to="/" />

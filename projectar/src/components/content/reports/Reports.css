@@ -15,4 +15,8 @@
   margin: 0 auto;
   max-width: 100%;
   min-width: 50px;
+  
+}
+.ck-editor__editable {
+  min-height: 450px !important;
 }

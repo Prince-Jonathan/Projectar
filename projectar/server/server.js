@@ -75,7 +75,7 @@ app.post("/upload", MultipartyMiddleWare, (req, res) => {
       res.status(200).json({
         uploaded: true,
         // url: `http://localhost:3001/${tempFile.originalFilename}`,
-        url: ` https://70088f6d1e9f.ngrok.io/${tempFile.originalFilename}`,
+        url: `https://d5db7e40f382.ngrok.io/${tempFile.originalFilename}`,
       });
 
       if (err) return console.log(err);

@@ -1,15 +1,16 @@
-import React from "react";
-import { useTable, useFilters, useExpanded } from "react-table";
+import React, { useEffect } from "react";
+import { useTable, useFilters, useExpanded, useRowSelect } from "react-table";
 
 import ColumnFilter from "./filters/ColumnFilter";
 
 import "./Table.css";
 
 const Table = ({
-  columns: userColumns,
+  columns,
   data,
   renderRowSubComponent,
   clickable,
+  selectedRows,
 }) => {
   const defaultColumn = React.useMemo(
     () => ({
@@ -26,15 +27,17 @@ const Table = ({
     rows,
     prepareRow,
     visibleColumns,
+    selectedFlatRows,
     state: { expanded },
   } = useTable(
     {
-      columns: userColumns,
+      columns,
       data,
       defaultColumn,
     },
     useExpanded,
-    useFilters
+    useFilters,
+    useRowSelect
   );
 
   const cursor = clickable ? { cursor: "pointer" } : null;
@@ -78,6 +81,8 @@ const Table = ({
                   );
                 })}
               </tr>
+              {console.log(selectedFlatRows)}
+              {row.isSelected ? selectedRows(selectedFlatRows) : null}
               {/*
                 If the row is in an expanded state, render a row with a
                 column that fills the entire length of the table.

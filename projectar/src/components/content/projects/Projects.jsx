@@ -74,9 +74,43 @@ const Projects = (props) => {
     [rowID]
   );
 
+  const IndeterminateCheckbox = React.forwardRef(
+    ({ indeterminate, ...rest }, ref) => {
+      const defaultRef = React.useRef()
+      const resolvedRef = ref || defaultRef
+  
+      React.useEffect(() => {
+        resolvedRef.current.indeterminate = indeterminate
+      }, [resolvedRef, indeterminate])
+  
+      return (
+        <>
+          <input type="checkbox" ref={resolvedRef} {...rest} />
+        </>
+      )
+    }
+  )
+
   const columns = React.useMemo(
     () => {
-      const column = [
+      const columns = [
+        {
+          id: 'selection',
+          // The header can use the table's getToggleAllRowsSelectedProps method
+          // to render a checkbox
+          Header: ({ getToggleAllRowsSelectedProps }) => (
+            <div>
+              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+            </div>
+          ),
+          // The cell can use the individual row's getToggleRowSelectedProps method
+          // to the render a checkbox
+          Cell: ({ row }) => (
+            <div>
+              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+            </div>
+          ),
+        },
         {
           // Make an expander cell
           Header: () => null, // No header
@@ -107,7 +141,7 @@ const Projects = (props) => {
           accessor: "project_manager",
         },
       ];
-      return isMobile ? column.splice(0, 2) : column;
+      return isMobile ? columns.splice(0, 2) : columns;
     },
     [isMobile]
   );
@@ -132,7 +166,7 @@ const Projects = (props) => {
               title={`${row.original.name} - Tasks List [Target vs. Achieved]`}
               logo={props.logo}
             />
-            <Button>Attendance</Button>
+            <Button onClick={()=>history.push(`/project/${row.original.id}/attendance`)}>Attendance</Button>
           </div>
           <TasksStatus
             projectID={row.original.id}
