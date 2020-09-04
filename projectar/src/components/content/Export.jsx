@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import DatePicker from "react-datepicker";
+
+import {isMobile} from "../Responsive";
 
 const Button = styled.button`
   background: #faec25b9;
@@ -23,8 +26,7 @@ const Button = styled.button`
   }
 `;
 const Export = (props) => {
-  // let tasks;
-  // let personnel;
+  const [startDate, setStartDate] = useState({ date: new Date() });
   const [tasks, setTasks] = useState([]);
   const [personnel, setPersonnel] = useState([]);
 
@@ -94,11 +96,30 @@ const Export = (props) => {
     doc.save(`${props.title}.pdf`);
   };
 
+  const CustomInput = ({ value, onClick }) => (
+    <Button
+      type="button"
+      style={{ cursor: "pointer" }}
+      required
+      className="date"
+      onClick={onClick}
+      value={value}
+    >
+      {value}
+    </Button>
+  );
+
   return (
     <div>
       <Button onClick={() => exportPDF()} disabled={!tasks.length}>
         {!tasks.length ? "Loading..." : props.caption}
       </Button>
+      <DatePicker
+        selected={startDate.date}
+        onChange={(date) => setStartDate({ date })}
+        customInput={<CustomInput />}
+        withPortal={isMobile}
+      />
     </div>
   );
 };

@@ -26,6 +26,7 @@ enrolment = db.Table('enrolment',
 			db.Column('personnel_id', db.Integer, db.ForeignKey('user.id')),
 			db.Column('project_id', db.Integer, db.ForeignKey('project.id')),
 			db.Column('task_id', db.Integer, db.ForeignKey('task.id')),
+			db.Column('register_id',db.Integer, db.ForeignKey('register.id')),
 			db.Column('date', db.DateTime, default=datetime.utcnow)
 		)
 
@@ -42,6 +43,8 @@ class User(db.Model):
 
 	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 	tasks = db.relationship('Task', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
+	assessment = db.relationship('Assessment', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
+	register = db.relationship('Register', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 
 	#date_created =  db.Column(db.DateTime, default=datetime.utcnow)	
 
@@ -55,7 +58,9 @@ class Project(db.Model):
 	project_consultant=db.Column(db.String(100), nullable=False)
 	project_manager=db.Column(db.String(100), nullable=False)
 	team=db.Column(db.String(200), nullable=False)
+
 	tasks=db.relationship('Task', backref='project', lazy=True)
+	register=db.relationship('Register', backref='project', lazy=True)
 
 	def __repr__(self): 
 		return '<Project %r>' % self.name
@@ -70,10 +75,21 @@ class Task(db.Model):
 	comment=db.Column(db.String(2000),nullable=True)
 	date =  db.Column(db.DateTime)
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
+	
 	child_task=db.relationship('Reassigned_Task', backref='parent_task', uselist=False)
 
 	def __repr__(self): 
 		return '<Task %r>' % self.title
+
+#Model Register Table
+class Register(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	date =  db.Column(db.DateTime)
+
+	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
+
+	def __repr__(self): 
+		return '<Register %r>' % self.title
 
 #Model Reassigned_Task Table
 class Reassigned_Task(db.Model):

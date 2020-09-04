@@ -459,6 +459,33 @@ def project_verbose(proj_id):
     "success":False
     }
 
+@app.route('/api/attendance/<int:proj_id>', methods=['POST'])
+def attendance():
+	'''assess attendance of personnel'''
+	project = Project.query.get_or_404(proj_id)
+	register = Register(
+		date=data["date"],
+		project=project
+	)
+	
+	db.session.add(register)
+	db.session.commit()
+
+	for personnel_id in data["personnel"]:
+		try:
+			personnel=User.query.get_or_404(personnel_id)
+			register.personnel.append(personnel)
+			db.session.commit()
+			return {
+				"success":True,
+			} 
+		except SQLAlchemyError as err:
+			print(err)
+			db.session.rollback()
+			return {
+			"success":False
+			}
+
 @app.route('/api/login', methods=['POST'])
 def login():
 	'''login authentication'''

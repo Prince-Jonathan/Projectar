@@ -27,7 +27,7 @@ import Logo from "./logos/logo2.png";
 
 const App = (props) => {
   const alert = useAlert();
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
@@ -41,8 +41,8 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  // const baseUrl = "http://192.168.103.56:8050";
-  const baseUrl = "https://4c4597692fd2.ngrok.io";
+  // const baseUrl = "https://projectar.devcodes.co";
+  const baseUrl = "https://472da4944472.ngrok.io";
   // const baseUrl = "http://localhost:8050";
 
   const fetchData = (url, params) =>
