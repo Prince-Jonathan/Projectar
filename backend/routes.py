@@ -7,8 +7,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
 import requests
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client
-from models import Project, User, Task
+from models import Project, User, Task, Register
 from modules import fetch, log
+from datetime import datetime
 
 # async def create_note(note):
 #     notification_body = {
@@ -248,7 +249,7 @@ def enrol_user_task(task_id, personnel_id):
 
 @app.route('/api/task/update/<int:task_id>', methods=['POST'])
 def update_task(task_id):
-	'''edits the task of the specifiend id'''
+	'''edits the task of the specified id'''
 	data = request.get_json()
 	try:
 		task= Task.query.get_or_404(task_id)
@@ -427,7 +428,7 @@ def del_task(task_id):
 
 @app.route('/api/project/verbose/<int:proj_id>')
 def project_verbose(proj_id):
-  '''Delete task of specified id'''
+  '''Details of project tasks of specified id'''
   try:
     plist = []
     # pnames = ""
@@ -460,31 +461,56 @@ def project_verbose(proj_id):
     }
 
 @app.route('/api/attendance/<int:proj_id>', methods=['POST'])
-def attendance():
+def attendance(proj_id):
 	'''assess attendance of personnel'''
-	project = Project.query.get_or_404(proj_id)
-	register = Register(
-		date=data["date"],
-		project=project
-	)
-	
-	db.session.add(register)
-	db.session.commit()
-
-	for personnel_id in data["personnel"]:
-		try:
-			personnel=User.query.get_or_404(personnel_id)
-			register.personnel.append(personnel)
+	data = request.get_json()
+	try:
+		#check if for the register for day already exists
+		register = Register.query.filter_by(date=data["date"]).first()
+		if register is None:
+			project = Project.query.get_or_404(proj_id)
+			register = Register(
+				date=data["date"],
+				project=project
+			)
+			
+			db.session.add(register)
+			db.session.commit()
+			for personnel_id in data["personnel"]:
+				try:
+					print("personnel id:", personnel_id)
+					personnel=User.query.get_or_404(personnel_id)
+					register.personnel.append(personnel)
+				except SQLAlchemyError as err:
+					print(err)
+					db.session.rollback()
+					return {
+					"success":False
+					}
 			db.session.commit()
 			return {
 				"success":True,
 			} 
-		except SQLAlchemyError as err:
-			print(err)
-			db.session.rollback()
-			return {
-			"success":False
-			}
+		for personnel in register.personnel[:]:
+			print("deleting",personnel)
+			register.personnel.remove(personnel)
+		db.session.commit()
+		register.date=data["date"]
+		if data["personnel"] is not None:
+			for personnel_id in data["personnel"]:
+				personnel=User.query.get_or_404(personnel_id)
+				register.personnel.append(personnel)
+		db.session.commit()
+		return {
+			"success":True,
+		}
+	except SQLAlchemyError as err:
+		print(err)
+		db.session.rollback()
+		return {
+			"success":False,
+			"message":"Invalid date or project ID"
+		}
 
 @app.route('/api/login', methods=['POST'])
 def login():

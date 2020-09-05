@@ -75,7 +75,7 @@ class Task(db.Model):
 	comment=db.Column(db.String(2000),nullable=True)
 	date =  db.Column(db.DateTime)
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
-	
+
 	child_task=db.relationship('Reassigned_Task', backref='parent_task', uselist=False)
 
 	def __repr__(self): 
@@ -85,7 +85,10 @@ class Task(db.Model):
 class Register(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	date =  db.Column(db.DateTime)
-
+	time_in = db.Column(db.DateTime)
+	time_out = db.Column(db.DateTime)
+	lunch = db.Column(db.Boolean)
+	
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
 
 	def __repr__(self): 

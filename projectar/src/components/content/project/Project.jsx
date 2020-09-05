@@ -195,7 +195,11 @@ const Project = (props) => {
             </Slate>
           </Route>
           <Route path={`${path}/attendance`}>
-            <Attendance personnel={props.personnel} />
+            <Attendance
+              personnel={props.personnel}
+              postData={props.postData}
+              projectID={id}
+            />
           </Route>
           <Route path={`${path}/outstanding-tasks`}>
             <Task

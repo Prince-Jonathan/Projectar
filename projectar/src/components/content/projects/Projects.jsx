@@ -141,7 +141,7 @@ const Projects = (props) => {
           accessor: "project_manager",
         },
       ];
-      return isMobile ? columns.splice(0, 2) : columns;
+      return isMobile ? columns.splice(0, 3) : columns;
     },
     [isMobile]
   );

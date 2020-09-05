@@ -75,7 +75,7 @@ const AddTask = (props) => {
         })
       )
       .then(() => props.onTaskUpdate())
-      .then(()=>props.postData("/api/notify/new-task", task))
+      .then(() => props.postData("/api/notify/new-task", task))
       .then(() => props.onCloseTasks())
       .catch(() =>
         props.onAlert("error", "Failed to Save Task", {
@@ -155,6 +155,7 @@ const AddTask = (props) => {
             onChange={(date) => setStartDate({ date })}
             customInput={<CustomInput />}
             withPortal={isMobile}
+            showTimeInput
           />
         </div>
 

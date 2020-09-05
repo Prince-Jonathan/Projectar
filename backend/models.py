@@ -65,10 +65,13 @@ class Task(db.Model, Serializer):
 		return '<Task %r>' % self.title
 
 #Model Register Table
-class Register(db.Model):
+class Register(db.Model, Serializer):
 	id = db.Column(db.Integer, primary_key=True)
 	date =  db.Column(db.DateTime)
-	
+	# time_in = db.Column(db.DateTime)
+	# time_out = db.Column(db.DateTime)
+	# lunch = db.Column(db.Boolean)
+
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
 
 	def __repr__(self): 
