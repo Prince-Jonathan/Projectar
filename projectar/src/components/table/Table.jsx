@@ -81,7 +81,6 @@ const Table = ({
                   );
                 })}
               </tr>
-              {console.log(selectedFlatRows)}
               {row.isSelected ? selectedRows(selectedFlatRows) : null}
               {/*
                 If the row is in an expanded state, render a row with a

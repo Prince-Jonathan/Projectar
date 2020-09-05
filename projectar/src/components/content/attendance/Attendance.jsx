@@ -29,6 +29,14 @@ const Attendance = (props) => {
   const handleSetStartTimes = React.useCallback(
     (data) => {
       let prev = [...startTimes];
+      let personnel = prev.filter(
+        (personnel) => personnel.personnelID === data[0].personnelID
+      );
+      if (personnel.length !== 0) {
+        const index = prev.indexOf(personnel[0]);
+        prev[index] = { ...data[0] };
+        return setStartTimes(prev);
+      }
       const update = prev.concat(data);
       setStartTimes(update);
     },
@@ -37,6 +45,14 @@ const Attendance = (props) => {
   const handleSetEndTimes = React.useCallback(
     (data) => {
       let prev = [...endTimes];
+      let personnel = prev.filter(
+        (personnel) => personnel.personnelID === data[0].personnelID
+      );
+      if (personnel.length !== 0) {
+        const index = prev.indexOf(personnel[0]);
+        prev[index] = { ...data[0] };
+        return setEndTimes(prev);
+      }
       const update = prev.concat(data);
       setEndTimes(update);
     },

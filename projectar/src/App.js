@@ -42,7 +42,7 @@ const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   // const baseUrl = "https://projectar.devcodes.co";
-  const baseUrl = "https://34ebe297ddd5.ngrok.io";
+  const baseUrl = "https://2689fc8dee1a.ngrok.io";
   // const baseUrl = "http://localhost:8050";
 
   const fetchData = (url, params) =>
