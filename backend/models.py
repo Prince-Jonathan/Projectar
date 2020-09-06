@@ -68,9 +68,9 @@ class Task(db.Model, Serializer):
 class Register(db.Model, Serializer):
 	id = db.Column(db.Integer, primary_key=True)
 	date =  db.Column(db.DateTime)
-	# time_in = db.Column(db.DateTime)
-	# time_out = db.Column(db.DateTime)
-	# lunch = db.Column(db.Boolean)
+	time_in = db.Column(db.DateTime)
+	time_out = db.Column(db.DateTime)
+	lunch = db.Column(db.Boolean)
 
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
 

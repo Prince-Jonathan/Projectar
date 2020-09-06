@@ -25,6 +25,7 @@ const Button = styled.button`
 const Attendance = (props) => {
   const [startTimes, setStartTimes] = useState([]);
   const [endTimes, setEndTimes] = useState([]);
+  const [tandts, setTandts] = useState([]);
 
   const handleSetStartTimes = React.useCallback(
     (data) => {
@@ -57,6 +58,22 @@ const Attendance = (props) => {
       setEndTimes(update);
     },
     [endTimes]
+  );
+  const handleSetTandts = React.useCallback(
+    (data) => {
+      let prev = [...tandts];
+      let personnel = prev.filter(
+        (personnel) => personnel.personnelID === data[0].personnelID
+      );
+      if (personnel.length !== 0) {
+        const index = prev.indexOf(personnel[0]);
+        prev[index] = { ...data[0] };
+        return setTandts(prev);
+      }
+      const update = prev.concat(data);
+      setTandts(update);
+    },
+    [tandts]
   );
   const CustomInput = ({ value, onClick }) => (
     <Button
@@ -99,14 +116,14 @@ const Attendance = (props) => {
         Cell: ({ row }) => {
           //holding state for each selector and forwarding the state to parent. This is because the selector unmounts
           //it is not possible to update state from parent
-          const [startTime, setStartTime] = useState(() => {
+          const [startTime] = useState(() => {
             try {
               return startTimes.filter(
                 (startTime) => startTime.personnelID === row.original.id
               )[0].date;
             } catch (err) {}
           });
-          const [endTime, setEndTime] = useState(() => {
+          const [endTime] = useState(() => {
             try {
               return endTimes.filter(
                 (endTime) => endTime.personnelID === row.original.id
@@ -119,7 +136,6 @@ const Attendance = (props) => {
               <DatePicker
                 selected={startTime}
                 onChange={(date) => {
-                  setStartTime(date);
                   handleSetStartTimes([
                     {
                       personnelID: row.original.id,
@@ -138,7 +154,6 @@ const Attendance = (props) => {
               <DatePicker
                 selected={endTime}
                 onChange={(date) => {
-                  setEndTime(date);
                   handleSetEndTimes([
                     {
                       personnelID: row.original.id,
@@ -163,15 +178,33 @@ const Attendance = (props) => {
       {
         id: "T & T",
         Header: "T & T",
-        // The cell can use the individual row's getToggleRowSelectedProps method
-        // to the render a checkbox
+
         Cell: ({ row }) => {
-          const [startDate, setStartDate] = useState(new Date());
-          return <input type="text" />;
+          const [tandt, setTandt] = useState(() => {
+            try {
+              return tandts.filter(
+                (tandt) => tandt.personnelID === row.original.id
+              )[0].tandt;
+            } catch (err) {}
+          });
+          return (
+            <input
+              type="text"
+              value={tandt}
+              onChange={(e) => {
+                setTandt(e.target.value);
+              }}
+              onBlur={() =>
+                handleSetTandts([
+                  { personnelID: row.original.id, tandt: tandt },
+                ])
+              }
+            />
+          );
         },
       },
     ],
-    [startTimes, endTimes]
+    [startTimes, endTimes, tandts]
   );
   const IndeterminateCheckbox = forwardRef(
     ({ indeterminate, ...rest }, ref) => {
@@ -208,13 +241,6 @@ const Attendance = (props) => {
     props
       .postData(`/api/attendance/${props.projectID}`, body)
       .then((data) => console.log(data));
-    console.log(
-      new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate()
-      )
-    );
   };
 
   return (
