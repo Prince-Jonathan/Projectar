@@ -31,9 +31,7 @@ const Attendance = (props) => {
   const handleSetSignIn = React.useCallback(
     (data) => {
       let prev = [...signIns];
-      let personnel = prev.filter(
-        (personnel) => personnel.id === data[0].id
-      );
+      let personnel = prev.filter((personnel) => personnel.id === data[0].id);
       if (personnel.length !== 0) {
         const index = prev.indexOf(personnel[0]);
         prev[index] = { ...data[0] };
@@ -47,9 +45,7 @@ const Attendance = (props) => {
   const handleSetSignOut = React.useCallback(
     (data) => {
       let prev = [...signOuts];
-      let personnel = prev.filter(
-        (personnel) => personnel.id === data[0].id
-      );
+      let personnel = prev.filter((personnel) => personnel.id === data[0].id);
       if (personnel.length !== 0) {
         const index = prev.indexOf(personnel[0]);
         prev[index] = { ...data[0] };
@@ -63,9 +59,7 @@ const Attendance = (props) => {
   const handleSetTandts = React.useCallback(
     (data) => {
       let prev = [...tandts];
-      let personnel = prev.filter(
-        (personnel) => personnel.id === data[0].id
-      );
+      let personnel = prev.filter((personnel) => personnel.id === data[0].id);
       if (personnel.length !== 0) {
         const index = prev.indexOf(personnel[0]);
         prev[index] = { ...data[0] };
@@ -192,9 +186,8 @@ const Attendance = (props) => {
         Cell: ({ row }) => {
           const [tandt, setTandt] = useState(() => {
             try {
-              return tandts.filter(
-                (tandt) => tandt.id === row.original.id
-              )[0].tandt;
+              return tandts.filter((tandt) => tandt.id === row.original.id)[0]
+                .tandt;
             } catch (err) {}
           });
           return (
@@ -206,9 +199,7 @@ const Attendance = (props) => {
                 setTandt(e.target.value);
               }}
               onBlur={() =>
-                handleSetTandts([
-                  { id: row.original.id, tandt: tandt },
-                ])
+                handleSetTandts([{ id: row.original.id, tandt: tandt }])
               }
             />
           );
@@ -244,15 +235,9 @@ const Attendance = (props) => {
     let personnelID;
     let body = data.map((personnel) => {
       personnelID = personnel.id;
-      const signIn = signIns.filter(
-        (signIn) => signIn.id === personnel.id
-      );
-      const signOut = signOuts.filter(
-        (signOut) => signOut.id === personnel.id
-      );
-      const tandt = tandts.filter(
-        (tandt) => tandt.id === personnel.id
-      );
+      const signIn = signIns.filter((signIn) => signIn.id === personnel.id);
+      const signOut = signOuts.filter((signOut) => signOut.id === personnel.id);
+      const tandt = tandts.filter((tandt) => tandt.id === personnel.id);
       const lunch = lunchList
         ? lunchList.find((personnelID) => personnelID === personnel.id)
           ? true

@@ -24,7 +24,7 @@ from datetime import datetime
 async def create_note(note,status):
     notification_body = {
 			'contents': {'en': note["description"]},
-			'included_segments': ['Subscribed Users'],
+			'include_external_user_ids': note.targets,
 			"headings": {"en":status+": "+note["title"]},
 			'url':"https://projectar.devcodes.co/"
 	}
@@ -471,20 +471,21 @@ def attendance(proj_id):
 	# print(time_object)
 	try:
 		#check if the register for day already exists
-		register = Register.query.filter_by(date=data["date"]).first()
-		if register is None:
-			project = Project.query.get_or_404(proj_id)
-			register = Register(
-				date=data["date"],
-				project=project
-			)
-			
-			db.session.add(register)
-			db.session.commit()
-			for personnel_id in data["personnel"]:
+		
+			for personnel in data["body"]:
+			register = Register.query.filter_by(date=data["date"]).first()
+				if register is None:
+					project = Project.query.get_or_404(proj_id)
+					register = Register(
+						date=data["date"],
+						project=project
+					)
+					
+					db.session.add(register)
+					db.session.commit()
 				try:
-					print("personnel id:", personnel_id)
-					personnel=User.query.get_or_404(personnel_id)
+					print("personnel id:", personnel.id)
+					personnel=User.query.get_or_404(personnel.id)
 					register.personnel.append(personnel)
 				except SQLAlchemyError as err:
 					print(err)

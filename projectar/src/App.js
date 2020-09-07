@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+// import OneSignal from "../public/Notification";
 import axios from "axios";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { useAlert } from "react-alert";
@@ -27,7 +28,7 @@ import Logo from "./logos/logo2.png";
 
 const App = (props) => {
   const alert = useAlert();
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
@@ -42,8 +43,13 @@ const App = (props) => {
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   // const baseUrl = "https://projectar.devcodes.co";
-  const baseUrl = "https://8c522abe0ffa.ngrok.io";
+  const baseUrl = "https://ef3470748de1.ngrok.io";
   // const baseUrl = "http://localhost:8050";
+
+  const OneSignal = window.OneSignal;
+  OneSignal.push(function() {
+    OneSignal.setExternalUserId(user.id);
+  });
 
   const fetchData = (url, params) =>
     axios.get(baseUrl + url, {
@@ -164,7 +170,6 @@ const App = (props) => {
               onAlert={handleAlert}
               toggler={handleTaskDelete}
               onTaskUpdate={handleTaskCreated}
-              onAlert={handleAlert}
               postData={postData}
               projects={projects}
               personnel={personnel}

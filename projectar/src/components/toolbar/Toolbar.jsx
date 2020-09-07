@@ -8,6 +8,8 @@ import "./Toolbar.css";
 const Toolbar = (props) => {
   const history = useHistory();
 
+  const OneSignal = window.OneSignal;
+
   return (
     <div className="toolbar">
       <div className="button">
@@ -23,9 +25,17 @@ const Toolbar = (props) => {
           style={{ cursor: "pointer" }}
         />
       </div>
-      <Link to="/login" className="right">
-        <i class="fa fa-user-o" aria-hidden="true" /> Logout
-      </Link>
+      <div
+        onClick={() =>
+          OneSignal.push(function() {
+            OneSignal.removeExternalUserId();
+          })
+        }
+      >
+        <Link to="/login" className="right">
+          <i class="fa fa-user-o" aria-hidden="true" /> Logout
+        </Link>
+      </div>
     </div>
   );
 };
