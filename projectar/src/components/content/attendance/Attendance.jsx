@@ -23,47 +23,48 @@ const Button = styled.button`
 `;
 
 const Attendance = (props) => {
-  const [startTimes, setStartTimes] = useState([]);
-  const [endTimes, setEndTimes] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [signIns, setSignIns] = useState([]);
+  const [signOuts, setSignOuts] = useState([]);
   const [tandts, setTandts] = useState([]);
 
-  const handleSetStartTimes = React.useCallback(
+  const handleSetSignIn = React.useCallback(
     (data) => {
-      let prev = [...startTimes];
+      let prev = [...signIns];
       let personnel = prev.filter(
-        (personnel) => personnel.personnelID === data[0].personnelID
+        (personnel) => personnel.id === data[0].id
       );
       if (personnel.length !== 0) {
         const index = prev.indexOf(personnel[0]);
         prev[index] = { ...data[0] };
-        return setStartTimes(prev);
+        return setSignIns(prev);
       }
       const update = prev.concat(data);
-      setStartTimes(update);
+      setSignIns(update);
     },
-    [startTimes]
+    [signIns]
   );
-  const handleSetEndTimes = React.useCallback(
+  const handleSetSignOut = React.useCallback(
     (data) => {
-      let prev = [...endTimes];
+      let prev = [...signOuts];
       let personnel = prev.filter(
-        (personnel) => personnel.personnelID === data[0].personnelID
+        (personnel) => personnel.id === data[0].id
       );
       if (personnel.length !== 0) {
         const index = prev.indexOf(personnel[0]);
         prev[index] = { ...data[0] };
-        return setEndTimes(prev);
+        return setSignOuts(prev);
       }
       const update = prev.concat(data);
-      setEndTimes(update);
+      setSignOuts(update);
     },
-    [endTimes]
+    [signOuts]
   );
   const handleSetTandts = React.useCallback(
     (data) => {
       let prev = [...tandts];
       let personnel = prev.filter(
-        (personnel) => personnel.personnelID === data[0].personnelID
+        (personnel) => personnel.id === data[0].id
       );
       if (personnel.length !== 0) {
         const index = prev.indexOf(personnel[0]);
@@ -88,26 +89,16 @@ const Attendance = (props) => {
     </Button>
   );
 
-  const data = useMemo(() => props.personnel, [props.personnel]);
+  const data = useMemo(
+    () =>
+      props.personnel.map((personnel) => {
+        const { first_name: firstName, last_name: lastName, id } = personnel;
+        return { name: `${firstName} ${lastName}`, id: id };
+      }),
+    [props.personnel]
+  );
   const columns = useMemo(
     () => [
-      {
-        id: "selection",
-        // The header can use the table's getToggleAllRowsSelectedProps method
-        // to render a checkbox
-        Header: ({ getToggleAllRowsSelectedProps }) => (
-          <div>
-            <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-          </div>
-        ),
-        // The cell can use the individual row's getToggleRowSelectedProps method
-        // to the render a checkbox
-        Cell: ({ row }) => (
-          <div>
-            <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-          </div>
-        ),
-      },
       {
         id: "time",
         Header: "Time",
@@ -116,30 +107,32 @@ const Attendance = (props) => {
         Cell: ({ row }) => {
           //holding state for each selector and forwarding the state to parent. This is because the selector unmounts
           //it is not possible to update state from parent
-          const [startTime] = useState(() => {
+          const [signIn] = useState(() => {
             try {
-              return startTimes.filter(
-                (startTime) => startTime.personnelID === row.original.id
-              )[0].date;
+              return signIns.filter(
+                (signIn) => signIn.id === row.original.id
+              )[0].signIn;
             } catch (err) {}
           });
-          const [endTime] = useState(() => {
+          const [signOut] = useState(() => {
             try {
-              return endTimes.filter(
-                (endTime) => endTime.personnelID === row.original.id
-              )[0].date;
+              return signOuts.filter(
+                (signOut) => signOut.id === row.original.id
+              )[0].signOut;
             } catch (err) {}
           });
-
+          const timeIn = signIn ? signIn : "06:00:00";
+          const timeOut = signOut ? signOut : "06:00:00";
           return (
             <div style={{ display: "flex" }}>
               <DatePicker
-                selected={startTime}
+                //setting dummy date "01/01/01 "value for the sake of  datePicker Library
+                selected={new Date("01/01/01 " + timeIn)}
                 onChange={(date) => {
-                  handleSetStartTimes([
+                  handleSetSignIn([
                     {
-                      personnelID: row.original.id,
-                      date: date,
+                      id: row.original.id,
+                      signIn: new Date(date).toLocaleTimeString(),
                     },
                   ]);
                 }}
@@ -152,12 +145,12 @@ const Attendance = (props) => {
                 dateFormat="h:mm aa"
               />
               <DatePicker
-                selected={endTime}
+                selected={new Date("01/01/01 " + timeOut)}
                 onChange={(date) => {
-                  handleSetEndTimes([
+                  handleSetSignOut([
                     {
-                      personnelID: row.original.id,
-                      date: date,
+                      id: row.original.id,
+                      signOut: new Date(date).toLocaleTimeString(),
                     },
                   ]);
                 }}
@@ -173,30 +166,48 @@ const Attendance = (props) => {
           );
         },
       },
-      { Header: "First Name", accessor: "first_name" },
-      { Header: "Last Name", accessor: "last_name" },
+      { Header: "Name", accessor: "name" },
+      {
+        id: "lunch",
+        // The header can use the table's getToggleAllRowsSelectedProps method
+        // to render a checkbox
+        Header: ({ getToggleAllRowsSelectedProps }) => (
+          <div>
+            <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+            <span> Lunch</span>
+          </div>
+        ),
+        // The cell can use the individual row's getToggleRowSelectedProps method
+        // to the render a checkbox
+        Cell: ({ row }) => (
+          <div>
+            <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+          </div>
+        ),
+      },
       {
         id: "T & T",
-        Header: "T & T",
+        Header: "T & T (GH\u20B5)",
 
         Cell: ({ row }) => {
           const [tandt, setTandt] = useState(() => {
             try {
               return tandts.filter(
-                (tandt) => tandt.personnelID === row.original.id
+                (tandt) => tandt.id === row.original.id
               )[0].tandt;
             } catch (err) {}
           });
           return (
             <input
-              type="text"
+              type="number"
               value={tandt}
+              style={{ width: 60 }}
               onChange={(e) => {
                 setTandt(e.target.value);
               }}
               onBlur={() =>
                 handleSetTandts([
-                  { personnelID: row.original.id, tandt: tandt },
+                  { id: row.original.id, tandt: tandt },
                 ])
               }
             />
@@ -204,7 +215,7 @@ const Attendance = (props) => {
         },
       },
     ],
-    [startTimes, endTimes, tandts]
+    [signIns, signOuts, tandts]
   );
   const IndeterminateCheckbox = forwardRef(
     ({ indeterminate, ...rest }, ref) => {
@@ -225,35 +236,65 @@ const Attendance = (props) => {
       );
     }
   );
-  let rows;
-  const extractData = (data) => {
-    rows = data.map((row) => row.original.id);
+  let lunchList;
+  const extractLunchData = (data) => {
+    lunchList = data.map((row) => row.original.id);
   };
   const handleSubmit = () => {
-    const body = {
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate()
-      ),
-      personnel: rows,
-    };
+    let personnelID;
+    let body = data.map((personnel) => {
+      personnelID = personnel.id;
+      const signIn = signIns.filter(
+        (signIn) => signIn.id === personnel.id
+      );
+      const signOut = signOuts.filter(
+        (signOut) => signOut.id === personnel.id
+      );
+      const tandt = tandts.filter(
+        (tandt) => tandt.id === personnel.id
+      );
+      const lunch = lunchList
+        ? lunchList.find((personnelID) => personnelID === personnel.id)
+          ? true
+          : false
+        : false;
+      return {
+        signIn: null,
+        signOut: null,
+        tandt: null,
+        ...signIn[0],
+        ...signOut[0],
+        ...tandt[0],
+        lunch: lunch,
+        id: personnelID,
+      };
+    });
+    const register = { date: new Date(date).toLocaleDateString(), body: body };
+    console.log(register);
     props
       .postData(`/api/attendance/${props.projectID}`, body)
       .then((data) => console.log(data));
   };
 
   return (
-    <React.Fragment>
+    <div>
+      <DatePicker
+        selected={date}
+        onChange={(date) => {
+          setDate(date);
+        }}
+        customInput={<CustomInput />}
+        withPortal={true}
+      />
       <Slate>
         <Table
           data={data}
           columns={columns}
-          selectedRows={(data) => extractData(data)}
+          selectedRows={(data) => extractLunchData(data)}
         />
       </Slate>
       <button onClick={handleSubmit}>click</button>
-    </React.Fragment>
+    </div>
   );
 };
 

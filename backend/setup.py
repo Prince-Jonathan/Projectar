@@ -88,6 +88,7 @@ class Register(db.Model):
 	time_in = db.Column(db.DateTime)
 	time_out = db.Column(db.DateTime)
 	lunch = db.Column(db.Boolean)
+	t_and_t= db.Column(db.Float)
 	
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
 

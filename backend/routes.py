@@ -464,8 +464,13 @@ def project_verbose(proj_id):
 def attendance(proj_id):
 	'''assess attendance of personnel'''
 	data = request.get_json()
+
+	# time_str = '2020-09-07T10:30:00.693Z'
+	# time_object = datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S%z").time()
+	# print(type(time_object))
+	# print(time_object)
 	try:
-		#check if for the register for day already exists
+		#check if the register for day already exists
 		register = Register.query.filter_by(date=data["date"]).first()
 		if register is None:
 			project = Project.query.get_or_404(proj_id)
