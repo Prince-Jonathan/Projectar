@@ -80,7 +80,7 @@ const Attendance = (props) => {
       />
       <label>
         {" "}
-        <span style={{ color: "white" }}>Register</span> Date
+        <span style={{color:"white"}}>Register</span> Date
         <input
           style={{
             cursor: "pointer",
@@ -304,7 +304,7 @@ const Attendance = (props) => {
           setDate(date);
         }}
         customInput={<MainDate />}
-        withPortal={isMobile}
+        withPortal={true}
       />
       <Slate>
         <Table
