@@ -71,6 +71,35 @@ const Attendance = (props) => {
     },
     [tandts]
   );
+  const MainDate = ({ value, onClick }) => (
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <i
+        style={{ position: "relative", top: -5, margin: 5 }}
+        className="fa fa-calendar"
+        aria-hidden="true"
+      />
+      <label>
+        {" "}
+        <span style={{ color: "white" }}>Register</span> Date
+        <input
+          style={{
+            cursor: "pointer",
+            color: "black",
+            backgroundColor: "white",
+            width: 110,
+            border: "0.25px solid black",
+            borderRadius: 12,
+            margin: 4,
+            paddingLeft: 5,
+          }}
+          required
+          onClick={onClick}
+          value={value}
+        />
+      </label>
+    </div>
+  );
+
   const CustomInput = ({ value, onClick }) => (
     <Button
       type="button"
@@ -266,18 +295,16 @@ const Attendance = (props) => {
     <div>
       <Caption flabel="Attendance" slabel="List" />
       <Caption
-            flabel={props.project[0].name}
-            style={{ fontSize: 15, color: "white" }}
-          />
+        flabel={props.project[0].name}
+        style={{ fontSize: 15, color: "white" }}
+      />
       <DatePicker
         selected={date}
         onChange={(date) => {
           setDate(date);
         }}
-        // customInput={
-        //   <CustomInput style={{ backgroundColor: "white", color: "black" }} />
-        // }
-        withPortal={true}
+        customInput={<MainDate />}
+        withPortal={isMobile}
       />
       <Slate>
         <Table

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import DatePicker from "react-datepicker";
@@ -89,20 +90,21 @@ const Export = (props) => {
   };
 
   const CustomInput = ({ value, onClick }) => (
-    <Button
-      type="button"
+    <input
       style={{
         cursor: "pointer",
         color: "black",
         backgroundColor: "white",
+        width: 90,
+        border: "0.25px solid black",
+        borderRadius: 12,
+        margin: 4,
+        paddingLeft:3
       }}
       required
-      className="date"
       onClick={onClick}
       value={value}
-    >
-      {value}
-    </Button>
+    />
   );
 
   return (
@@ -110,27 +112,33 @@ const Export = (props) => {
       <Button onClick={() => exportPDF()} disabled={!tasks.length}>
         {!tasks.length ? "Loading..." : props.caption}
       </Button>
-      <DatePicker
-        selected={startDate}
-        disabled={!tasks.length}
-        onChange={(date) => setStartDate(date)}
-        selectsStart
-        startDate={startDate}
-        endDate={endDate}
-        withPortal={isMobile}
-        // customInput={<CustomInput />}
-      />
-      <DatePicker
-        selected={endDate}
-        disabled={!tasks.length}
-        onChange={(date) => setEndDate(date)}
-        selectsEnd
-        startDate={startDate}
-        endDate={endDate}
-        minDate={startDate}
-        withPortal={isMobile}
-        // customInput={<CustomInput />}
-      />
+      <label>
+        From
+        <DatePicker
+          selected={startDate}
+          disabled={!tasks.length}
+          onChange={(date) => setStartDate(date)}
+          selectsStart
+          startDate={startDate}
+          endDate={endDate}
+          withPortal={isMobile}
+          customInput={<CustomInput />}
+        />
+      </label>
+      <label>
+        To
+        <DatePicker
+          selected={endDate}
+          disabled={!tasks.length}
+          onChange={(date) => setEndDate(date)}
+          selectsEnd
+          startDate={startDate}
+          endDate={endDate}
+          minDate={startDate}
+          withPortal={isMobile}
+          customInput={<CustomInput />}
+        />
+      </label>
     </div>
   );
 };
