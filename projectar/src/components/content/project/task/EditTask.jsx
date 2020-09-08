@@ -78,7 +78,12 @@ const AddTask = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    let task = { ...state, ...startDate, project_id: props.selectedID };
+    let task = {
+      ...state,
+      ...startDate,
+      project_id: props.selectedID,
+      targets: state.personnel,
+    };
     props.onAlert("info", "Updating...", {
       timeout: 3000,
       position: "bottom center",
@@ -94,7 +99,7 @@ const AddTask = (props) => {
         })
       )
       .then(() => props.onTaskUpdate())
-      .then(()=>props.postData("/api/notify/edited-task", task))
+      .then(() => props.postData("/api/notify/edited-task", task))
       // .then(() => props.resetSelectedTaskID())
       .then(() => props.onCloseTasks())
       .catch(() =>
