@@ -31,8 +31,9 @@ const Toolbar = (props) => {
             OneSignal.removeExternalUserId();
           })
         }
+        className="right"
       >
-        <Link to="/login" className="right">
+        <Link to="/login">
           <i class="fa fa-user-o" aria-hidden="true" /> Logout
         </Link>
       </div>

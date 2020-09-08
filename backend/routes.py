@@ -472,31 +472,31 @@ def attendance(proj_id):
 	try:
 		#check if the register for day already exists
 		
-			for personnel in data["body"]:
+		for personnel in data["body"]:
 			register = Register.query.filter_by(date=data["date"]).first()
-				if register is None:
-					project = Project.query.get_or_404(proj_id)
-					register = Register(
-						date=data["date"],
-						project=project
-					)
-					
-					db.session.add(register)
-					db.session.commit()
-				try:
-					print("personnel id:", personnel.id)
-					personnel=User.query.get_or_404(personnel.id)
-					register.personnel.append(personnel)
-				except SQLAlchemyError as err:
-					print(err)
-					db.session.rollback()
-					return {
-					"success":False
-					}
-			db.session.commit()
-			return {
-				"success":True,
-			} 
+			if register is None:
+				project = Project.query.get_or_404(proj_id)
+				register = Register(
+					date=data["date"],
+					project=project
+				)
+				
+				db.session.add(register)
+				db.session.commit()
+			try:
+				print("personnel id:", personnel.id)
+				personnel=User.query.get_or_404(personnel.id)
+				register.personnel.append(personnel)
+			except SQLAlchemyError as err:
+				print(err)
+				db.session.rollback()
+				return {
+				"success":False
+				}
+		db.session.commit()
+		return {
+			"success":True,
+		} 
 		for personnel in register.personnel[:]:
 			print("deleting",personnel)
 			register.personnel.remove(personnel)
