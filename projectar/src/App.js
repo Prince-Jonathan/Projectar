@@ -116,7 +116,7 @@ const App = (props) => {
     fetchProjectTasks();
   };
   return (
-    <React.Fragment>
+    <div>
       <Switch>
         <Route exact path="/login">
           <Row
@@ -211,7 +211,7 @@ const App = (props) => {
           ) : null}
         </Layout>
       </Switch>
-    </React.Fragment>
+    </div>
   );
 };
 
