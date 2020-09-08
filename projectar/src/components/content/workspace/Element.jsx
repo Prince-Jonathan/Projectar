@@ -12,7 +12,7 @@ const Element = ({ icon, flabel, slabel, onClick }) => {
       <div className="circular">
         <i
           style={{ textShadow: "1px 1px 1px #ccc" }}
-          class={icon}
+          className={icon}
           aria-hidden="true"
         />
       </div>

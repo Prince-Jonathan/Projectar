@@ -25,7 +25,7 @@ const Announcements = (props) => {
   const [announcement, setAnnouncement] = useState(
     <div style={{ marginTop: "5%", color: "#b2beb5" }}>
       <i
-        class="fa fa-bullhorn fa-3x"
+        className="fa fa-bullhorn fa-3x"
         aria-hidden="true"
       />
       <div>
@@ -44,7 +44,7 @@ const Announcements = (props) => {
             {" "}
             <i
               style={{ color: "#ffee00" }}
-              class="fa fa-plus"
+              className="fa fa-plus"
               aria-hidden="true"
             />{" "}
             Add

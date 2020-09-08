@@ -34,7 +34,7 @@ const Toolbar = (props) => {
         className="right"
       >
         <Link to="/login">
-          <i class="fa fa-user-o" aria-hidden="true" /> Logout
+          <i className="fa fa-user-o" aria-hidden="true" /> Logout
         </Link>
       </div>
     </div>

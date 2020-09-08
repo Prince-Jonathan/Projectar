@@ -4,7 +4,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import DatePicker from "react-datepicker";
 
-import {isMobile} from "../Responsive";
+import { isMobile } from "../Responsive";
 
 const Button = styled.button`
   background: #faec25b9;
@@ -26,7 +26,8 @@ const Button = styled.button`
   }
 `;
 const Export = (props) => {
-  const [startDate, setStartDate] = useState({ date: new Date() });
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [tasks, setTasks] = useState([]);
   const [personnel, setPersonnel] = useState([]);
 
@@ -116,10 +117,33 @@ const Export = (props) => {
       </Button>
       <DatePicker
         selected={startDate.date}
-        onChange={(date) => setStartDate({ date })}
+        startDate={startDate.date}
+        endDate={endDate.date}
+        onChange={(dates) => {
+          const [start, end] = dates;
+          setStartDate({ date: start });
+          setEndDate({ date: end });
+        }}
         customInput={<CustomInput />}
+        selectsRange
+        // inline
         withPortal={isMobile}
       />
+      {/* <DatePicker
+        selected={startDate}
+        onChange={date => setStartDate(date)}
+        selectsStart
+        startDate={startDate}
+        endDate={endDate}
+      />
+      <DatePicker
+        selected={endDate}
+        onChange={date => setEndDate(date)}
+        selectsEnd
+        startDate={startDate}
+        endDate={endDate}
+        minDate={startDate}
+      /> */}
     </div>
   );
 };
