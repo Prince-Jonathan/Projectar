@@ -125,20 +125,6 @@ const Export = (props) => {
       <Button onClick={() => exportPDF()} disabled={!tasks.length}>
         {!tasks.length ? "Loading..." : props.caption}
       </Button>
-      {/* <DatePicker
-        selected={startDate.date}
-        startDate={startDate.date}
-        endDate={endDate.date}
-        onChange={(dates) => {
-          const [start, end] = dates;
-          setStartDate({ date: start });
-          setEndDate({ date: end });
-        }}
-        customInput={<CustomInput />}
-        selectsRange
-        // inline
-        withPortal={isMobile}
-      /> */}
       <DatePicker
         selected={startDate}
         disabled={!tasks.length}
