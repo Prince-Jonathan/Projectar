@@ -1,6 +1,4 @@
-import React from "react";
 import styled from "styled-components";
-
 const Button = styled.button`
   background: #faec25b9;
   border: none;
@@ -9,27 +7,27 @@ const Button = styled.button`
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
   font-size: 15px;
   text-align: center;
-
   cursor: pointer;
   margin: 0 5px 0 5px;
   border-radius: 12px;
   background-color: #ffee00;
+  opacity: 0.95;
+  transition: all 0.2s ease-in-out;
 
+  &:hover {
+    text-shadow: none;
+    box-shadow: 0 2.2px 10px rgba(0, 0, 0, 0.12);
+    color: #ffee00;
+    opacity: 1;
+    transform: scale(1.08);
+  }
   &:focus {
     outline: none;
-  }
-  &:hover {
-    outline: none;
-    box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
+    text-shadow: none;
+    box-shadow: 0 2.2px 80px rgba(0, 0, 0, 0.12);
+    color: #ffee00;
+    opacity: 1;
   }
 `;
 
-const DrawerToggleButton = (props) => {
-  return (
-    <Button onClick={props.onClick}>
-      <i className="fa fa-reorder fa-lg" />
-    </Button>
-  );
-};
-
-export default DrawerToggleButton;
+export default Button;

@@ -1,30 +1,12 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import DatePicker from "react-datepicker";
 
 import { isMobile } from "../Responsive";
+import Button from "./uiElements/Button";
 
-const Button = styled.button`
-  background: #faec25b9;
-  border: none;
-  border-bottom: 4px solid #10292e;
-  color: #10292e;
-  /* font-family: 'Open Sans', sans-serif; */
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
-  font-size: 15px;
-  text-align: center;
-  box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  margin: 0 5px 0 5px;
-  border-radius: 12px;
-  background-color: #ffee00;
 
-  &::active {
-    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.2);
-  }
-`;
 const Export = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -110,7 +92,7 @@ const Export = (props) => {
   const CustomInput = ({ value, onClick }) => (
     <Button
       type="button"
-      style={{ cursor: "pointer" }}
+      style={{ cursor: "pointer", color: "black", backgroundColor: "white" }}
       required
       className="date"
       onClick={onClick}
@@ -133,6 +115,7 @@ const Export = (props) => {
         startDate={startDate}
         endDate={endDate}
         withPortal={isMobile}
+        customInput={<CustomInput />}
       />
       <DatePicker
         selected={endDate}
