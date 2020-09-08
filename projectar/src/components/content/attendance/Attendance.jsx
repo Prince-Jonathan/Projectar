@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 
 import Slate from "../slate/Slate";
 import { isMobile } from "../../Responsive";
+import Caption from "../../content/Caption";
 
 const Button = styled.button`
   border: none;
@@ -263,12 +264,19 @@ const Attendance = (props) => {
 
   return (
     <div>
+      <Caption flabel="Attendance" slabel="List" />
+      <Caption
+            flabel={props.project[0].name}
+            style={{ fontSize: 15, color: "white" }}
+          />
       <DatePicker
         selected={date}
         onChange={(date) => {
           setDate(date);
         }}
-        customInput={<CustomInput />}
+        // customInput={
+        //   <CustomInput style={{ backgroundColor: "white", color: "black" }} />
+        // }
         withPortal={true}
       />
       <Slate>

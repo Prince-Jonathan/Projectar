@@ -163,7 +163,7 @@ const Project = (props) => {
   };
 
   return (
-    <React.Fragment>
+    <div>
       <Styles>
         <Switch>
           <Route exact path={path}>
@@ -181,6 +181,7 @@ const Project = (props) => {
               personnel={props.personnel}
               postData={props.postData}
               projectID={id}
+              project={project}
             />
           </Route>
           <Route path={`${path}/outstanding-tasks`}>
@@ -230,7 +231,7 @@ const Project = (props) => {
           </Route>
         </Switch>
       </Styles>
-    </React.Fragment>
+    </div>
   );
 };
 

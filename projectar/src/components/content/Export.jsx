@@ -6,7 +6,6 @@ import DatePicker from "react-datepicker";
 import { isMobile } from "../Responsive";
 import Button from "./uiElements/Button";
 
-
 const Export = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -92,7 +91,11 @@ const Export = (props) => {
   const CustomInput = ({ value, onClick }) => (
     <Button
       type="button"
-      style={{ cursor: "pointer", color: "black", backgroundColor: "white" }}
+      style={{
+        cursor: "pointer",
+        color: "black",
+        backgroundColor: "white",
+      }}
       required
       className="date"
       onClick={onClick}
@@ -115,7 +118,7 @@ const Export = (props) => {
         startDate={startDate}
         endDate={endDate}
         withPortal={isMobile}
-        customInput={<CustomInput />}
+        // customInput={<CustomInput />}
       />
       <DatePicker
         selected={endDate}
@@ -126,6 +129,7 @@ const Export = (props) => {
         endDate={endDate}
         minDate={startDate}
         withPortal={isMobile}
+        // customInput={<CustomInput />}
       />
     </div>
   );

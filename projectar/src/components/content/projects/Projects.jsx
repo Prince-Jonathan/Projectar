@@ -160,7 +160,7 @@ const Projects = (props) => {
     [props.toggler]
   );
   return (
-    <React.Fragment>
+    <div>
       <Wrapper isMobile={isMobile}>
         <Caption flabel="Projects" slabel="List" />
         <Slate>
@@ -171,7 +171,7 @@ const Projects = (props) => {
           />
         </Slate>
       </Wrapper>
-    </React.Fragment>
+    </div>
   );
 };
 
