@@ -24,7 +24,7 @@ from datetime import datetime
 async def create_note(note,status):
     notification_body = {
 			'contents': {'en': note["description"]},
-			'include_external_user_ids': note.targets,
+			'include_external_user_ids': note["targets"],
 			"headings": {"en":status+": "+note["title"]},
 			'url':"https://projectar.devcodes.co/"
 	}

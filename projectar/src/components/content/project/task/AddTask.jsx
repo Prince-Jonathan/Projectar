@@ -59,31 +59,35 @@ const AddTask = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // let targets=
-    console.log(state.personnel);
-    let task = { ...state, ...startDate, project_id: props.selectedID };
+
+    const task = {
+      ...state,
+      ...startDate,
+      project_id: props.selectedID,
+      targets: state.personnel,
+    };
     props.onAlert("info", "Saving...", {
       timeout: 3000,
       position: "bottom center",
     });
-    // props
-    //   .postData("/api/task/add", task)
-    //   .then((data) => console.log(data))
-    //   .then(() =>
-    //     props.onAlert("success", "Task Saved", {
-    //       timeout: 5000,
-    //       position: "bottom center",
-    //     })
-    //   )
-    //   .then(() => props.onTaskUpdate())
-    //   .then(() => props.postData("/api/notify/new-task", task))
-    //   .then(() => props.onCloseTasks())
-    //   .catch(() =>
-    //     props.onAlert("error", "Failed to Save Task", {
-    //       timeout: 3000,
-    //       position: "bottom center",
-    //     })
-    //   );
+    props
+      .postData("/api/task/add", task)
+      .then((data) => console.log(data))
+      .then(() =>
+        props.onAlert("success", "Task Saved", {
+          timeout: 5000,
+          position: "bottom center",
+        })
+      )
+      .then(() => props.onTaskUpdate())
+      .then(() => props.postData("/api/notify/new-task", task))
+      .then(() => props.onCloseTasks())
+      .catch(() =>
+        props.onAlert("error", "Failed to Save Task", {
+          timeout: 3000,
+          position: "bottom center",
+        })
+      );
   };
 
   const handleSelection = (selectedOption) => {
