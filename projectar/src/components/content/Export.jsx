@@ -70,7 +70,16 @@ const Export = (props) => {
       ],
     ];
 
-    const data = tasks.map((task) => [
+    const filteredTasks = tasks.length
+      ? tasks.filter(
+          (task) =>
+            +new Date(task.date).setHours(0, 0, 0, 0) >=
+              +new Date(startDate).setHours(0, 0, 0, 0) &&
+            +new Date(task.date).setHours(0, 0, 0, 0) <=
+              +new Date(endDate).setHours(0, 0, 0, 0)
+        )
+      : tasks;
+    const data = filteredTasks.map((task) => [
       task.date,
       task.title,
       task.description,
@@ -85,13 +94,14 @@ const Export = (props) => {
       body: data,
     };
 
-    var splitTitle = doc.splitTextToSize(title, 550);
+    var splitTitle = doc.splitTextToSize(title, 650);
     // doc.text(15, 20, splitTitle);
     var imageData = new Image();
     imageData.src = props.logo;
     doc.addImage(imageData, "png", 140, 0, 50, 50);
     var logoLabel = "THE AUTOMATION GHANA GROUP";
     doc.text(logoLabel, 190, 30);
+    doc.setFontSize(12);
     doc.text(splitTitle, marginLeft, 56);
     doc.autoTable(content);
     doc.save(`${props.title}.pdf`);
@@ -115,7 +125,7 @@ const Export = (props) => {
       <Button onClick={() => exportPDF()} disabled={!tasks.length}>
         {!tasks.length ? "Loading..." : props.caption}
       </Button>
-      <DatePicker
+      {/* <DatePicker
         selected={startDate.date}
         startDate={startDate.date}
         endDate={endDate.date}
@@ -128,22 +138,26 @@ const Export = (props) => {
         selectsRange
         // inline
         withPortal={isMobile}
-      />
-      {/* <DatePicker
+      /> */}
+      <DatePicker
         selected={startDate}
-        onChange={date => setStartDate(date)}
+        disabled={!tasks.length}
+        onChange={(date) => setStartDate(date)}
         selectsStart
         startDate={startDate}
         endDate={endDate}
+        withPortal={isMobile}
       />
       <DatePicker
         selected={endDate}
-        onChange={date => setEndDate(date)}
+        disabled={!tasks.length}
+        onChange={(date) => setEndDate(date)}
         selectsEnd
         startDate={startDate}
         endDate={endDate}
         minDate={startDate}
-      /> */}
+        withPortal={isMobile}
+      />
     </div>
   );
 };
