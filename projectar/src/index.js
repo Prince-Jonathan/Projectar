@@ -18,4 +18,4 @@ ReactDOM.render(
   document.getElementById("react-root")
 );
 
-navigator.serviceWorker.register('../public/OneSignalSDKWorker.js');
+navigator.serviceWorker.register('./OneSignalSDKWorker.js');

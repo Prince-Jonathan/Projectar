@@ -5,6 +5,7 @@ import asyncio
 from flask import request, redirect, url_for,jsonify
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
+from onesignal_sdk.error import OneSignalHTTPError
 import requests
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client
 from models import Project, User, Task, Register
@@ -22,14 +23,19 @@ from datetime import datetime
 
 # loop = asyncio.get_event_loop()
 async def create_note(note,status):
-    notification_body = {
-			'contents': {'en': note["description"]},
-			'include_external_user_ids': note["targets"],
-			"headings": {"en":status+": "+note["title"]},
-			'url':"https://projectar.devcodes.co/"
-	}
-    response = await client.send_notification(notification_body)
-    return response.body
+    try:
+        notification_body = {
+            'contents': {'en': note["description"]},
+            'include_external_user_ids': note["targets"],
+            "headings": {"en":status+": "+note["title"]},
+            'url':"https://projectar.devcodes.co/"
+        }
+        response = await client.send_notification(notification_body)
+        return response.body
+    except OneSignalHTTPError as e:
+        print(e)
+        print(e.status_code)
+        print(e.http_response.json()) # You can see the details of error by parsing original response
 
 loop = asyncio.get_event_loop()
 
@@ -490,29 +496,20 @@ def attendance(proj_id):
 				return {
 					"success":True
 				}
-			try:
-				print("personnel id:", personnel.id)
-				personnel=User.query.get_or_404(personnel.id)
-				register.personnel.append(personnel)
-			except SQLAlchemyError as err:
-				print(err)
-				db.session.rollback()
-				return {
-				"success":False
-				}
-		db.session.commit()
+	except SQLAlchemyError as err:
+		print(err)
+		db.session.rollback()
 		return {
-			"success":True,
-		} 
+			"success":False
+		}
+	try:
 		for personnel in register.personnel[:]:
 			print("deleting",personnel)
 			register.personnel.remove(personnel)
 		db.session.commit()
-		register.date=data["date"]
-		if data["personnel"] is not None:
-			for personnel_id in data["personnel"]:
-				personnel=User.query.get_or_404(personnel_id)
-				register.personnel.append(personnel)
+		for personnel in data["body"]:
+			personnel=User.query.get_or_404(personnel["id"])
+			register.personnel.append(personnel)
 		db.session.commit()
 		return {
 			"success":True,
