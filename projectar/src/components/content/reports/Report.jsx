@@ -26,7 +26,8 @@ const App = (props) => {
           }}
           onChange={handleOnChange}
           config={{
-            ckfinder: { uploadUrl: "http://localhost:9000/upload" },
+            // ckfinder: { uploadUrl: "http://localhost:9000/upload" },
+            ckfinder: { uploadUrl: "https://projectar.devcodes.co/upload" },
           }}
           // onBlur={(event, editor) => {
           //   console.log("Blur.", editor);

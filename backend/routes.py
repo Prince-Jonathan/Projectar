@@ -471,18 +471,25 @@ def attendance(proj_id):
 	# print(time_object)
 	try:
 		#check if the register for day already exists
-		
-		for personnel in data["body"]:
-			register = Register.query.filter_by(date=data["date"]).first()
-			if register is None:
-				project = Project.query.get_or_404(proj_id)
+		project = Project.query.get_or_404(proj_id)
+		register = Register.query.filter_by(date=data["date"]).first()
+		if register is None:
+			for personnel in data["body"]:
+				personnel=User.query.get_or_404(personnel["id"])			
 				register = Register(
 					date=data["date"],
+					time_in=personnel["signIn"],
+					time_out=personnel["signOut"],
+					lunch=personnel["lunch"],
+					t_and_t=personnel["tandt"],
+					personnel_id=personnel["id"],
 					project=project
 				)
-				
 				db.session.add(register)
 				db.session.commit()
+				return {
+					"success":True
+				}
 			try:
 				print("personnel id:", personnel.id)
 				personnel=User.query.get_or_404(personnel.id)

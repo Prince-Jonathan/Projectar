@@ -286,9 +286,9 @@ const Attendance = (props) => {
     });
     const register = { date: new Date(date).toLocaleDateString(), body: body };
     console.log(register);
-    props
-      .postData(`/api/attendance/${props.projectID}`, body)
-      .then((data) => console.log(data));
+    // props
+    //   .postData(`/api/attendance/${props.projectID}`, register)
+    //   .then((data) => console.log(data));
   };
 
   return (

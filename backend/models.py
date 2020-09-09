@@ -11,7 +11,6 @@ enrolment = db.Table('enrolment',
 			db.Column('personnel_id', db.Integer, db.ForeignKey('user.id')),
 			db.Column('project_id', db.Integer, db.ForeignKey('project.id')),
 			db.Column('task_id', db.Integer, db.ForeignKey('task.id')),
-			db.Column('register_id',db.Integer, db.ForeignKey('register.id')),
 			db.Column('date', db.DateTime, default=datetime.utcnow)
 		)
 
@@ -28,7 +27,6 @@ class User(db.Model, Serializer):
 
 	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 	tasks = db.relationship('Task', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
-	register = db.relationship('Register', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 
 	#date_created =  db.Column(db.DateTime, default=datetime.utcnow)	
 
@@ -44,7 +42,6 @@ class Project(db.Model, Serializer):
 	team=db.Column(db.String(200), nullable=False)
 
 	tasks=db.relationship('Task', backref='project', lazy=True)
-	register=db.relationship('Register', backref='project', lazy=True)
 
 	def __repr__(self): 
 		return '<Project %r>' % self.name
@@ -72,6 +69,7 @@ class Register(db.Model, Serializer):
 	time_out = db.Column(db.DateTime)
 	lunch = db.Column(db.Boolean)
 	t_and_t= db.Column(db.Float)
+	personnel_id = db.Column(db.Integer)
 	
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
 
