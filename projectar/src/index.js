@@ -3,16 +3,19 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+// import * as serviceWorker from "./serviceWorker";
 
 import App from "./App";
 
 ReactDOM.render(
   // <React.StrictMode>
-    <BrowserRouter>
-      <AlertProvider template={AlertTemplate}>
-        <App />
-      </AlertProvider>
-    </BrowserRouter>,
+  <BrowserRouter>
+    <AlertProvider template={AlertTemplate}>
+      <App />
+    </AlertProvider>
+  </BrowserRouter>,
 
   document.getElementById("react-root")
 );
+
+navigator.serviceWorker.register('../public/OneSignalSDKWorker.js');

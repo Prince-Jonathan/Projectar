@@ -1,9 +1,21 @@
 {
+  "name": "Project Archive",
   "short_name": "Projectar",
-  "name": "Projectar",
-  "icons": [],
-  "start_url": ".",
+  "theme_color": "#ffee00",
+  "background_color": "#10292e",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "images/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/x-icon"
+    }
+  ]
 }
