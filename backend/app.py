@@ -12,7 +12,7 @@ from onesignal_sdk.client import AsyncClient
 #initialising flask object
 APP = Flask(__name__)
 cors=CORS(APP, resources={r"/api/*": {"origins": "*"}})
-APP.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jona:jona132435@35.225.121.217:5432/projectar'
+APP.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jona:jona132435@35.202.128.59:5432/projectar'
 # consumes lot of memory: set to false
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

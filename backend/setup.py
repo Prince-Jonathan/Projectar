@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 app=Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://jona:jona132435@35.225.121.217:5432/projectar'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://jona:jona132435@35.202.128.59:5432/projectar'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #consumes lot of memory: set to fals
 
 db=SQLAlchemy(app)
@@ -58,7 +58,7 @@ class Project(db.Model):
 	team=db.Column(db.String(200), nullable=False)
 
 	tasks=db.relationship('Task', backref='project', lazy=True)
-	register=db.relationship('Register', backref='project', lazy=True)
+	registers=db.relationship('Register', backref='project', lazy=True)
 
 	def __repr__(self): 
 		return '<Project %r>' % self.name

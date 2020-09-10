@@ -42,6 +42,7 @@ class Project(db.Model, Serializer):
 	team=db.Column(db.String(200), nullable=False)
 
 	tasks=db.relationship('Task', backref='project', lazy=True)
+	registers=db.relationship('Register', backref='project', lazy=True)
 
 	def __repr__(self): 
 		return '<Project %r>' % self.name
