@@ -182,6 +182,7 @@ const Project = (props) => {
               postData={props.postData}
               projectID={id}
               project={project}
+              onAlert={props.onAlert}
             />
           </Route>
           <Route path={`${path}/outstanding-tasks`}>

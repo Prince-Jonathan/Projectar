@@ -481,7 +481,6 @@ def attendance(proj_id):
 			db.session.commit()
 
 		for personnel in data["body"]:
-			print("in here", personnel["signIn"])
 			time_in = None if personnel["signIn"]==None else datetime.strptime(personnel["signIn"], "%H:%M:%S %p").time()
 			time_out =  None if personnel["signOut"]==None else datetime.strptime(personnel["signOut"], "%H:%M:%S %p").time()
 

@@ -168,8 +168,8 @@ const Attendance = (props) => {
               )[0].isPresent;
             } catch (err) {}
           });
-          const timeIn = signIn ? signIn : "06:00:00";
-          const timeOut = signOut ? signOut : "06:00:00";
+          const timeIn = signIn ? signIn : "00:00:00";
+          const timeOut = signOut ? signOut : "00:00:00";
           const isPersonnelPresent = isPresent ? isPresent : false;
           return (
             <div
@@ -316,33 +316,58 @@ const Attendance = (props) => {
           (isPresent) => isPresent.id === personnel.id
         );
       }
-
-      const signIn = signIns.filter((signIn) => signIn.id === personnel.id);
-      const signOut = signOuts.filter((signOut) => signOut.id === personnel.id);
-      const tandt = tandts.filter((tandt) => tandt.id === personnel.id);
-      const lunch = lunchList
-        ? lunchList.find((personnelID) => personnelID === personnel.id)
-          ? true
-          : false
-        : false;
+      try {
+        if (isPresent[0].isPresent) {
+          const signIn = signIns.filter((signIn) => signIn.id === personnel.id);
+          const signOut = signOuts.filter(
+            (signOut) => signOut.id === personnel.id
+          );
+          const tandt = tandts.filter((tandt) => tandt.id === personnel.id);
+          const lunch = lunchList
+            ? lunchList.find((personnelID) => personnelID === personnel.id)
+              ? true
+              : false
+            : false;
+          return {
+            signIn: null,
+            signOut: null,
+            tandt: null,
+            ...signIn[0],
+            ...signOut[0],
+            ...tandt[0],
+            ...isPresent[0],
+            lunch: lunch,
+            id: personnelID,
+          };
+        }
+      } catch (err) {}
       return {
         signIn: null,
         signOut: null,
         tandt: null,
         isPresent: false,
-        ...signIn[0],
-        ...signOut[0],
-        ...tandt[0],
-        ...isPresent[0],
-        lunch: lunch,
+        lunch: false,
         id: personnelID,
       };
     });
     const register = { date: new Date(date).toLocaleDateString(), body: body };
-    console.log(register);
+    props.onAlert("info", "Saving...", {
+      timeout: 3000,
+      position: "bottom center",
+    });
     props
       .postData(`/api/attendance/${props.projectID}`, register)
-      .then((data) => console.log(data));
+      .then(({ data }) =>
+        data.success
+          ? props.onAlert("success", "Register Saved", {
+              timeout: 5000,
+              position: "bottom center",
+            })
+          : props.onAlert("error", "Failed to Save Register", {
+              timeout: 3000,
+              position: "bottom center",
+            })
+      );
   };
 
   return (
