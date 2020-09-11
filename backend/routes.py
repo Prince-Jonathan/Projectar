@@ -471,62 +471,44 @@ def attendance(proj_id):
 	'''assess attendance of personnel'''
 	data = request.get_json()
 
-	time_str = data["body"][0]["signIn"]
-	time_object = datetime.strptime(time_str, "%H:%M:%S %p").time()
-	print(type(time_object))
-	print(time_object)
 	try:
 		#check if the register for day already exists
 		project = Project.query.get_or_404(proj_id)
-		register = Register.query.filter_by(date=data["date"], project=project).first()
-		if register is None:
-			for personnel in data["body"]:
-				print("in here", personnel)
-				time_in = datetime.strptime(personnel["signIn"], "%H:%M:%S %p").time()
-				time_out = datetime.strptime(personnel["signOut"], "%H:%M:%S %p").time()
+		register = Register.query.filter_by(date=data["date"], project=project).all()
+		if len(register) != 0:
+			for personnel in register[:]:
+				db.session.delete(personnel)
+			db.session.commit()
 
-				register = Register(
-					date=data["date"],
-					time_in=time_in,
-					time_out=time_out,
-					lunch=personnel["lunch"],
-					t_and_t=personnel["tandt"],
-					personnel_id=personnel["id"],
-					project=project
-				)
-				db.session.add(register)
-				db.session.commit()
-			return {
-				"success":True
-			}
+		for personnel in data["body"]:
+			print("in here", personnel["signIn"])
+			time_in = None if personnel["signIn"]==None else datetime.strptime(personnel["signIn"], "%H:%M:%S %p").time()
+			time_out =  None if personnel["signOut"]==None else datetime.strptime(personnel["signOut"], "%H:%M:%S %p").time()
+
+			register = Register(
+				date=data["date"],
+				is_present=personnel["isPresent"],
+				time_in=time_in,
+				time_out=time_out,
+				lunch=personnel["lunch"],
+				t_and_t=personnel["tandt"],
+				personnel_id=personnel["id"],
+				project=project
+			)
+			db.session.add(register)
+		db.session.commit()
 		return {
 			"success":True
 		}
+		
 	except SQLAlchemyError as err:
 		print(err)
 		db.session.rollback()
 		return {
-			"success":False
+			"success":False,
+			"message":"Invalid date or project ID"
 		}
-	# try:
-	# 	for personnel in register.personnel[:]:
-	# 		print("deleting",personnel)
-	# 		register.personnel.remove(personnel)
-	# 	db.session.commit()
-	# 	for personnel in data["body"]:
-	# 		personnel=User.query.get_or_404(personnel["id"])
-	# 		register.personnel.append(personnel)
-	# 	db.session.commit()
-	# 	return {
-	# 		"success":True,
-	# 	}
-	# except SQLAlchemyError as err:
-	# 	print(err)
-	# 	db.session.rollback()
-	# 	return {
-	# 		"success":False,
-	# 		"message":"Invalid date or project ID"
-	# 	}
+
 @app.route('/api/attendance/<int:proj_id>/all')
 def all_attendance(proj_id):
 	try:

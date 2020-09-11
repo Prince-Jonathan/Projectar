@@ -83,8 +83,9 @@ class Task(db.Model):
 class Register(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	date =  db.Column(db.DateTime)
-	time_in = db.Column(db.DateTime)
-	time_out = db.Column(db.DateTime)
+	is_present = db.Column(db.Boolean)
+	time_in = db.Column(db.Time)
+	time_out = db.Column(db.Time)
 	lunch = db.Column(db.Boolean)
 	t_and_t= db.Column(db.Float)
 	personnel_id = db.Column(db.Integer)

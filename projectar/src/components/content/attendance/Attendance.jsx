@@ -25,9 +25,25 @@ const Button = styled.button`
 
 const Attendance = (props) => {
   const [date, setDate] = useState(new Date());
+  const [isPresents, setIsPresents] = useState([]);
   const [signIns, setSignIns] = useState([]);
   const [signOuts, setSignOuts] = useState([]);
   const [tandts, setTandts] = useState([]);
+
+  const handleIsPresent = React.useCallback(
+    (data) => {
+      let prev = [...isPresents];
+      let personnel = prev.filter((personnel) => personnel.id === data[0].id);
+      if (personnel.length !== 0) {
+        const index = prev.indexOf(personnel[0]);
+        prev[index] = { ...data[0] };
+        return setIsPresents(prev);
+      }
+      const update = prev.concat(data);
+      setIsPresents(update);
+    },
+    [isPresents]
+  );
 
   const handleSetSignIn = React.useCallback(
     (data) => {
@@ -80,7 +96,7 @@ const Attendance = (props) => {
       />
       <label>
         {" "}
-        <span style={{color:"white"}}>Register</span> Date
+        <span style={{ color: "white" }}>Register</span> Date
         <input
           style={{
             cursor: "pointer",
@@ -145,13 +161,41 @@ const Attendance = (props) => {
               )[0].signOut;
             } catch (err) {}
           });
+          const [isPresent] = useState(() => {
+            try {
+              return isPresents.filter(
+                (isPresent) => isPresent.id === row.original.id
+              )[0].isPresent;
+            } catch (err) {}
+          });
           const timeIn = signIn ? signIn : "06:00:00";
           const timeOut = signOut ? signOut : "06:00:00";
+          const isPersonnelPresent = isPresent ? isPresent : false;
           return (
-            <div style={{ display: "flex" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+              }}
+            >
+              <input
+                type="checkbox"
+                name="isPresent"
+                checked={isPersonnelPresent}
+                onChange={() => {
+                  handleIsPresent([
+                    {
+                      id: row.original.id,
+                      isPresent: !isPersonnelPresent,
+                    },
+                  ]);
+                }}
+              />
               <DatePicker
                 //setting dummy date "01/01/01 "value for the sake of  datePicker Library
                 selected={new Date("01/01/01 " + timeIn)}
+                disabled={!isPersonnelPresent}
                 onChange={(date) => {
                   handleSetSignIn([
                     {
@@ -170,6 +214,7 @@ const Attendance = (props) => {
               />
               <DatePicker
                 selected={new Date("01/01/01 " + timeOut)}
+                disabled={!isPersonnelPresent}
                 onChange={(date) => {
                   handleSetSignOut([
                     {
@@ -236,7 +281,7 @@ const Attendance = (props) => {
         },
       },
     ],
-    [signIns, signOuts, tandts]
+    [signIns, signOuts, tandts, isPresents]
   );
   const IndeterminateCheckbox = forwardRef(
     ({ indeterminate, ...rest }, ref) => {
@@ -265,6 +310,13 @@ const Attendance = (props) => {
     let personnelID;
     let body = data.map((personnel) => {
       personnelID = personnel.id;
+      let isPresent;
+      if (isPresents.length) {
+        isPresent = isPresents.filter(
+          (isPresent) => isPresent.id === personnel.id
+        );
+      }
+
       const signIn = signIns.filter((signIn) => signIn.id === personnel.id);
       const signOut = signOuts.filter((signOut) => signOut.id === personnel.id);
       const tandt = tandts.filter((tandt) => tandt.id === personnel.id);
@@ -277,9 +329,11 @@ const Attendance = (props) => {
         signIn: null,
         signOut: null,
         tandt: null,
+        isPresent: false,
         ...signIn[0],
         ...signOut[0],
         ...tandt[0],
+        ...isPresent[0],
         lunch: lunch,
         id: personnelID,
       };
