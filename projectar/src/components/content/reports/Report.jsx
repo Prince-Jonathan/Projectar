@@ -13,7 +13,7 @@ const App = (props) => {
     // console.log({ event, editor, data });
   };
   return (
-    <React.Fragment>
+    <div>
       <Caption flabel="Draft" slabel="Report" />
       <div className="report-wrapper">
         <CKEditor
@@ -38,7 +38,7 @@ const App = (props) => {
         />
       </div>
       <button onClick={() => console.log(value)}>Log</button>
-    </React.Fragment>
+    </div>
   );
 };
 

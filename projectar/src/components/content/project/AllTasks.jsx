@@ -167,7 +167,7 @@ const AllTasks = (props) => {
   const completedTasks = data.filter((task) => parseInt(task.achieved) === 100);
 
   return (
-    <React.Fragment>
+    <div>
       <Styles>
         <Switch>
           <Route exact path={path}>
@@ -201,7 +201,7 @@ const AllTasks = (props) => {
           </Route>
         </Switch>
       </Styles>
-    </React.Fragment>
+    </div>
   );
 };
 

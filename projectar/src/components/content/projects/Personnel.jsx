@@ -102,7 +102,7 @@ const Personnel = (props) => {
     history.push(`${path}/${row.original.id}/tasks`);
   };
   return (
-    <React.Fragment>
+    <div>
       <Switch>
         <Route exact path={path}>
           <Caption flabel="Personnel" slabel="List" />
@@ -116,7 +116,7 @@ const Personnel = (props) => {
           {/* <div>this is it</div> */}
         </Route>
       </Switch>
-    </React.Fragment>
+    </div>
   );
 };
 

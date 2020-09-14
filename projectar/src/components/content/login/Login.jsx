@@ -47,13 +47,13 @@ const Login = (props) => {
     }
   };
   return (
-    <React.Fragment>
+    <div>
       <SimpleLoginForm
         getUserInfo={sendUserInfoToDatabase}
         style={formStyle}
         photoIcon={props.logo}
       />
-    </React.Fragment>
+    </div>
   );
 };
 

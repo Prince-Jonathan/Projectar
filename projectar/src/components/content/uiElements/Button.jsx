@@ -14,19 +14,31 @@ const Button = styled.button`
   opacity: 0.95;
   transition: all 0.2s ease-in-out;
 
+  ${({ bright }) =>
+    bright &&
+    `color: white;background-color: green;border-bottom: 0 2.2px 10px rgba(0, 0, 0, 0.12);`}
+
   &:hover {
     text-shadow: none;
     box-shadow: 0 2.2px 10px rgba(0, 0, 0, 0.12);
     color: #ffee00;
     opacity: 1;
     transform: scale(1.08);
+
+    ${({ bright }) =>
+      bright &&
+      `color: #ffee00; border-bottom: 4px solid rgba(0, 128, 0, 0.199)`}
   }
   &:focus {
     outline: none;
     text-shadow: none;
     box-shadow: 0 2.2px 80px rgba(0, 0, 0, 0.12);
     color: #ffee00;
-    opacity: 1;
+    opacity: 0.85;
+
+    ${({ bright }) =>
+      bright &&
+      `color: #ffee00; border-bottom: 4px solid rgba(0, 128, 0, 0.199)`}
   }
 `;
 

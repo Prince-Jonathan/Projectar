@@ -36,7 +36,7 @@ const Announcements = (props) => {
   );
   const fixWidth = isMobile ? null : { width: "800px" };
   return (
-    <React.Fragment>
+    <div>
       <div className="slate" style={fixWidth}>
         <div className="header">
           <strong>Announcements</strong>
@@ -52,7 +52,7 @@ const Announcements = (props) => {
         </div>
         <div>{announcement}</div>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

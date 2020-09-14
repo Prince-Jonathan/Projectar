@@ -52,6 +52,29 @@ const Project = (props) => {
   const data = tasks.filter((task) => task.project_id === parseInt(id));
   const projects = React.useMemo(() => props.projects, [props.projects]);
   const project = projects.filter((project) => project.id === parseInt(id));
+  const [toggleFetchAttendance, setToggleFetchAttendance] = useState(false);
+  const [attendance, setAttendance] = useState([]);
+  const [attendanceDate, setAttendanceDate] = useState(new Date());
+
+  const fetchAttendance = async () => {
+    props.onFetchData(`/api/attendance/${id}/all`).then(({ data }) => {
+      const filtered = data.filter((register) => {
+        return (
+          +new Date(register.date) ===
+            +new Date(new Date(attendanceDate).toDateString()) &&
+          register.is_present === true
+        );
+      });
+      setAttendance(filtered);
+    });
+  };
+
+  useEffect(
+    () => {
+      fetchAttendance();
+    },
+    [attendanceDate, toggleFetchAttendance]
+  );
 
   data.sort((a, b) => {
     let dateA = new Date(a.date),
@@ -162,6 +185,12 @@ const Project = (props) => {
     history.push(`${url}/outstanding-tasks/${row.original.id}/execute`);
   };
 
+  const handleSetAttendanceDate = (date) => {
+    setAttendanceDate(date);
+  };
+  const handleToggleFetchAttendance = () => {
+    setToggleFetchAttendance((prevState) => !prevState);
+  };
   return (
     <div>
       <Styles>
@@ -183,6 +212,10 @@ const Project = (props) => {
               projectID={id}
               project={project}
               onAlert={props.onAlert}
+              attendance={attendance}
+              date={attendanceDate}
+              onHandleSetAttendanceDate={handleSetAttendanceDate}
+              onHandleToggleFetchAttendance={handleToggleFetchAttendance}
             />
           </Route>
           <Route path={`${path}/outstanding-tasks`}>
