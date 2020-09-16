@@ -9,7 +9,7 @@ from onesignal_sdk.error import OneSignalHTTPError
 import requests
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client
 from models import Project, User, Task, Register
-from modules import fetch, log
+from modules import fetch, log, netsuite_req
 from datetime import datetime
 
 # async def create_note(note):
@@ -199,6 +199,45 @@ def all_projects():
 			"success":False	
 		}
 
+@app.route('/api/project/sync')
+def sync_projects():
+	'''Sync all Projects from NetSuite into db'''
+	data = netsuite_req({"request":"projects"})["data"]
+	try:
+		for project in data:
+			db_proj = Project.query.get(project["id"])
+			if db_proj is not None:
+				db.session.delete(db_proj)
+				db.session.commit()
+			proj = Project(
+				id=project["id"],
+				name=project["name"],
+				consultant=project["consultant"],
+				consultant_id=project["consultant_id"],
+				manager=project["manager"],
+				manager_id=project["manager_id"],
+				customer=project["customer"],
+				start_date=project["start_date"],
+				end_date=project["end_date"],
+				number=project["number"],
+				progress_percentage=project["progress_percentage"],
+				revised_end_date=project["revised_end_date"],
+				status=project["status"]
+			)
+			db.session.add(proj)
+		db.session.commit()	
+		return {
+			"success":True,
+		}
+	except SQLAlchemyError as err:
+		print(err)
+		db.session.rollback()
+		return {
+			"success":False,
+		} 
+
+
+
 @app.route('/api/task/all')
 def all_tasks():
 	'''Get all Tasks'''
@@ -335,32 +374,42 @@ def user_projs(personnel_id):
 			"success":False
 		}
 
+# @app.route('/api/project/enrolments/<int:project_id>')
+# def proj_users(project_id):
+# 	'''Get all users that have been enrolled to a project'''
+# 	data = []
+# 	try:
+# 		project = Project.query.get(project_id)
+# 		msg = "does not exist"
+# 		if project is not None:
+# 			users = project.personnel
+# 			if len(users[:]) != 0:
+# 				# fetch(users, data)
+# 				# return {
+# 				# 	"success":True,
+# 				# 	"data":data
+# 				# }
+# 				return jsonify(User.serialize_list(users))
+# 			msg = "has not yet got enrolled users"
+# 		return {
+# 			"success":False,
+# 			"msg":"Project with ID: %d %s" % (project_id, msg)
+# 		}
+# 	except SQLAlchemyError as err:
+# 		print(err)
+# 		return{
+# 			"success":False
+# 		}
+
 @app.route('/api/project/enrolments/<int:project_id>')
 def proj_users(project_id):
 	'''Get all users that have been enrolled to a project'''
-	data = []
-	try:
-		project = Project.query.get(project_id)
-		msg = "does not exist"
-		if project is not None:
-			users = project.personnel
-			if len(users[:]) != 0:
-				# fetch(users, data)
-				# return {
-				# 	"success":True,
-				# 	"data":data
-				# }
-				return jsonify(User.serialize_list(users))
-			msg = "has not yet got enrolled users"
-		return {
-			"success":False,
-			"msg":"Project with ID: %d %s" % (project_id, msg)
-		}
-	except SQLAlchemyError as err:
-		print(err)
-		return{
-			"success":False
-		}
+	data = netsuite_req({"request": "personnel", "project_id": project_id})
+	return {
+		"success" : True,
+		"data" : data["data"]
+	}
+	
 
 @app.route('/api/task/enrolments/<int:task_id>')
 def task_users(task_id):
@@ -443,7 +492,7 @@ def project_verbose(proj_id):
     if project is not None:
       tasks = project.tasks
       if len(tasks) == 0:
-        print("jeff")
+      	print("project has no tasks")
     for task in tasks:
       temp_ = ''
       task_users = User.serialize_list(task.personnel)
@@ -492,6 +541,7 @@ def attendance(proj_id):
 				lunch=personnel["lunch"],
 				t_and_t=personnel["tandt"],
 				personnel_id=personnel["id"],
+				personnel_name=personnel["name"],
 				project=project
 			)
 			db.session.add(register)

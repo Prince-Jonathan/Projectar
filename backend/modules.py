@@ -1,4 +1,4 @@
-
+import requests
 
 def fetch(data, logfile):
 	'''fetches data of all objects in the list and passes to logfile''' 	
@@ -12,4 +12,15 @@ def log(data, logfile):
 	for field, value in data.__dict__.items(): 
 		if not field[0].startswith('_'): 
 			logfile[field] = value
-			
+
+def netsuite_req(pload):
+	'''NetSuite integration request'''
+	try:
+		headers = {"Authorization":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHAiOiJwcm9qZWN0YXIiLCJleHBpcnkiOjE4OTM0NTYwMDAsInNjb3BlIjoidGFnZyJ9.E6lIboiszt-AQuvCI8HWF7XxEUM7sQV8ZD_1MODUY4Q"}
+		r = requests.post("https://tagg.automationghana.com/projectar", headers=headers, json=pload)
+		return r.json()
+	except requests.ConnectionError as err:
+		print(err)
+		return {
+			"success":False	
+		}

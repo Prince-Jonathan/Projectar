@@ -35,8 +35,8 @@ const App = (props) => {
   const [personnel, setPersonnel] = useState();
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showTask, setShowTask] = useState(false);
-  const [selectedID, setSeletedID] = useState(undefined);
-  const [selectedTaskID, setSeletedTaskID] = useState(undefined);
+  const [selectedID, setSelectedID] = useState(null);
+  const [selectedTaskID, setSeletedTaskID] = useState(0);
   //lots of code refactoring can be done...but at the expense of time
   const [isTaskUpdated, setIsTaskUpdated] = useState(false);
   const [isTaskCreated, setIsTaskCreated] = useState(false);
@@ -137,12 +137,14 @@ const App = (props) => {
           aside={<Aside onPopUpClick={handlePopUpClick} />}
           name={user.first_name}
           onShowSideMenu={handleShowSideMenu}
+          onFetchData={fetchData}
+          onAlert={handleAlert}
           logo={Logo2}
         >
           <PrivateRoute exact isAuthenticated={isAuthenticated} path="/">
             <Workspace
               onShowTask={handleShowTask}
-              onSelect={(id) => setSeletedID(id)}
+              onSelect={(id) => setSelectedID(id)}
               projects={projectTasks}
               selectedID={selectedID}
               onFetchData={fetchData}
@@ -151,7 +153,7 @@ const App = (props) => {
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/personnel">
             <Personnel
-              onSelect={(id) => setSeletedID(id)}
+              onSelect={(id) => setSelectedID(id)}
               personnel={personnel}
               selectedID={selectedID}
               onFetchData={fetchData}
@@ -178,7 +180,7 @@ const App = (props) => {
           <PrivateRoute isAuthenticated={isAuthenticated} path="/all-projects">
             <Projects
               onShowTask={handleShowTask}
-              onSelect={(id) => setSeletedID(id)}
+              onSelect={(id) => setSelectedID(id)}
               projects={projects}
               selectedID={selectedID}
               onFetchData={fetchData}
@@ -200,12 +202,13 @@ const App = (props) => {
               onCloseTasks={handleCloseTasks}
               postData={postData}
               selectedID={selectedID}
+              resetSelectedID={() => setSelectedID((prevState) => prevState)}
               selectedTaskID={selectedTaskID}
               onAlert={handleAlert}
               onTaskUpdate={handleTaskCreated}
               personnel={personnel}
               tasks={projectTasks}
-              resetSelectedTaskID={() => setSeletedTaskID(undefined)}
+              resetSelectedTaskID={() => setSeletedTaskID(0)}
               onFetchData={fetchData}
             />
           ) : null}

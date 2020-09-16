@@ -115,11 +115,11 @@ const Projects = (props) => {
         },
         {
           Header: "Consultant",
-          accessor: "project_consultant",
+          accessor: "consultant",
         },
         {
           Header: "Manager",
-          accessor: "project_manager",
+          accessor: "manager",
         },
       ];
       return isMobile ? columns.splice(0, 3) : columns;

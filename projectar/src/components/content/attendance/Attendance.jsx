@@ -149,8 +149,11 @@ const Attendance = (props) => {
     () => [
       { Header: "Time In", accessor: "time_in" },
       { Header: "Time Out", accessor: "time_out" },
-      { Header: "Personnel ID", accessor: "personnel_id" },
-      { Header: "T and T", accessor: "t_and_t" },
+      {
+        Header: "Personnel",
+        accessor: "personnel_name",
+      },
+      { Header: "T & T (GH\u20B5)", accessor: "t_and_t" },
       {
         id: "lunch",
         Header: "Lunch",

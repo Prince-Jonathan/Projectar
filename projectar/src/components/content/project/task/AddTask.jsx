@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
@@ -26,6 +26,7 @@ const Button = styled.button`
 
 const AddTask = (props) => {
   const [startDate, setStartDate] = useState({ date: new Date() });
+  const [projectPersonnel, setProjectPersonnel] = useState([]);
   const [state, setState] = useState({
     title: "",
     description: "",
@@ -34,19 +35,46 @@ const AddTask = (props) => {
     personnel: null,
   });
 
-  const data = props.personnel;
+  const fetchProjectPersonnel = async () => {
+    try {
+      props
+        .onFetchData(`/api/project/enrolments/${props.selectedID}`)
+        .then(({ data: { data } }) => {
+          setProjectPersonnel(data);
+          console.log(data);
+        });
+    } catch (err) {}
+  };
 
-  const options = data.map((personnel) => {
-    const { first_name: firstName, last_name: lastName, id: value } = personnel;
-    return { label: `${firstName} ${lastName}`, value: value };
-  });
+  useEffect(
+    () => {
+      fetchProjectPersonnel();
+      console.log("inside useeffect");
+    },
+    [props.selectedID]
+  );
+  // useEffect(() => {
+  //   return () => {
+  //     setProjectPersonnel([]);
+  //   };
+  // }, []);
 
-  // const options = [
-  //   { value: "chocolate", label: "Chocolate" },
-  //   { value: "strawberry", label: "Strawberry" },
-  //   { value: "vanilla", label: "Vanilla" },
-  // ];
+  // const options = data.map((personnel) => {
+  //   const { first_name: firstName, last_name: lastName, id: value } = personnel;
+  //   return { label: `${firstName} ${lastName}`, value: value };
+  // });
 
+  const options = useMemo(
+    () =>
+      projectPersonnel
+        ? projectPersonnel.map((personnel) => {
+            return { label: personnel.name, value: personnel.id };
+          })
+        : null,
+    [props.selectedID, fetchProjectPersonnel]
+  );
+
+  console.log("ptions", options);
   const [selectedOption, setSelectedOption] = useState({
     isOpen: false,
     isFixed: false,
@@ -192,7 +220,10 @@ const AddTask = (props) => {
           <Button
             type="button"
             className="btn cancel"
-            onClick={props.onCloseTasks}
+            onClick={() => {
+              props.onCloseTasks();
+              props.resetSelectedID();
+            }}
           >
             Close
           </Button>

@@ -18,7 +18,7 @@ const Row = styled.div.attrs((props) => ({ className: props.className }))`
   ${({ alignItems }) => `align-items:${alignItems}`};
 `;
 
-const Column = styled.div.attrs((props) => ({ className: props.className }))`
+const Column = styled.div`
   &::-webkit-scrollbar {
     ${(props)=>!props.scroll && "display: none"};
   }

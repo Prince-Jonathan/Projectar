@@ -317,9 +317,7 @@ const Register = (props) => {
     lunchList = data.map((row) => row.original.id);
   };
   const handleSubmit = () => {
-    let personnelID;
     let body = data.map((personnel) => {
-      personnelID = personnel.id;
       let isPresent;
       if (isPresents.length) {
         isPresent = isPresents.filter(
@@ -338,15 +336,19 @@ const Register = (props) => {
               ? true
               : false
             : false;
+          console.log("analysis", {
+            ...(tandt[0].tandt ? tandt[0] : { tandt: null }),
+          });
           return {
             signIn: null,
             signOut: null,
             ...signIn[0],
             ...signOut[0],
-            ...(tandt[0].tant ? tandt[0] : { tandt: null }),
+            ...(tandt[0].tandt ? tandt[0] : { tandt: null }),
             ...isPresent[0],
             lunch: lunch,
-            id: personnelID,
+            id: personnel.id,
+            name: personnel.name,
           };
         }
       } catch (err) {}
@@ -356,10 +358,14 @@ const Register = (props) => {
         tandt: null,
         isPresent: false,
         lunch: false,
-        id: personnelID,
+        id: personnel.id,
+        name: personnel.name,
       };
     });
-    const register = { date: new Date(props.date).toLocaleDateString(), body: body };
+    const register = {
+      date: new Date(props.date).toLocaleDateString(),
+      body: body,
+    };
     props.onAlert("info", "Saving...", {
       timeout: 3000,
       position: "bottom center",

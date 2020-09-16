@@ -20,7 +20,6 @@ const Bay = (props) => {
   return (
     <div>
       {backdrop}
-      {console.log(location.pathname.includes("/all-projects"))}
       <div className="bay">
         {location.pathname.includes("/all-projects") ? (
           <AddTask
@@ -33,6 +32,8 @@ const Bay = (props) => {
             onFetchTasks={props.onFetchTasks}
             onTaskUpdate={props.onTaskUpdate}
             personnel={props.personnel}
+            onFetchData={props.onFetchData}
+            resetSelectedID={props.resetSelectedID}
           />
         ) : (
           <EditTask

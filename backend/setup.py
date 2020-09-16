@@ -52,10 +52,19 @@ class User(db.Model):
 #Model Project Table
 class Project(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String(100), unique=True, nullable=False)
-	project_consultant=db.Column(db.String(100), nullable=False)
-	project_manager=db.Column(db.String(100), nullable=False)
-	team=db.Column(db.String(200), nullable=False)
+	name = db.Column(db.String(200), nullable=False)
+	consultant = db.Column(db.String(100), nullable=False)
+	consultant_id = db.Column(db.Integer, nullable=False)
+	manager = db.Column(db.String(100), nullable=False)
+	manager_id = db.Column(db.Integer, nullable=False)
+	team = db.Column(db.String(200), nullable=True)
+	customer = db.Column(db.String(200), nullable=False)
+	start_date = db.Column(db.String(10), nullable=False)
+	end_date = db.Column(db.String(10), nullable=False)
+	number = db.Column(db.Integer, nullable=True)
+	progress_percentage = db.Column(db.String(8), nullable=True)
+	revised_end_date = db.Column(db.String(10), nullable=True)
+	status = db.Column(db.String(100), nullable=True)
 
 	tasks=db.relationship('Task', backref='project', lazy=True)
 	registers=db.relationship('Register', backref='project', lazy=True)
@@ -89,6 +98,7 @@ class Register(db.Model):
 	lunch = db.Column(db.Boolean)
 	t_and_t= db.Column(db.Float)
 	personnel_id = db.Column(db.Integer)
+	personnel_name=db.Column(db.String(100))
 	
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
 

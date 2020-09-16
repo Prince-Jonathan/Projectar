@@ -24,7 +24,12 @@ const Layout = (props) => {
       <Default>
         <Row flexDirection="column" backgroundColor={bgcolor}>
           <Column>
-            <Toolbar onClick={props.onShowSideMenu} logo={props.logo} />
+            <Toolbar
+              onClick={props.onShowSideMenu}
+              onFetchData={props.onFetchData}
+              onAlert={props.onAlert}
+              logo={props.logo}
+            />
           </Column>
           <Column className={asideClass.join(" ")} backgroundColor={bgcolor}>
             {props.aside}
@@ -48,7 +53,7 @@ const Layout = (props) => {
       <Mobile>
         <Row flexDirection="column" backgroundColor={bgcolor}>
           <Column>
-            <Toolbar onClick={props.onShowSideMenu} logo={props.logo}/>
+            <Toolbar onClick={props.onShowSideMenu} logo={props.logo} />
           </Column>
           <Column>
             <Row justifyContent="space-evenly">
