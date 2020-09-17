@@ -38,7 +38,7 @@ const Description = (props) => {
               textShadow: "1px 1px 1px #000",
             }}
           >
-            {p.first_name + " " + p.last_name}
+            {p.name}
           </div>
         ))}
       </div>

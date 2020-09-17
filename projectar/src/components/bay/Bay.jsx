@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 
@@ -11,32 +11,56 @@ import "./Bay.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Bay = (props) => {
-  const location = useLocation();
-  console.log("where we are", location);
-  let backdrop = props.showTask ? (
-    <BackDrop onClick={props.onCloseTasks} />
-  ) : null;
+  const { url, path } = useRouteMatch();
+  const history = useHistory();
+  // const [projectID, setProjectID] = useState(history.location.state.projectID);
+  const [projectPersonnel, setProjectPersonnel] = useState([]);
+
+  const fetchProjectPersonnel = async () => {
+    try {
+      props
+        .onFetchData(
+          `/api/project/enrolments/${history.location.state.projectID}`
+        )
+        .then(({ data: { data } }) => {
+          setProjectPersonnel(data);
+          console.log(data);
+        });
+    } catch (err) {}
+  };
+
+  useEffect(
+    () => {
+      fetchProjectPersonnel();
+      console.log("inside useeffect");
+    },
+    [history.location.state.projectID]
+  );
+
+  let backdrop = <BackDrop onClick={console.log("backdrop clicked")} />;
 
   return (
     <div>
-      {backdrop}
-      <div className="bay">
-        {location.pathname.includes("/all-projects") ? (
-          <AddTask
-            showTask={props.showTask}
-            onShowTask={props.onShowTask}
-            onCloseTasks={props.onCloseTasks}
-            postData={props.postData}
-            selectedID={props.selectedID}
-            onAlert={props.onAlert}
-            onFetchTasks={props.onFetchTasks}
-            onTaskUpdate={props.onTaskUpdate}
-            personnel={props.personnel}
-            onFetchData={props.onFetchData}
-            resetSelectedID={props.resetSelectedID}
-          />
-        ) : (
-          <EditTask
+      <Switch>
+        <Route path={path}>
+          {backdrop}
+          {console.log("selectedId", history.location.state.projectID)}
+          <div className="bay" >
+            <AddTask
+              showTask={props.showTask}
+              onShowTask={props.onShowTask}
+              onCloseTasks={props.onCloseTasks}
+              postData={props.postData}
+              projectPersonnel={projectPersonnel}
+              onAlert={props.onAlert}
+              onFetchTasks={props.onFetchTasks}
+              onTaskUpdate={props.onTaskUpdate}
+              personnel={props.personnel}
+              onFetchData={props.onFetchData}
+              resetSelectedID={props.resetSelectedID}
+            />
+
+            {/* <EditTask
             showTask={props.showTask}
             onShowTask={props.onShowTask}
             onCloseTasks={props.onCloseTasks}
@@ -49,9 +73,10 @@ const Bay = (props) => {
             tasks={props.tasks}
             resetSelectedTaskID={props.resetSelectedTaskID}
             onFetchData={props.onFetchData}
-          />
-        )}
-      </div>
+          />  */}
+          </div>
+        </Route>
+      </Switch>
     </div>
   );
 };

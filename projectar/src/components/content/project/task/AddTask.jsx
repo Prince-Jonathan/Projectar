@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
@@ -25,8 +26,9 @@ const Button = styled.button`
 `;
 
 const AddTask = (props) => {
+  const history = useHistory();
+
   const [startDate, setStartDate] = useState({ date: new Date() });
-  const [projectPersonnel, setProjectPersonnel] = useState([]);
   const [state, setState] = useState({
     title: "",
     description: "",
@@ -35,24 +37,6 @@ const AddTask = (props) => {
     personnel: null,
   });
 
-  const fetchProjectPersonnel = async () => {
-    try {
-      props
-        .onFetchData(`/api/project/enrolments/${props.selectedID}`)
-        .then(({ data: { data } }) => {
-          setProjectPersonnel(data);
-          console.log(data);
-        });
-    } catch (err) {}
-  };
-
-  useEffect(
-    () => {
-      fetchProjectPersonnel();
-      console.log("inside useeffect");
-    },
-    [props.selectedID]
-  );
   // useEffect(() => {
   //   return () => {
   //     setProjectPersonnel([]);
@@ -66,12 +50,12 @@ const AddTask = (props) => {
 
   const options = useMemo(
     () =>
-      projectPersonnel
-        ? projectPersonnel.map((personnel) => {
+      props.projectPersonnel
+        ? props.projectPersonnel.map((personnel) => {
             return { label: personnel.name, value: personnel.id };
           })
         : null,
-    [props.selectedID, fetchProjectPersonnel]
+    [props.projectPersonnel]
   );
 
   console.log("ptions", options);
@@ -91,7 +75,7 @@ const AddTask = (props) => {
     const task = {
       ...state,
       ...startDate,
-      project_id: props.selectedID,
+      project_id: history.location.state.projectID,
       targets: state.personnel,
     };
     props.onAlert("info", "Saving...", {
@@ -108,8 +92,8 @@ const AddTask = (props) => {
         })
       )
       .then(() => props.onTaskUpdate())
-      .then(() => props.postData("/api/notify/new-task", task))
-      .then(() => props.onCloseTasks())
+      .then(() => props.postData("/api/notify/new_task", task))
+      .then(() => history.goBack())
       .catch(() =>
         props.onAlert("error", "Failed to Save Task", {
           timeout: 3000,
@@ -221,8 +205,7 @@ const AddTask = (props) => {
             type="button"
             className="btn cancel"
             onClick={() => {
-              props.onCloseTasks();
-              props.resetSelectedID();
+              history.goBack();
             }}
           >
             Close

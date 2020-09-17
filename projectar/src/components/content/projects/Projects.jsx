@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  Link,
+  useHistory,
+  useRouteMatch,
+} from "react-router-dom";
 import styled from "styled-components";
 
+import Bay from "../../bay/Bay";
+import AddTask from "../project/task/AddTask";
 import Table from "../../table/Table";
 import Slate from "../slate/Slate";
 import { isMobile } from "../../Responsive";
@@ -37,13 +45,14 @@ const Styles = styled.div`
 `;
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: ${props=>props.isMobile ? "row" : "column"};
+  flex-direction: ${(props) => (props.isMobile ? "row" : "column")};
   justify-content: space-around;
   flex-wrap: wrap;
 `;
 
 const Projects = (props) => {
   const history = useHistory();
+  const { url, path } = useRouteMatch();
   const [rowID, setRowID] = useState(0);
 
   const data = React.useMemo(() => props.projects, [props.projects]);
@@ -57,26 +66,29 @@ const Projects = (props) => {
 
   const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
-      const defaultRef = React.useRef()
-      const resolvedRef = ref || defaultRef
-  
-      React.useEffect(() => {
-        resolvedRef.current.indeterminate = indeterminate
-      }, [resolvedRef, indeterminate])
-  
+      const defaultRef = React.useRef();
+      const resolvedRef = ref || defaultRef;
+
+      React.useEffect(
+        () => {
+          resolvedRef.current.indeterminate = indeterminate;
+        },
+        [resolvedRef, indeterminate]
+      );
+
       return (
         <>
           <input type="checkbox" ref={resolvedRef} {...rest} />
         </>
-      )
+      );
     }
-  )
+  );
 
   const columns = React.useMemo(
     () => {
       const columns = [
         {
-          id: 'selection',
+          id: "selection",
           // The header can use the table's getToggleAllRowsSelectedProps method
           // to render a checkbox
           Header: ({ getToggleAllRowsSelectedProps }) => (
@@ -134,7 +146,8 @@ const Projects = (props) => {
             <Button
               onClick={() => {
                 setRowID(row.original.id);
-                props.onShowTask();
+                // props.onShowTask();
+                history.push(`${url}/bay`, { projectID: row.original.id });
               }}
             >
               Add Task
@@ -147,7 +160,13 @@ const Projects = (props) => {
               title={`${row.original.name} - Tasks List [Target vs. Achieved]`}
               logo={props.logo}
             />
-            <Button onClick={()=>history.push(`/project/${row.original.id}/attendance`)}>Attendance</Button>
+            <Button
+              onClick={() =>
+                history.push(`/project/${row.original.id}/attendance`)
+              }
+            >
+              Attendance
+            </Button>
           </div>
           <TasksStatus
             projectID={row.original.id}
@@ -171,6 +190,18 @@ const Projects = (props) => {
           />
         </Slate>
       </Wrapper>
+      <Route path={`${path}/bay`}>
+        <Bay
+          postData={props.postData}
+          selectedTaskID={props.selectedTaskID}
+          onAlert={props.onAlert}
+          onTaskUpdate={props.handleTaskCreated}
+          tasks={props.projectTasks}
+          onTaskUpdate={props.onTaskUpdate}
+          resetSelectedTaskID={props.resetSelectedTaskID}
+          onFetchData={props.onFetchData}
+        />
+      </Route>
     </div>
   );
 };

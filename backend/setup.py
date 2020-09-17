@@ -32,13 +32,10 @@ enrolment = db.Table('enrolment',
 #Model User Table
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	first_name = db.Column(db.String(50), nullable=False)
-	last_name=db.Column(db.String(50), nullable=False)
+	name = db.Column(db.String(100), nullable=False)
 	email=db.Column(db.String(200), nullable=True)
-	phone_number=db.Column(db.Integer, nullable=True)
-	username=db.Column(db.String(100), nullable=True)
-	password=db.Column(db.String(50), nullable=True)
 	role=db.Column(db.String(50), nullable=True)
+	role_id=db.Column(db.Integer, nullable=True)
 
 	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 	tasks = db.relationship('Task', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
@@ -65,6 +62,7 @@ class Project(db.Model):
 	progress_percentage = db.Column(db.String(8), nullable=True)
 	revised_end_date = db.Column(db.String(10), nullable=True)
 	status = db.Column(db.String(100), nullable=True)
+	actual_end_date = db.Column(db.String(10), nullable=True)
 
 	tasks=db.relationship('Task', backref='project', lazy=True)
 	registers=db.relationship('Register', backref='project', lazy=True)

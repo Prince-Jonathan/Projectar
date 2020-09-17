@@ -186,6 +186,9 @@ const App = (props) => {
               onFetchData={fetchData}
               toggler={isTaskCreated}
               logo={Logo2}
+              postData={postData}
+              onTaskUpdate={handleTaskCreated}
+              onAlert={handleAlert}
             />
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/reports">
@@ -195,7 +198,7 @@ const App = (props) => {
             <Redirect to="/" />
           </Route>
 
-          {showTask ? (
+          {/* {showTask ? (
             <Bay
               showTask={showTask}
               onShowTask={handleShowTask}
@@ -211,7 +214,7 @@ const App = (props) => {
               resetSelectedTaskID={() => setSeletedTaskID(0)}
               onFetchData={fetchData}
             />
-          ) : null}
+          ) : null} */}
         </Layout>
       </Switch>
     </div>

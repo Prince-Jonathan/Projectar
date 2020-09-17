@@ -53,7 +53,7 @@ def notify_complete():
 	note=request.get_json()
 	return loop.run_until_complete(create_note(note,"Completed Task"))
 
-@app.route('/api/notify/new-task', methods=['POST'])
+@app.route('/api/notify/new_task', methods=['POST'])
 def notify_new():
 	note=request.get_json()
 	return loop.run_until_complete(create_note(note,"New Task"))
@@ -205,10 +205,14 @@ def sync_projects():
 	data = netsuite_req({"request":"projects"})["data"]
 	try:
 		for project in data:
+			print("at project:",project["id"])
 			db_proj = Project.query.get(project["id"])
 			if db_proj is not None:
-				db.session.delete(db_proj)
+				db.session.query(Project).filter(Project.id==db_proj.id).update(project)
 				db.session.commit()
+				return {
+					"success":True,
+				}
 			proj = Project(
 				id=project["id"],
 				name=project["name"],
@@ -222,10 +226,38 @@ def sync_projects():
 				number=project["number"],
 				progress_percentage=project["progress_percentage"],
 				revised_end_date=project["revised_end_date"],
-				status=project["status"]
+				status=project["status"],
+				actual_end_date=project["actual_end_date"] 
 			)
 			db.session.add(proj)
-		db.session.commit()	
+			db.session.commit()	
+
+			#add personnel
+			
+			data = netsuite_req( {"request": "personnel", "project_id": project["id"]})["data"]
+			if len(data) != 0:
+				print("syncing personnel for project:", project["id"])
+				try:
+					for personnel in data:
+						db_pers = User.query.get(personnel["id"])
+						if db_pers is not None:
+							db.session.query(User).filter(User.id==db_pers.id).update(personnel)
+						else:
+							pers = User(
+								id=personnel["id"],
+								name=personnel["name"],
+								role=personnel["role"],
+								role_id=personnel["role_id"]
+							)
+							db.session.add(pers)
+					db.session.commit()	
+				except SQLAlchemyError as err:
+					print(err)
+					db.session.rollback()
+					return {
+						"success":False,
+						"msg":"Could not sync personnel"
+					} 
 		return {
 			"success":True,
 		}
@@ -234,6 +266,7 @@ def sync_projects():
 		db.session.rollback()
 		return {
 			"success":False,
+			"msg":"Could not sync project"
 		} 
 
 
@@ -405,11 +438,11 @@ def user_projs(personnel_id):
 def proj_users(project_id):
 	'''Get all users that have been enrolled to a project'''
 	data = netsuite_req({"request": "personnel", "project_id": project_id})
+	db_proj = Project.query.get(project_id)
 	return {
 		"success" : True,
 		"data" : data["data"]
 	}
-	
 
 @app.route('/api/task/enrolments/<int:task_id>')
 def task_users(task_id):

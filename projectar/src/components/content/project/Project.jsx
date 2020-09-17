@@ -152,7 +152,8 @@ const Project = (props) => {
           <div className="left">
             <Button
               onClick={() => {
-                props.onShowTask(row.original.id);
+                // props.onShowTask(row.original.id);
+                history.push(`${url}/bay`, { projectID: row.original.id });
               }}
             >
               Edit
