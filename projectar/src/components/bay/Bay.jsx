@@ -11,42 +11,41 @@ import "./Bay.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 const Bay = (props) => {
-  const { url, path } = useRouteMatch();
-  const history = useHistory();
+  const { path } = useRouteMatch();
+  // const history = useHistory();
   // const [projectID, setProjectID] = useState(history.location.state.projectID);
-  const [projectPersonnel, setProjectPersonnel] = useState([]);
+  // const [projectPersonnel, setProjectPersonnel] = useState([]);
 
-  const fetchProjectPersonnel = async () => {
-    try {
-      props
-        .onFetchData(
-          `/api/project/enrolments/${history.location.state.projectID}`
-        )
-        .then(({ data: { data } }) => {
-          setProjectPersonnel(data);
-          console.log(data);
-        });
-    } catch (err) {}
-  };
+  // const fetchProjectPersonnel = async () => {
+  //   try {
+  //     props
+  //       .onFetchData(
+  //         `/api/project/enrolments/${history.location.state.projectID}`
+  //       )
+  //       .then(({ data: { data } }) => {
+  //         setProjectPersonnel(data);
+  //         console.log(data);
+  //       });
+  //   } catch (err) {}
+  // };
 
-  useEffect(
-    () => {
-      fetchProjectPersonnel();
-      console.log("inside useeffect");
-    },
-    [history.location.state.projectID]
-  );
+  // useEffect(
+  //   () => {
+  //     fetchProjectPersonnel();
+  //     console.log("inside useeffect");
+  //   },
+  //   [history.location.state.projectID]
+  // );
 
-  let backdrop = <BackDrop onClick={console.log("backdrop clicked")} />;
+  let backdrop = <BackDrop />;
 
   return (
     <div>
       <Switch>
         <Route path={path}>
           {backdrop}
-          {console.log("selectedId", history.location.state.projectID)}
-          <div className="bay" >
-            <AddTask
+          <div className="bay">
+            {/* <AddTask
               showTask={props.showTask}
               onShowTask={props.onShowTask}
               onCloseTasks={props.onCloseTasks}
@@ -58,8 +57,8 @@ const Bay = (props) => {
               personnel={props.personnel}
               onFetchData={props.onFetchData}
               resetSelectedID={props.resetSelectedID}
-            />
-
+            /> */}
+            {props.children}
             {/* <EditTask
             showTask={props.showTask}
             onShowTask={props.onShowTask}

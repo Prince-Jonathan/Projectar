@@ -191,7 +191,7 @@ const Projects = (props) => {
         </Slate>
       </Wrapper>
       <Route path={`${path}/bay`}>
-        <Bay
+        {/* <Bay
           postData={props.postData}
           selectedTaskID={props.selectedTaskID}
           onAlert={props.onAlert}
@@ -200,7 +200,15 @@ const Projects = (props) => {
           onTaskUpdate={props.onTaskUpdate}
           resetSelectedTaskID={props.resetSelectedTaskID}
           onFetchData={props.onFetchData}
-        />
+        /> */}
+        <Bay>
+          <AddTask
+            postData={props.postData}
+            onAlert={props.onAlert}
+            onTaskUpdate={props.onTaskUpdate}
+            onFetchData={props.onFetchData}
+          />
+        </Bay>
       </Route>
     </div>
   );

@@ -28,6 +28,29 @@ const Button = styled.button`
 const AddTask = (props) => {
   const history = useHistory();
 
+  const [projectPersonnel, setProjectPersonnel] = useState([]);
+
+  const fetchProjectPersonnel = async () => {
+    try {
+      props
+        .onFetchData(
+          `/api/project/enrolments/${history.location.state.projectID}`
+        )
+        .then(({ data: { data } }) => {
+          setProjectPersonnel(data);
+          console.log(data);
+        });
+    } catch (err) {}
+  };
+
+  useEffect(
+    () => {
+      fetchProjectPersonnel();
+      console.log("inside useeffect");
+    },
+    [history.location.state.projectID]
+  );
+
   const [startDate, setStartDate] = useState({ date: new Date() });
   const [state, setState] = useState({
     title: "",
@@ -50,15 +73,14 @@ const AddTask = (props) => {
 
   const options = useMemo(
     () =>
-      props.projectPersonnel
-        ? props.projectPersonnel.map((personnel) => {
+      projectPersonnel
+        ? projectPersonnel.map((personnel) => {
             return { label: personnel.name, value: personnel.id };
           })
         : null,
-    [props.projectPersonnel]
+    [projectPersonnel]
   );
 
-  console.log("ptions", options);
   const [selectedOption, setSelectedOption] = useState({
     isOpen: false,
     isFixed: false,
@@ -85,14 +107,14 @@ const AddTask = (props) => {
     props
       .postData("/api/task/add", task)
       .then((data) => console.log(data))
-      .then(() =>
+      .then(() => {
+        props.onTaskUpdate()
         props.onAlert("success", "Task Saved", {
           timeout: 5000,
           position: "bottom center",
-        })
-      )
-      .then(() => props.onTaskUpdate())
-      .then(() => props.postData("/api/notify/new_task", task))
+        });
+        props.postData("/api/notify/new_task", task)
+      })
       .then(() => history.goBack())
       .catch(() =>
         props.onAlert("error", "Failed to Save Task", {
