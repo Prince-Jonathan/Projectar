@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
@@ -26,6 +26,7 @@ const Button = styled.button`
 `;
 
 const AddTask = (props) => {
+  const location = useLocation();
   const history = useHistory();
 
   const [projectPersonnel, setProjectPersonnel] = useState([]);
@@ -33,9 +34,7 @@ const AddTask = (props) => {
   const fetchProjectPersonnel = async () => {
     try {
       props
-        .onFetchData(
-          `/api/project/enrolments/${history.location.state.projectID}`
-        )
+        .onFetchData(`/api/project/enrolments/${location.state.projectID}`)
         .then(({ data: { data } }) => {
           setProjectPersonnel(data);
           console.log(data);
@@ -48,7 +47,7 @@ const AddTask = (props) => {
       fetchProjectPersonnel();
       console.log("inside useeffect");
     },
-    [history.location.state.projectID]
+    [location.state.projectID]
   );
 
   const [startDate, setStartDate] = useState({ date: new Date() });
@@ -97,7 +96,7 @@ const AddTask = (props) => {
     const task = {
       ...state,
       ...startDate,
-      project_id: history.location.state.projectID,
+      project_id: location.state.projectID,
       targets: state.personnel,
     };
     props.onAlert("info", "Saving...", {
@@ -108,12 +107,12 @@ const AddTask = (props) => {
       .postData("/api/task/add", task)
       .then((data) => console.log(data))
       .then(() => {
-        props.onTaskUpdate()
+        props.onTaskUpdate();
         props.onAlert("success", "Task Saved", {
           timeout: 5000,
           position: "bottom center",
         });
-        props.postData("/api/notify/new_task", task)
+        props.postData("/api/notify/new_task", task);
       })
       .then(() => history.goBack())
       .catch(() =>
