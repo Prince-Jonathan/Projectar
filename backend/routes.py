@@ -531,7 +531,7 @@ def project_verbose(proj_id):
       task_users = User.serialize_list(task.personnel)
       # print(task_users)
       for task_user in task_users:
-        temp_ += task_user['first_name'] + " " + task_user['last_name']
+        temp_ += task_user['name']
         if not task_users[-1]==task_user:
         	temp_+=", "
       plist.append(temp_)
