@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
@@ -24,8 +25,14 @@ const Button = styled.button`
   }
 `;
 
-const AddTask = (props) => {
+const EditTask = (props) => {
+  const location = useLocation();
+  const history = useHistory();
+
   const [startDate, setStartDate] = useState({ date: new Date() });
+  const [projectPersonnel, setProjectPersonnel] = useState([]);
+  const [taskPersonnel, setTaskPersonnel] = useState([]);
+
   const [state, setState] = useState({
     title: "",
     description: "",
@@ -34,6 +41,39 @@ const AddTask = (props) => {
     personnel: null,
   });
 
+  const fetchProjectPersonnel = async () => {
+    try {
+      props
+        .onFetchData(`/api/project/enrolments/${location.state.projectID}`)
+        .then(({ data: { data } }) => {
+          setProjectPersonnel(data);
+          console.log(data);
+        });
+    } catch (err) {}
+  };
+
+  const fetchTaskPersonnel = async () => {
+    try {
+      props
+        .onFetchData(`/api/task/enrolments/${location.state.taskID}`)
+        .then(({ data }) => {
+          let personnel = data.map((personnel) => {
+            return { label: personnel.name, value: personnel.id };
+          });
+          setTaskPersonnel(personnel);
+          console.log(personnel);
+        });
+    } catch (err) {}
+  };
+
+  useEffect(
+    () => {
+      fetchProjectPersonnel();
+      fetchTaskPersonnel();
+    },
+    [location.state]
+  );
+
   // const fetchPersonnel = (taskID) =>
   //   props
   //     .onFetchData(`/api/task/enrolments/${taskID}`)
@@ -41,28 +81,39 @@ const AddTask = (props) => {
   //     .then(({ data }) => (data.msg ? null : setPersonnel(data)));
 
   // useEffect(() => {
-  //   fetchPersonnel(props.selectedTaskID);
+  //   fetchPersonnel(location.state.taskID);
   // }, []);
-  const data = props.personnel;
-  const options = data.map((personnel) => {
-    const { first_name: firstName, last_name: lastName, id: value } = personnel;
-    return { label: `${firstName} ${lastName}`, value: value };
-  });
-  // const options = [
-  //   { value: "chocolate", label: "Chocolate" },
-  //   { value: "strawberry", label: "Strawberry" },
-  //   { value: "vanilla", label: "Vanilla" },
-  // ];
+
+  // const assignedPersonnel = useMemo(
+  //   () =>
+  //     taskPersonnel
+  //       ? taskPersonnel.map((personnel) => {
+  //           return { label: personnel.name, value: personnel.id };
+  //         })
+  //       : null,
+  //   [taskPersonnel]
+  // );
+  const options = useMemo(
+    () =>
+      projectPersonnel
+        ? projectPersonnel.map((personnel) => {
+            return { label: personnel.name, value: personnel.id };
+          })
+        : null,
+    [projectPersonnel]
+  );
 
   let task;
   useEffect(
     () => {
-      task = props.tasks.filter((t) => parseInt(t.id) === props.selectedTaskID);
-      console.log("query move", props.selectedTaskID);
+      task = props.tasks.filter(
+        (t) => parseInt(t.id) === location.state.taskID
+      );
+      console.log("query move", location.state.taskID);
       setState(task[0]);
       setStartDate({ date: new Date(task[0].date) });
     },
-    [props.selectedTaskID, props.tasks]
+    [location.state, props.tasks]
   );
 
   const [selectedOption, setSelectedOption] = useState({
@@ -90,7 +141,7 @@ const AddTask = (props) => {
     });
     console.log("this is the outgoing", task);
     props
-      .postData(`/api/task/update/${props.selectedTaskID}`, task)
+      .postData(`/api/task/update/${location.state.taskID}`, task)
       .then((data) => console.log("returned from post", data))
       .then(() =>
         props.onAlert("success", "Task Updated", {
@@ -101,7 +152,7 @@ const AddTask = (props) => {
       .then(() => props.onTaskUpdate())
       .then(() => props.postData("/api/notify/edited-task", task))
       // .then(() => props.resetSelectedTaskID())
-      .then(() => props.onCloseTasks())
+      .then(() => history.goBack())
       .catch(() =>
         props.onAlert("error", "Failed to Update Task", {
           timeout: 3000,
@@ -187,8 +238,8 @@ const AddTask = (props) => {
           isMulti
           placeholder="Assign to:"
           onChange={handleSelection}
+          defaultValue={[{label: "Samuel Keketsor", value: 189}]}
           options={options}
-          defaultValue={selectedOption.value}
           isClearable
           styles={{ menuPortal: (base) => ({ ...base, zIndex: 200 }) }}
           menuPortalTarget={document.body}
@@ -211,10 +262,7 @@ const AddTask = (props) => {
           <Button
             type="button"
             className="btn cancel"
-            onClick={() => {
-              props.onCloseTasks();
-              // props.resetSelectedTaskID();
-            }}
+            onClick={() => history.goBack()}
           >
             Close
           </Button>
@@ -224,4 +272,4 @@ const AddTask = (props) => {
   );
 };
 
-export default AddTask;
+export default EditTask;

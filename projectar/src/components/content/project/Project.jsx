@@ -7,6 +7,7 @@ import {
   Switch,
   Redirect,
   useHistory,
+  useLocation,
 } from "react-router-dom";
 
 import Table from "../../table/Table";
@@ -17,8 +18,10 @@ import filterGreaterThan from "../../table/filters/filterGreaterThan";
 import Description from "../project/task/Description";
 import Caption from "../Caption";
 import Task from "./task/Task";
+import EditTask from "./task/EditTask";
 import AllTasks from "./AllTasks";
 import Attendance from "../attendance/Attendance";
+import Bay from "../../bay/Bay";
 import Button from "../uiElements/Button";
 
 const Styles = styled.div`
@@ -44,6 +47,7 @@ const Styles = styled.div`
 const Project = (props) => {
   const { path, url } = useRouteMatch();
   const { status } = useParams();
+  const location = useLocation();
   const history = useHistory();
   const [selectedTaskID, setSelectedTaskID] = useState(undefined);
   const { id } = useParams();
@@ -153,7 +157,10 @@ const Project = (props) => {
             <Button
               onClick={() => {
                 // props.onShowTask(row.original.id);
-                history.push(`${url}/bay`, { projectID: row.original.id });
+                history.push(`${url}`, {
+                  taskID: row.original.id,
+                  projectID: id,
+                });
               }}
             >
               Edit
@@ -204,6 +211,20 @@ const Project = (props) => {
                 data={data}
                 renderRowSubComponent={renderRowSubComponent}
               />
+              {location.state ? (
+                <Bay>
+                  <EditTask
+                    postData={props.postData}
+                    onAlert={props.onAlert}
+                    onFetchTasks={props.onFetchTasks}
+                    onTaskUpdate={props.onTaskUpdate}
+                    personnel={props.personnel}
+                    tasks={props.tasks}
+                    resetSelectedTaskID={props.resetSelectedTaskID}
+                    onFetchData={props.onFetchData}
+                  />{" "}
+                </Bay>
+              ) : null}
             </Slate>
           </Route>
           <Route path={`${path}/attendance`}>

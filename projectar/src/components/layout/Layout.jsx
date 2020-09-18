@@ -29,6 +29,7 @@ const Layout = (props) => {
               onFetchData={props.onFetchData}
               onAlert={props.onAlert}
               logo={props.logo}
+              onSync={props.onSync}
             />
           </Column>
           <Column className={asideClass.join(" ")} backgroundColor={bgcolor}>
@@ -53,7 +54,11 @@ const Layout = (props) => {
       <Mobile>
         <Row flexDirection="column" backgroundColor={bgcolor}>
           <Column>
-            <Toolbar onClick={props.onShowSideMenu} logo={props.logo} />
+            <Toolbar
+              onSync={props.onSync}
+              onClick={props.onShowSideMenu}
+              logo={props.logo}
+            />
           </Column>
           <Column>
             <Row justifyContent="space-evenly">

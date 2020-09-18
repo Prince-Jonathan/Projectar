@@ -28,7 +28,7 @@ class User(db.Model, Serializer):
 	#date_created =  db.Column(db.DateTime, default=datetime.utcnow)	
 
 	def __repr__(self): 
-		return '<User %r>' % self.first_name	
+		return '<User %r>' % self.name	
 
 #Model Project Table
 class Project(db.Model, Serializer):

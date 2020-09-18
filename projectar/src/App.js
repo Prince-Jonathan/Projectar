@@ -29,6 +29,7 @@ import Logo from "./logos/logo2.png";
 const App = (props) => {
   const alert = useAlert();
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [syncing, setSyncing] = useState(false);
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
   const [projectTasks, setProjectTasks] = useState([]);
@@ -43,8 +44,8 @@ const App = (props) => {
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   // const baseUrl = "https://projectar.devcodes.co";
-  // const baseUrl = "https://85171a7e4491.ngrok.io";
-  const baseUrl = "http://localhost:8050";
+  const baseUrl = "https://5333334e79de.ngrok.io";
+  // const baseUrl = "http://localhost:8050";
 
   const OneSignal = window.OneSignal;
   OneSignal.push(function() {
@@ -63,7 +64,29 @@ const App = (props) => {
         ...params,
       },
     });
-
+  const syncEvents = () => {
+    setSyncing(true);
+    !syncing &&
+      handleAlert("info", "Syncing events", {
+        timeout: 3000,
+        position: "bottom center",
+      });
+    !syncing &&
+      fetchData("/api/project/sync")
+        .then(() => {
+          handleAlert("success", "Syncing complete", {
+            timeout: 5000,
+            position: "bottom center",
+          });
+          setSyncing(false);
+        })
+        .catch(() =>
+          handleAlert("error", "Failed to sync events", {
+            timeout: 3000,
+            position: "bottom center",
+          })
+        );
+  };
   const fetchProjects = () =>
     fetchData("/api/project/all").then(({ data }) => setProjects(data));
   const fetchProjectTasks = () =>
@@ -72,6 +95,7 @@ const App = (props) => {
     fetchData("/api/user/all").then(({ data }) => setPersonnel(data));
 
   useEffect(() => {
+    syncEvents();
     fetchProjects();
     fetchProjectTasks();
     fetchPersonnel();
@@ -138,6 +162,7 @@ const App = (props) => {
           name={user.first_name}
           onShowSideMenu={handleShowSideMenu}
           onFetchData={fetchData}
+          onSync={syncEvents}
           onAlert={handleAlert}
           logo={Logo2}
         >

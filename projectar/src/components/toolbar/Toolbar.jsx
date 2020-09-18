@@ -36,30 +36,7 @@ const Toolbar = (props) => {
             color: "black",
           }}
           disabled={true}
-          onClick={() => {
-            setSyncing(true);
-            !syncing &&
-              props.onAlert("info", "Syncing events", {
-                timeout: 3000,
-                position: "bottom center",
-              });
-            !syncing &&
-              props
-                .onFetchData("/api/project/sync")
-                .then(() => {
-                  props.onAlert("success", "Syncing complete", {
-                    timeout: 5000,
-                    position: "bottom center",
-                  });
-                  setSyncing(false);
-                })
-                .catch(() =>
-                  props.onAlert("error", "Failed to Save Task", {
-                    timeout: 3000,
-                    position: "bottom center",
-                  })
-                );
-          }}
+          onClick={props.onSync}
         >
           <i
             className="fa fa-refresh fa-fw"
