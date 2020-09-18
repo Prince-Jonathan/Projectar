@@ -47,7 +47,7 @@ const Register = (props) => {
       const update = prev.concat(data);
       setIsPresents(update);
     },
-    [isPresents]
+    [isPresents]  
   );
 
   const handleSetSignIn = React.useCallback(

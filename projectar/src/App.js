@@ -44,8 +44,8 @@ const App = (props) => {
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   // const baseUrl = "https://projectar.devcodes.co";
-  const baseUrl = "https://5333334e79de.ngrok.io";
-  // const baseUrl = "http://localhost:8050";
+  // const baseUrl = "https://5333334e79de.ngrok.io";
+  const baseUrl = "http://localhost:8050";
 
   const OneSignal = window.OneSignal;
   OneSignal.push(function() {
@@ -95,7 +95,7 @@ const App = (props) => {
     fetchData("/api/user/all").then(({ data }) => setPersonnel(data));
 
   useEffect(() => {
-    syncEvents();
+    // syncEvents();
     fetchProjects();
     fetchProjectTasks();
     fetchPersonnel();

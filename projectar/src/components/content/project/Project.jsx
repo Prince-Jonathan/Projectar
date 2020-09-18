@@ -60,6 +60,50 @@ const Project = (props) => {
   const [attendance, setAttendance] = useState([]);
   const [attendanceDate, setAttendanceDate] = useState(new Date());
 
+  const [projectPersonnel, setProjectPersonnel] = useState([]);
+  const [taskPersonnel, setTaskPersonnel] = useState([]);
+  const [tasksPersonnel, setTasksPersonnel] = useState([]);
+
+  const fetchProjectPersonnel = async () => {
+    try {
+      props
+        .onFetchData(`/api/project/enrolments/${id}`)
+        .then(({ data: { data } }) => {
+          setProjectPersonnel(data);
+        });
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    fetchProjectPersonnel();
+  }, []);
+
+  useEffect(() => console.log("projectPersonnel", projectPersonnel), [
+    projectPersonnel,
+  ]);
+
+  useEffect(() => {
+    let assignedPersonnel = [];
+    const fetchTasksPersonnel = async () => {
+      data.forEach((task) =>
+        props
+          .onFetchData(`/api/task/enrolments/${task.id}`)
+          .then(({ data }) => {
+            let personnel = data.map((personnel) => {
+              return {
+                label: personnel.name,
+                value: personnel.id,
+                id: task.id,
+              };
+            });
+            assignedPersonnel = assignedPersonnel.concat(personnel);
+            setTasksPersonnel(assignedPersonnel);
+          })
+      );
+    };
+    fetchTasksPersonnel();
+  }, []);
+
   const fetchAttendance = async () => {
     props.onFetchData(`/api/attendance/${id}/all`).then(({ data }) => {
       const filtered = data.filter((register) => {
@@ -93,18 +137,20 @@ const Project = (props) => {
           // Make an expander cell
           Header: () => null, // No header
           id: "expander", // It needs an ID
-          Cell: ({ row }) => (
-            // Use Cell to render an expander for each row.
-            // We can use the getToggleRowExpandedProps prop-getter
-            // to build the expander.
-            <span {...row.getToggleRowExpandedProps()}>
-              {row.isExpanded ? (
-                <i class="fa fa-compress" aria-hidden="true" />
-              ) : (
-                <i class="fa fa-expand" aria-hidden="true" />
-              )}
-            </span>
-          ),
+          Cell: ({ row }) => {
+            return (
+              // Use Cell to render an expander for each row.
+              // We can use the getToggleRowExpandedProps prop-getter
+              // to build the expander.
+              <span {...row.getToggleRowExpandedProps()}>
+                {row.isExpanded ? (
+                  <i class="fa fa-compress" aria-hidden="true" />
+                ) : (
+                  <i class="fa fa-expand" aria-hidden="true" />
+                )}
+              </span>
+            );
+          },
         },
         {
           Header: "Title",
@@ -130,7 +176,7 @@ const Project = (props) => {
       ];
       return isMobile ? column.splice(0, 2) : column;
     },
-    [isMobile]
+    [isMobile, props.project]
   );
   const deleteTask = useCallback((taskID) => {
     console.log("its the component");
@@ -169,16 +215,18 @@ const Project = (props) => {
 
             <Button onClick={() => deleteTask(row.original.id)}>Delete</Button>
           </div>
+          {console.log("tasksPersonnel", tasksPersonnel)}
           <Description
             onFetchData={props.onFetchData}
             description={row.original.description}
             comment={row.original.comment}
             taskID={row.original.id}
+            tasksPersonnel={tasksPersonnel}
           />
         </div>
       </Styles>
     ),
-    []
+    [tasksPersonnel]
   );
   const outstandingTasks = data.filter(
     (task) => parseInt(task.achieved) !== parseInt(task.target)
@@ -190,7 +238,10 @@ const Project = (props) => {
   const handleClick = ({ row }) => {
     setSelectedTaskID(row.original.id);
     // setPersonnelName(row.original.first_name + " " + row.original.last_name);
-    history.push(`${url}/outstanding-tasks/${row.original.id}/execute`);
+    history.push(`${url}/outstanding-tasks/${row.original.id}/execute`, {
+      taskID: row.original.id,
+      projectID: id,
+    });
   };
 
   const handleSetAttendanceDate = (date) => {
@@ -218,7 +269,8 @@ const Project = (props) => {
                     onAlert={props.onAlert}
                     onFetchTasks={props.onFetchTasks}
                     onTaskUpdate={props.onTaskUpdate}
-                    personnel={props.personnel}
+                    projectPersonnel={projectPersonnel}
+                    tasksPersonnel={tasksPersonnel}
                     tasks={props.tasks}
                     resetSelectedTaskID={props.resetSelectedTaskID}
                     onFetchData={props.onFetchData}
@@ -248,6 +300,8 @@ const Project = (props) => {
               clickable={handleClick}
               selectedTaskID={selectedTaskID}
               onTaskUpdate={props.onTaskUpdate}
+              projectPersonnel={projectPersonnel}
+              tasksPersonnel={tasksPersonnel}
               onAlert={props.onAlert}
               postData={props.postData}
               project={project}

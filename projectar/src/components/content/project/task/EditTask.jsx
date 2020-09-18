@@ -30,8 +30,6 @@ const EditTask = (props) => {
   const history = useHistory();
 
   const [startDate, setStartDate] = useState({ date: new Date() });
-  const [projectPersonnel, setProjectPersonnel] = useState([]);
-  const [taskPersonnel, setTaskPersonnel] = useState([]);
 
   const [state, setState] = useState({
     title: "",
@@ -41,66 +39,18 @@ const EditTask = (props) => {
     personnel: null,
   });
 
-  const fetchProjectPersonnel = async () => {
-    try {
-      props
-        .onFetchData(`/api/project/enrolments/${location.state.projectID}`)
-        .then(({ data: { data } }) => {
-          setProjectPersonnel(data);
-          console.log(data);
-        });
-    } catch (err) {}
-  };
-
-  const fetchTaskPersonnel = async () => {
-    try {
-      props
-        .onFetchData(`/api/task/enrolments/${location.state.taskID}`)
-        .then(({ data }) => {
-          let personnel = data.map((personnel) => {
-            return { label: personnel.name, value: personnel.id };
-          });
-          setTaskPersonnel(personnel);
-          console.log(personnel);
-        });
-    } catch (err) {}
-  };
-
-  useEffect(
-    () => {
-      fetchProjectPersonnel();
-      fetchTaskPersonnel();
-    },
-    [location.state]
-  );
-
-  // const fetchPersonnel = (taskID) =>
-  //   props
-  //     .onFetchData(`/api/task/enrolments/${taskID}`)
-  //     //check if messsage exists: msg only exist on error
-  //     .then(({ data }) => (data.msg ? null : setPersonnel(data)));
-
-  // useEffect(() => {
-  //   fetchPersonnel(location.state.taskID);
-  // }, []);
-
-  // const assignedPersonnel = useMemo(
-  //   () =>
-  //     taskPersonnel
-  //       ? taskPersonnel.map((personnel) => {
-  //           return { label: personnel.name, value: personnel.id };
-  //         })
-  //       : null,
-  //   [taskPersonnel]
-  // );
   const options = useMemo(
     () =>
-      projectPersonnel
-        ? projectPersonnel.map((personnel) => {
+      props.projectPersonnel
+        ? props.projectPersonnel.map((personnel) => {
             return { label: personnel.name, value: personnel.id };
           })
         : null,
-    [projectPersonnel]
+    [props.projectPersonnel]
+  );
+
+  const assignedPersonnel = props.tasksPersonnel.filter(
+    (personnel) => parseInt(personnel.id) === parseInt(location.state.taskID)
   );
 
   let task;
@@ -238,7 +188,7 @@ const EditTask = (props) => {
           isMulti
           placeholder="Assign to:"
           onChange={handleSelection}
-          defaultValue={[{label: "Samuel Keketsor", value: 189}]}
+          defaultValue={assignedPersonnel}
           options={options}
           isClearable
           styles={{ menuPortal: (base) => ({ ...base, zIndex: 200 }) }}

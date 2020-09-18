@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  useRouteMatch,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
@@ -33,6 +39,7 @@ const Button = styled.button`
 
 const Task = (props) => {
   const history = useHistory();
+  const location = useLocation();
 
   const [startDate, setStartDate] = useState({ date: new Date() });
   const [state, setState] = useState({
@@ -67,19 +74,22 @@ const Task = (props) => {
     [task]
   );
 
-  // const data = props.personnel;
+  const assignedPersonnel = location.state
+    ? props.tasksPersonnel.filter(
+        (personnel) =>
+          parseInt(personnel.id) === parseInt(location.state.taskID)
+      )
+    : null;
 
-  // const options = data.map((personnel) => {
-  //   const { first_name: firstName, last_name: lastName, id: value } = personnel;
-  //   return { label: `${firstName} ${lastName}`, value: value };
-  // });
-
-  const options = [
-    { value: 1, label: "Jonathan Nkansah" },
-    { value: 2, label: "Alex Bentum" },
-    { value: 3, label: "Kofi Tei" },
-    { value: 4, label: "Ben Ten" },
-  ];
+  const options = useMemo(
+    () =>
+      props.projectPersonnel
+        ? props.projectPersonnel.map((personnel) => {
+            return { label: personnel.name, value: personnel.id };
+          })
+        : null,
+    [props.projectPersonnel]
+  );
 
   const [selectedOption, setSelectedOption] = useState({
     isOpen: false,
@@ -261,7 +271,7 @@ const Task = (props) => {
                 isMulti
                 onChange={handleSelection}
                 options={options}
-                defaultValue={selectedOption.value}
+                defaultValue={assignedPersonnel}
                 isClearable
                 styles={{ menuPortal: (base) => ({ ...base, zIndex: 200 }) }}
                 menuPortalTarget={document.body}
@@ -299,7 +309,9 @@ const Task = (props) => {
                   // }}
                   onChange={handleEditorChange}
                   config={{
-                    ckfinder: { uploadUrl: "https://projectar.devcodes.co/upload" },
+                    ckfinder: {
+                      uploadUrl: "https://projectar.devcodes.co/upload",
+                    },
                   }}
                   // onBlur={(event, editor) => {
                   //   console.log("Blur.", editor);

@@ -209,27 +209,28 @@ def sync_projects():
 			db_proj = Project.query.get(project["id"])
 			if db_proj is not None:
 				db.session.query(Project).filter(Project.id==db_proj.id).update(project)
-				db.session.commit()
-				return {
-					"success":True,
-				}
-			proj = Project(
-				id=project["id"],
-				name=project["name"],
-				consultant=project["consultant"],
-				consultant_id=project["consultant_id"],
-				manager=project["manager"],
-				manager_id=project["manager_id"],
-				customer=project["customer"],
-				start_date=project["start_date"],
-				end_date=project["end_date"],
-				number=project["number"],
-				progress_percentage=project["progress_percentage"],
-				revised_end_date=project["revised_end_date"],
-				status=project["status"],
-				actual_end_date=project["actual_end_date"] 
-			)
-			db.session.add(proj)
+				# db.session.commit()
+				# return {
+				# 	"success":True,
+				# }
+			else:
+				proj = Project(
+					id=project["id"],
+					name=project["name"],
+					consultant=project["consultant"],
+					consultant_id=project["consultant_id"],
+					manager=project["manager"],
+					manager_id=project["manager_id"],
+					customer=project["customer"],
+					start_date=project["start_date"],
+					end_date=project["end_date"],
+					number=project["number"],
+					progress_percentage=project["progress_percentage"],
+					revised_end_date=project["revised_end_date"],
+					status=project["status"],
+					actual_end_date=project["actual_end_date"] 
+				)
+				db.session.add(proj)
 			db.session.commit()	
 
 			#add personnel

@@ -3,17 +3,11 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const Description = (props) => {
-  const [personnel, setPersonnel] = useState([]);
 
-  const fetchPersonnel = (taskID) =>
-    props
-      .onFetchData(`/api/task/enrolments/${taskID}`)
-      //check if messsage exists: msg only exist on error
-      .then(({ data }) => (data.msg ? null : setPersonnel(data)));
+  const assignedPersonnel = props.tasksPersonnel.filter(
+    (personnel) => parseInt(personnel.id) === parseInt(props.taskID)
+  );
 
-  useEffect(() => {
-    fetchPersonnel(props.taskID);
-  }, []);
   return (
     <div style={{ color: "10292e", fontWeight: 700 }}>
       <div>
@@ -30,7 +24,7 @@ const Description = (props) => {
       </div>
       <div>
         Personnel:{" "}
-        {personnel.map((p) => (
+        {assignedPersonnel.map((p) => (
           <div
             style={{
               color: "white",
@@ -38,7 +32,7 @@ const Description = (props) => {
               textShadow: "1px 1px 1px #000",
             }}
           >
-            {p.name}
+            {p.label}
           </div>
         ))}
       </div>
