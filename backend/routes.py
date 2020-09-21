@@ -110,24 +110,70 @@ def add_project():
 			"msg":"Project:'%s' already exits" % data["name"]
 		} 
 
+# @app.route('/api/task/add', methods=['POST'])
+# def add_task():
+# 	'''Add new task'''
+# 	data = request.get_json()
+# 	project = Project.query.get_or_404(data["project_id"])
+# 	task = Task(
+# 		title=data["title"],
+# 		description=data["description"],
+# 		target=data["target"],
+# 		date=data["date"],
+# 		project=project
+# 	)
+# 	try:
+# 		db.session.add(task)
+# 		db.session.commit()
+
+# 		for personnel_id in data["personnel"]:
+# 			enrol_user_task(task.id, personnel_id)
+# 		return {
+# 			"success":True,
+# 			"data":data
+# 		}
+# 	except SQLAlchemyError as err:
+# 		print(err)
+# 		db.session.rollback()
+# 		return {
+# 			"success":False,
+# 			"msg":"Task:'%s' already exits" % data["title"]
+# 		} 
+
 @app.route('/api/task/add', methods=['POST'])
 def add_task():
 	'''Add new task'''
-	data = request.get_json()
-	project = Project.query.get_or_404(data["project_id"])
-	task = Task(
-		title=data["title"],
-		description=data["description"],
-		target=data["target"],
-		date=data["date"],
-		project=project
-	)
 	try:
+		data = request.get_json()
+		project = Project.query.get(data["project_id"])
+		if project is None:
+			#add project
+			project = Project(
+					id=data["project_id"]
+				)
+
+		task = Task(
+			title=data["title"],
+			description=data["description"],
+			target=data["target"],
+			date=data["date"],
+			project=project
+		)
 		db.session.add(task)
 		db.session.commit()
 
-		for personnel_id in data["personnel"]:
-			enrol_user_task(task.id, personnel_id)
+		for personnel in data["personnel"]:
+			db_pers = User.query.get(personnel["id"])
+			if db_pers is None:
+				#add personnel
+				print("personnel_id",personnel)
+				db_pers = User(
+						id=personnel["id"],
+						name=personnel["name"]
+					)
+				db.session.add(db_pers)
+				db.session.commit()
+			enrol_user_task(task.id, personnel["id"])
 		return {
 			"success":True,
 			"data":data
@@ -181,23 +227,32 @@ def all_users():
 			"success":False	
 		}
 
+# @app.route('/api/project/all')
+# def all_projects():
+# 	'''Get all Projects'''
+# 	data = []
+# 	try:
+# 		projects = Project.query.order_by(Project.id).all()
+# 		# fetch(projects, data)
+# 		# return {
+# 		# 	"success":True,
+# 		# 	"data":data
+# 		# }
+# 		return jsonify(Project.serialize_list(projects))
+# 	except SQLAlchemyError as err:
+# 		print(err)
+# 		return {
+# 			"success":False	
+# 		}
+
 @app.route('/api/project/all')
 def all_projects():
 	'''Get all Projects'''
-	data = []
-	try:
-		projects = Project.query.order_by(Project.id).all()
-		# fetch(projects, data)
-		# return {
-		# 	"success":True,
-		# 	"data":data
-		# }
-		return jsonify(Project.serialize_list(projects))
-	except SQLAlchemyError as err:
-		print(err)
-		return {
-			"success":False	
-		}
+	data = netsuite_req({"request": "projects"})["data"]
+	return {
+		"success":True,
+		"data":data
+	}
 
 @app.route('/api/project/sync')
 def sync_projects():
@@ -208,27 +263,23 @@ def sync_projects():
 			print("at project:",project["id"])
 			db_proj = Project.query.get(project["id"])
 			if db_proj is not None:
-				db.session.query(Project).filter(Project.id==db_proj.id).update(project)
-				# db.session.commit()
-				# return {
-				# 	"success":True,
-				# }
+				db.session.query(Project).filter(Project.id==db_proj.id).update({"id":project["id"]})
 			else:
 				proj = Project(
 					id=project["id"],
-					name=project["name"],
-					consultant=project["consultant"],
-					consultant_id=project["consultant_id"],
-					manager=project["manager"],
-					manager_id=project["manager_id"],
-					customer=project["customer"],
-					start_date=project["start_date"],
-					end_date=project["end_date"],
-					number=project["number"],
-					progress_percentage=project["progress_percentage"],
-					revised_end_date=project["revised_end_date"],
-					status=project["status"],
-					actual_end_date=project["actual_end_date"] 
+					# name=project["name"],
+					# consultant=project["consultant"],
+					# consultant_id=project["consultant_id"],
+					# manager=project["manager"],
+					# manager_id=project["manager_id"],
+					# customer=project["customer"],
+					# start_date=project["start_date"],
+					# end_date=project["end_date"],
+					# number=project["number"],
+					# progress_percentage=project["progress_percentage"],
+					# revised_end_date=project["revised_end_date"],
+					# status=project["status"],
+					# actual_end_date=project["actual_end_date"] 
 				)
 				db.session.add(proj)
 			db.session.commit()	
@@ -242,13 +293,13 @@ def sync_projects():
 					for personnel in data:
 						db_pers = User.query.get(personnel["id"])
 						if db_pers is not None:
-							db.session.query(User).filter(User.id==db_pers.id).update(personnel)
+							db.session.query(User).filter(User.id==db_pers.id).update({"id":personnel["id"]})
 						else:
 							pers = User(
 								id=personnel["id"],
-								name=personnel["name"],
-								role=personnel["role"],
-								role_id=personnel["role_id"]
+								# name=personnel["name"],
+								# role=personnel["role"],
+								# role_id=personnel["role_id"]
 							)
 							db.session.add(pers)
 					db.session.commit()	

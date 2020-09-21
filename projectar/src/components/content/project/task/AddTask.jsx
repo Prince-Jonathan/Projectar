@@ -124,7 +124,9 @@ const AddTask = (props) => {
   };
 
   const handleSelection = (selectedOption) => {
-    const personnel = selectedOption.map((option) => option.value);
+    const personnel = selectedOption.map((option) => {
+      return { name: option.label, id: option.value };
+    });
     setState({ ...state, personnel });
   };
 
