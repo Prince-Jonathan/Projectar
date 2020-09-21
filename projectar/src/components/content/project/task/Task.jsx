@@ -17,25 +17,10 @@ import Report from "../../reports/Report";
 import Slate from "../../slate/Slate";
 import Table from "./../../../table/Table";
 import Caption from "../../Caption";
+import ExecuteTask from "./ExecuteTask";
 
 import "./Task.css";
 import "react-datepicker/dist/react-datepicker.css";
-
-const Button = styled.button`
-  border: none;
-  color: white;
-  font-size: 15px;
-  text-align: center;
-  box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  margin: 0 5px 0 5px;
-  border-radius: 12px;
-  background-color: #10292e;
-
-  &::active {
-    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.2);
-  }
-`;
 
 const Task = (props) => {
   const history = useHistory();
@@ -49,18 +34,21 @@ const Task = (props) => {
     achieved: "",
     personnel: null,
   });
+  // const [taskPersonnel, setTaskPersonnel] = useState([]);
   const [comment, setComment] = useState("");
 
   const { url, path } = useRouteMatch();
 
   let task = useMemo(
     () => {
-      // setState({ ...task });
-      return props.data.filter(
-        (task) => parseInt(task.id) === props.selectedTaskID
-      );
+      // replace filter with find
+      return location.state
+        ? props.data.filter(
+            (task) => parseInt(task.id) === location.state.taskID
+          )
+        : [];
     },
-    [props.selectedTaskID, props.data]
+    [location.state, props.data]
   );
 
   useEffect(
@@ -74,13 +62,32 @@ const Task = (props) => {
     [task]
   );
 
-  const assignedPersonnel = location.state
+  // useEffect(
+  //   () => {
+  //     const assignedPersonnel = location.state
+  //       ? props.tasksPersonnel.filter(
+  //           (personnel) =>
+  //             parseInt(personnel.id) === parseInt(location.state.taskID)
+  //         )
+  //       : null;
+  //     console.log(assignedPersonnel);
+  //     setTaskPersonnel(assignedPersonnel);
+  //   },
+  //   [props.taskPersonnel, location.state]
+  // );
+
+  // useEffect(() => console.log({ ...state, personnel: taskPersonnel }), [task]);
+
+  let assignedPersonnel = location.state
     ? props.tasksPersonnel.filter(
         (personnel) =>
           parseInt(personnel.id) === parseInt(location.state.taskID)
       )
     : null;
 
+  // useEffect(() => console.log({ ...state, personnel: assignedPersonnel }), [
+  //   assignedPersonnel,
+  // ]);
   const options = useMemo(
     () =>
       props.projectPersonnel
@@ -115,18 +122,25 @@ const Task = (props) => {
         position: "bottom center",
       });
     } else {
+      let personnel = state.personnel || {
+        personnel: assignedPersonnel.map((personnel) => personnel.value),
+      };
+
       let task = {
         ...state,
         ...startDate,
         project_id: props.selectedID,
         comment: comment,
+        targets: state.personnel,
+        ...personnel,
       };
+      console.log(task, "assignedPersonnel", assignedPersonnel);
       props.onAlert("info", "Executing...", {
         timeout: 3000,
         position: "bottom center",
       });
       props
-        .postData(`/api/task/update/${props.selectedTaskID}`, task)
+        .postData(`/api/task/update/${location.state.taskID}`, task)
         .then((data) => console.log("returned from post", data))
         .then(() =>
           props.onAlert("success", "Task Executed", {
@@ -156,18 +170,6 @@ const Task = (props) => {
     setState({ ...state, personnel });
   };
 
-  const CustomInput = ({ value, onClick }) => (
-    <Button
-      type="button"
-      style={{ cursor: "pointer" }}
-      required
-      className="date"
-      onClick={onClick}
-      value={value}
-    >
-      {value}
-    </Button>
-  );
   const handleClose = () => {
     history.goBack();
   };
@@ -175,7 +177,11 @@ const Task = (props) => {
     <div>
       <Switch>
         <Route exact path={path}>
-          <Caption flabel="Tasks" slabel=" -Outstanding" />
+          {props.outstanding ? (
+            <Caption flabel="Tasks" slabel=" -Outstanding" />
+          ) : (
+            <Caption flabel="Tasks" slabel=" -Completed" />
+          )}
           <Caption
             flabel={props.project[0].name}
             style={{ fontSize: 15, color: "white" }}
@@ -191,7 +197,7 @@ const Task = (props) => {
         </Route>
         <Route path={`${path}/:id/execute/`}>
           <Caption flabel="Task" slabel=" -Outstanding" />
-          <Slate>
+          {/* <Slate>
             <form onSubmit={handleSubmit} className="form-container">
               <span>
                 <strong>Execute Task</strong>
@@ -322,7 +328,19 @@ const Task = (props) => {
                 />
               </div>
             </form>
-          </Slate>
+          </Slate> */}
+          <ExecuteTask
+            handleSubmit={handleSubmit}
+            state={state}
+            handleChange={handleChange}
+            startDate={startDate}
+            handleSelection={handleSelection}
+            options={options}
+            assignedPersonnel={assignedPersonnel}
+            selectedOption={selectedOption}
+            handleClose={handleClose}
+            handleEditorChange={handleEditorChange}
+          />
         </Route>
       </Switch>
     </div>

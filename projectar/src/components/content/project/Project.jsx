@@ -89,15 +89,18 @@ const Project = (props) => {
         props
           .onFetchData(`/api/task/enrolments/${task.id}`)
           .then(({ data }) => {
-            let personnel = data.map((personnel) => {
-              return {
-                label: personnel.name,
-                value: personnel.id,
-                id: task.id,
-              };
-            });
-            assignedPersonnel = assignedPersonnel.concat(personnel);
-            setTasksPersonnel(assignedPersonnel);
+            console.log("the api data", data);
+            try {
+              let personnel = data.map((personnel) => {
+                return {
+                  label: personnel.name,
+                  value: personnel.id,
+                  id: task.id,
+                };
+              });
+              assignedPersonnel = assignedPersonnel.concat(personnel);
+              setTasksPersonnel(assignedPersonnel);
+            } catch (err) {}
           })
       );
     };
@@ -281,7 +284,7 @@ const Project = (props) => {
           </Route>
           <Route path={`${path}/attendance`}>
             <Attendance
-              personnel={props.personnel}
+              personnel={projectPersonnel}
               postData={props.postData}
               projectID={id}
               project={project}
@@ -294,11 +297,12 @@ const Project = (props) => {
           </Route>
           <Route path={`${path}/outstanding-tasks`}>
             <Task
+              outstanding
               columns={columns}
               data={outstandingTasks}
               renderRowSubComponent={renderRowSubComponent}
               clickable={handleClick}
-              selectedTaskID={selectedTaskID}
+              // selectedTaskID={selectedTaskID}
               onTaskUpdate={props.onTaskUpdate}
               projectPersonnel={projectPersonnel}
               tasksPersonnel={tasksPersonnel}
@@ -308,7 +312,7 @@ const Project = (props) => {
             />
           </Route>
           <Route path={`${path}/completed-tasks`}>
-            <Caption flabel="Tasks" slabel=" -Completed" />
+            {/* <Caption flabel="Tasks" slabel=" -Completed" />
             <Caption
               flabel={() => {
                 if (typeof project === "undefined") {
@@ -318,14 +322,22 @@ const Project = (props) => {
                 }
               }}
               style={{ fontSize: 15, color: "white" }}
-            />
-            <Slate>
-              <Table
+            /> */}
+              {/* <Table
                 columns={columns}
                 data={completedTasks}
                 renderRowSubComponent={renderRowSubComponent}
+              /> */}
+              <Task
+                columns={columns}
+                data={completedTasks}
+                renderRowSubComponent={renderRowSubComponent}
+                clickable={false}
+                selectedTaskID={selectedTaskID}
+                projectPersonnel={projectPersonnel}
+                tasksPersonnel={tasksPersonnel}
+                project={project}
               />
-            </Slate>
           </Route>
           <Route path={`${path}/tasks`}>
             <AllTasks

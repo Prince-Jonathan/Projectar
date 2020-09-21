@@ -382,15 +382,15 @@ def update_task(task_id):
 	'''edits the task of the specified id'''
 	data = request.get_json()
 	try:
-		task= Task.query.get_or_404(task_id)
+		task = Task.query.get_or_404(task_id)
 
-		task.title=data["title"]
-		task.description=data["description"]
-		task.target=data["target"]
-		task.date=data["date"]
-		task.comment=data["comment"]
+		task.title = data["title"]
+		task.description = data["description"]
+		task.target = data["target"]
+		task.date = data["date"]
+		task.comment = data["comment"]
 		if data["achieved"] is not None:
-			task.achieved=data["achieved"]
+			task.achieved = data["achieved"]
 
 		for personnel in task.personnel[:]:
 			print("deleting",personnel)
