@@ -88,9 +88,12 @@ const App = (props) => {
         );
   };
   const fetchProjects = () =>
-    fetchData("/api/project/all").then(({ data: { data } }) =>
-      setProjects(data)
-    );
+    fetchData("/api/project/all").then(({ data: { data } }) => {
+      const concat = data.map((project) => {
+        return { ...project, ...{ name: `${project.number} - ${project.name}` } };
+      });
+      setProjects(concat);
+    });
   const fetchProjectTasks = () =>
     fetchData("/api/task/all").then(({ data }) => setProjectTasks(data));
   const fetchPersonnel = () =>
@@ -201,7 +204,6 @@ const App = (props) => {
               onTaskUpdate={handleTaskCreated}
               postData={postData}
               projects={projects}
-              personnel={personnel}
             />
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/all-projects">

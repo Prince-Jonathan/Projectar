@@ -47,7 +47,7 @@ const Register = (props) => {
       const update = prev.concat(data);
       setIsPresents(update);
     },
-    [isPresents]  
+    [isPresents]
   );
 
   const handleSetSignIn = React.useCallback(
@@ -137,14 +137,16 @@ const Register = (props) => {
     </Button>
   );
 
-  const data = useMemo(
-    () =>
-      props.personnel.map((personnel) => {
-        const { first_name: firstName, last_name: lastName, id } = personnel;
-        return { name: `${firstName} ${lastName}`, id: id };
-      }),
-    [props.personnel]
-  );
+  // const data = useMemo(
+  //   () =>
+  //     props.personnel.map((personnel) => {
+  //       const { first_name: firstName, last_name: lastName, id } = personnel;
+  //       return { name: `${firstName} ${lastName}`, id: id };
+  //     }),
+  //   [props.personnel]
+  // );
+  const data = props.personnel;
+
   const columns = useMemo(
     () => [
       {
@@ -221,6 +223,7 @@ const Register = (props) => {
                 timeIntervals={5}
                 timeCaption="Time In"
                 dateFormat="h:mm aa"
+                popperPlacement="bottom-end"
               />
               <DatePicker
                 selected={new Date("01/01/01 " + timeOut)}
