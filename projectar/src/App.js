@@ -4,6 +4,7 @@ import axios from "axios";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { jsPDF } from "jspdf";
+import { trackPromise } from "react-promise-tracker";
 
 import Aside from "./components/sidemenu/Aside";
 import Layout from "./components/layout/Layout";
@@ -19,6 +20,7 @@ import PrivateRoute from "./components/content/PrivateRoute";
 import { Column, Row } from "./components/Grid";
 import Report from "./components/content/reports/Report";
 import Export from "./components/content/Export";
+import LoadingIndicator from "./components/loader/LoadingIndicator";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -88,12 +90,17 @@ const App = (props) => {
         );
   };
   const fetchProjects = () =>
-    fetchData("/api/project/all").then(({ data: { data } }) => {
-      const concat = data.map((project) => {
-        return { ...project, ...{ name: `${project.number} - ${project.name}` } };
-      });
-      setProjects(concat);
-    });
+    trackPromise(
+      fetchData("/api/project/all").then(({ data: { data } }) => {
+        const concat = data.map((project) => {
+          return {
+            ...project,
+            ...{ name: `${project.number} - ${project.name}` },
+          };
+        });
+        setProjects(concat);
+      })
+    );
   const fetchProjectTasks = () =>
     fetchData("/api/task/all").then(({ data }) => setProjectTasks(data));
   const fetchPersonnel = () =>
@@ -226,7 +233,6 @@ const App = (props) => {
           <Route path="*">
             <Redirect to="/" />
           </Route>
-
           {/* {showTask ? (
             <Bay
               showTask={showTask}

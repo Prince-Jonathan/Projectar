@@ -9,6 +9,7 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
+import { trackPromise } from "react-promise-tracker";
 
 import Table from "../../table/Table";
 import Slate from "../slate/Slate";
@@ -103,16 +104,18 @@ const Project = (props) => {
   }, []);
 
   const fetchAttendance = async () => {
-    props.onFetchData(`/api/attendance/${id}/all`).then(({ data }) => {
-      const filtered = data.filter((register) => {
-        return (
-          +new Date(register.date) ===
-            +new Date(new Date(attendanceDate).toDateString()) &&
-          register.is_present === true
-        );
-      });
-      setAttendance(filtered);
-    });
+    trackPromise(
+      props.onFetchData(`/api/attendance/${id}/all`).then(({ data }) => {
+        const filtered = data.filter((register) => {
+          return (
+            +new Date(register.date) ===
+              +new Date(new Date(attendanceDate).toDateString()) &&
+            register.is_present === true
+          );
+        });
+        setAttendance(filtered);
+      })
+    );
   };
 
   useEffect(
@@ -316,21 +319,21 @@ const Project = (props) => {
               }}
               style={{ fontSize: 15, color: "white" }}
             /> */}
-              {/* <Table
+            {/* <Table
                 columns={columns}
                 data={completedTasks}
                 renderRowSubComponent={renderRowSubComponent}
               /> */}
-              <Task
-                columns={columns}
-                data={completedTasks}
-                renderRowSubComponent={renderRowSubComponent}
-                clickable={false}
-                selectedTaskID={selectedTaskID}
-                projectPersonnel={projectPersonnel}
-                tasksPersonnel={tasksPersonnel}
-                project={project}
-              />
+            <Task
+              columns={columns}
+              data={completedTasks}
+              renderRowSubComponent={renderRowSubComponent}
+              clickable={false}
+              selectedTaskID={selectedTaskID}
+              projectPersonnel={projectPersonnel}
+              tasksPersonnel={tasksPersonnel}
+              project={project}
+            />
           </Route>
           <Route path={`${path}/tasks`}>
             <AllTasks
