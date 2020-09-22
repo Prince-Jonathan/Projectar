@@ -62,22 +62,6 @@ const Task = (props) => {
     [task]
   );
 
-  // useEffect(
-  //   () => {
-  //     const assignedPersonnel = location.state
-  //       ? props.tasksPersonnel.filter(
-  //           (personnel) =>
-  //             parseInt(personnel.id) === parseInt(location.state.taskID)
-  //         )
-  //       : null;
-  //     console.log(assignedPersonnel);
-  //     setTaskPersonnel(assignedPersonnel);
-  //   },
-  //   [props.taskPersonnel, location.state]
-  // );
-
-  // useEffect(() => console.log({ ...state, personnel: taskPersonnel }), [task]);
-
   let assignedPersonnel = location.state
     ? props.tasksPersonnel.filter(
         (personnel) =>
@@ -85,9 +69,6 @@ const Task = (props) => {
       )
     : null;
 
-  // useEffect(() => console.log({ ...state, personnel: assignedPersonnel }), [
-  //   assignedPersonnel,
-  // ]);
   const options = useMemo(
     () =>
       props.projectPersonnel
@@ -129,19 +110,17 @@ const Task = (props) => {
       let task = {
         ...state,
         ...startDate,
-        project_id: props.selectedID,
+        project_id: location.state.projectID,
         comment: comment,
         targets: state.personnel,
         ...personnel,
       };
-      console.log(task, "assignedPersonnel", assignedPersonnel);
       props.onAlert("info", "Executing...", {
         timeout: 3000,
         position: "bottom center",
       });
       props
         .postData(`/api/task/update/${location.state.taskID}`, task)
-        .then((data) => console.log("returned from post", data))
         .then(() =>
           props.onAlert("success", "Task Executed", {
             timeout: 5000,
@@ -197,138 +176,6 @@ const Task = (props) => {
         </Route>
         <Route path={`${path}/:id/execute/`}>
           <Caption flabel="Task" slabel=" -Outstanding" />
-          {/* <Slate>
-            <form onSubmit={handleSubmit} className="form-container">
-              <span>
-                <strong>Execute Task</strong>
-              </span>
-
-              <input
-                type="text"
-                style={{ flex: "1", backgroundColor: "#B2BEB5" }}
-                name="title"
-                placeholder={state.title}
-                value={state.title}
-                readOnly
-              />
-
-              <textarea
-                type="text"
-                style={{ flex: "1", backgroundColor: "#B2BEB5" }}
-                name="description"
-                placeholder={state.description}
-                value={state.description}
-                required
-                rows="5"
-                cols="37"
-                readOnly
-              />
-              <div
-                style={{
-                  display: "flex",
-                  alignContent: "center",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                  margin: "5px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignContent: "center",
-                    justifyContent: "space-around",
-                    alignItems: "baseline",
-                    margin: "5px",
-                  }}
-                >
-                  <label>
-                    Target(%):
-                    <input
-                      style={{ backgroundColor: "#B2BEB5" }}
-                      type="text"
-                      name="target"
-                      placeholder={state.target}
-                      value={state.target}
-                      readOnly
-                    />
-                  </label>
-                  <label>
-                    Achieved(%):
-                    <input
-                      style={{ flexBasis: "auto", backgroundColor: "#B2BEB5" }}
-                      type="text"
-                      name="achieved"
-                      value={state.achieved}
-                      onChange={handleChange}
-                      required
-                    />
-                  </label>
-                </div>
-                <DatePicker
-                  selected={startDate.date}
-                  customInput={<CustomInput />}
-                  withPortal={isMobile}
-                  disabled
-                />
-              </div>
-
-              <Select
-                isMulti
-                onChange={handleSelection}
-                options={options}
-                defaultValue={assignedPersonnel}
-                isClearable
-                styles={{ menuPortal: (base) => ({ ...base, zIndex: 200 }) }}
-                menuPortalTarget={document.body}
-                isSearchable
-                name="color"
-                menuPosition={selectedOption.isFixed ? "fixed" : "absolute"}
-                menuPlacement={selectedOption.portalPlacement}
-              />
-
-              <div
-                style={{
-                  display: "flex",
-                  alignContent: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Button type="submit" className="btn">
-                  Save
-                </Button>
-                <Button
-                  type="button"
-                  className="btn cancel"
-                  onClick={handleClose}
-                >
-                  Close
-                </Button>
-              </div>
-              <div className="report-wrapper">
-                <CKEditor
-                  editor={ClassicEditor}
-                  data="<p><i>What will you want to report?</i></p>"
-                  // onInit={(editor) => {
-                  //   // You can store the "editor" and use when it is needed.
-                  //   console.log("Editor is ready to use!", editor);
-                  // }}
-                  onChange={handleEditorChange}
-                  config={{
-                    ckfinder: {
-                      uploadUrl: "https://projectar.devcodes.co/upload",
-                    },
-                  }}
-                  // onBlur={(event, editor) => {
-                  //   console.log("Blur.", editor);
-                  // }}
-                  // onFocus={(event, editor) => {
-                  //   console.log("Focus.", editor);
-                  // }}
-                />
-              </div>
-            </form>
-          </Slate> */}
           <ExecuteTask
             handleSubmit={handleSubmit}
             state={state}

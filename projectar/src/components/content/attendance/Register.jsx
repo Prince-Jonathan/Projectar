@@ -339,9 +339,6 @@ const Register = (props) => {
               ? true
               : false
             : false;
-          console.log("analysis", {
-            ...(tandt[0].tandt ? tandt[0] : { tandt: null }),
-          });
           return {
             signIn: null,
             signOut: null,

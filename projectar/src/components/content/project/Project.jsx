@@ -78,10 +78,6 @@ const Project = (props) => {
     fetchProjectPersonnel();
   }, []);
 
-  useEffect(() => console.log("projectPersonnel", projectPersonnel), [
-    projectPersonnel,
-  ]);
-
   useEffect(() => {
     let assignedPersonnel = [];
     const fetchTasksPersonnel = async () => {
@@ -89,7 +85,6 @@ const Project = (props) => {
         props
           .onFetchData(`/api/task/enrolments/${task.id}`)
           .then(({ data }) => {
-            console.log("the api data", data);
             try {
               let personnel = data.map((personnel) => {
                 return {
@@ -182,7 +177,6 @@ const Project = (props) => {
     [isMobile, props.project]
   );
   const deleteTask = useCallback((taskID) => {
-    console.log("its the component");
     props.onAlert("info", "Deleting...", {
       timeout: 3000,
       position: "bottom center",
@@ -218,7 +212,6 @@ const Project = (props) => {
 
             <Button onClick={() => deleteTask(row.original.id)}>Delete</Button>
           </div>
-          {console.log("tasksPersonnel", tasksPersonnel)}
           <Description
             onFetchData={props.onFetchData}
             description={row.original.description}
