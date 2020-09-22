@@ -215,15 +215,14 @@ const Register = (props) => {
                     },
                   ]);
                 }}
+                popperPlacement="bottom-end"
                 customInput={<CustomInput />}
-                popperPlacement="top-end"
                 withPortal={isMobile}
                 showTimeSelect
                 showTimeSelectOnly
                 timeIntervals={5}
                 timeCaption="Time In"
                 dateFormat="h:mm aa"
-                popperPlacement="bottom-end"
               />
               <DatePicker
                 selected={new Date("01/01/01 " + timeOut)}
@@ -236,6 +235,7 @@ const Register = (props) => {
                     },
                   ]);
                 }}
+                popperPlacement="bottom-end"
                 customInput={<CustomInput />}
                 withPortal={isMobile}
                 showTimeSelect

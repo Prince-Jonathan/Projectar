@@ -67,11 +67,13 @@ const Project = (props) => {
 
   const fetchProjectPersonnel = async () => {
     try {
-      props
-        .onFetchData(`/api/project/enrolments/${id}`)
-        .then(({ data: { data } }) => {
-          setProjectPersonnel(data);
-        });
+      trackPromise(
+        props
+          .onFetchData(`/api/project/enrolments/${id}`)
+          .then(({ data: { data } }) => {
+            setProjectPersonnel(data);
+          })
+      );
     } catch (err) {}
   };
 
@@ -84,41 +86,44 @@ const Project = (props) => {
     const fetchTasksPersonnel = async () => {
       data.forEach((task) =>
         trackPromise(
-          props.onFetchData(`/api/task/enrolments/${task.id}`).then((data) => {
-            console.log(data);
-            return data;
-          })
-        .then(({ data }) => {
-          try {
-            let personnel = data.map((personnel) => {
-              return {
-                label: personnel.name,
-                value: personnel.id,
-                id: task.id,
-              };
-            });
-            assignedPersonnel = assignedPersonnel.concat(personnel);
-            setTasksPersonnel(assignedPersonnel);
-          } catch (err) {}
-        }))
+          props
+            .onFetchData(`/api/task/enrolments/${task.id}`)
+            .then((data) => {
+              console.log(data);
+              return data;
+            })
+            .then(({ data }) => {
+              try {
+                let personnel = data.map((personnel) => {
+                  return {
+                    label: personnel.name,
+                    value: personnel.id,
+                    id: task.id,
+                  };
+                });
+                assignedPersonnel = assignedPersonnel.concat(personnel);
+                setTasksPersonnel(assignedPersonnel);
+              } catch (err) {}
+            })
+        )
       );
     };
     fetchTasksPersonnel();
   }, []);
 
   const fetchAttendance = async () => {
-    // trackPromise(
-    props.onFetchData(`/api/attendance/${id}/all`).then(({ data }) => {
-      const filtered = data.filter((register) => {
-        return (
-          +new Date(register.date) ===
-            +new Date(new Date(attendanceDate).toDateString()) &&
-          register.is_present === true
-        );
-      });
-      setAttendance(filtered);
-    });
-    // );
+    trackPromise(
+      props.onFetchData(`/api/attendance/${id}/all`).then(({ data }) => {
+        const filtered = data.filter((register) => {
+          return (
+            +new Date(register.date) ===
+              +new Date(new Date(attendanceDate).toDateString()) &&
+            register.is_present === true
+          );
+        });
+        setAttendance(filtered);
+      })
+    );
   };
 
   useEffect(
