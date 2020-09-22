@@ -87,23 +87,23 @@ const Projects = (props) => {
   const columns = React.useMemo(
     () => {
       const columns = [
-        {
-          id: "selection",
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            </div>
-          ),
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
-          Cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            </div>
-          ),
-        },
+        // {
+        //   id: "selection",
+        //   // The header can use the table's getToggleAllRowsSelectedProps method
+        //   // to render a checkbox
+        //   Header: ({ getToggleAllRowsSelectedProps }) => (
+        //     <div>
+        //       <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+        //     </div>
+        //   ),
+        //   // The cell can use the individual row's getToggleRowSelectedProps method
+        //   // to the render a checkbox
+        //   Cell: ({ row }) => (
+        //     <div>
+        //       <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+        //     </div>
+        //   ),
+        // },
         {
           // Make an expander cell
           Header: () => null, // No header
