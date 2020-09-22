@@ -5,7 +5,7 @@ import BarLoader from "react-spinners/BarLoader";
 
 const LoadingIndicator = (props) => {
   //   const [loading, setLoading] = useState(false);
-  const { promiseInProgress } = usePromiseTracker();
+  const { promiseInProgress } = usePromiseTracker({ delay: 500 });
   return (
     promiseInProgress && (
       <div
