@@ -58,16 +58,33 @@ class Project(db.Model, Serializer):
 class Task(db.Model, Serializer):
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(100), nullable=False)
-	description=db.Column(db.String(500), nullable=False)
-	target=db.Column(db.String(5), nullable=False)
-	achieved=db.Column(db.String(5), nullable=True)
-	comment=db.Column(db.String(2000),nullable=True)
-	date =  db.Column(db.DateTime)
-	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
-	child_task=db.relationship('Reassigned_Task', backref='parent_task', uselist=False)
+	description = db.Column(db.String(500), nullable=False)
+	date_created = db.Column(db.DateTime, default=datetime.utcnow)
+
+	details = db.relationship('Task_Detail', backref='task', lazy=True)
+	# target=db.Column(db.String(5), nullable=False)
+	# achieved=db.Column(db.String(5), nullable=True)
+	# comment=db.Column(db.String(2000),nullable=True)
+	# date =  db.Column(db.DateTime)
+	# project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
+	# child_task=db.relationship('Reassigned_Task', backref='parent_task', uselist=False)
+
 
 	def __repr__(self): 
 		return '<Task %r>' % self.title
+
+#Model Task Detailes Table
+class Task_Detail(db.Model, Serializer):
+	task_id = db.Column(db.Integer, db.ForeignKey('task.id'), primary_key=True)
+	date_updated = db.Column(db.DateTime, default=datetime.utcnow)
+	target_date = db.Column(db.DateTime, nullable=True)
+	entry_type = db.Column(db.Integer, nullable=False)
+	achieved = db.Column(db.String(5), nullable=True)
+	target = db.Column(db.String(5), nullable=True)
+	comment = db.Column(db.String(2000), nullable=True)
+
+	def __repr__(self): 
+		return '<Task_Detail %r>' % self.task_id
 
 #Model Register Table
 class Register(db.Model, Serializer):
@@ -84,13 +101,13 @@ class Register(db.Model, Serializer):
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
 
 	def __repr__(self): 
-		return '<Register %r>' % self.title
+		return '<Register %r>' % self.id
 
-#Model Reassigned_Task Table
-class Reassigned_Task(db.Model, Serializer):
-	id = db.Column(db.Integer, primary_key=True)
-	parent_id=db.Column(db.Integer, db.ForeignKey('task.id'), unique=True)
+# #Model Reassigned_Task Table
+# class Reassigned_Task(db.Model, Serializer):
+# 	id = db.Column(db.Integer, primary_key=True)
+# 	parent_id=db.Column(db.Integer, db.ForeignKey('task.id'), unique=True)
 
-	def __repr__(self): 
-		return '<Reassigned_Task %r>' % self.parent_id
+# 	def __repr__(self): 
+# 		return '<Reassigned_Task %r>' % self.parent_id
 		

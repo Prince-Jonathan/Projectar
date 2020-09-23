@@ -678,9 +678,17 @@ def login():
 			"success":False	
 		}
 
-@app.route('/api/v1/authenticate', methods=['POST'])
+@app.route('/api/authenticate', methods=['POST'])
 def authenticate():
 	'''login authentication'''
-	pload= request.get_json()
-	r = requests.post("https://b0703c0633fb.ngrok.io/v1/authenticate", data=pload)
-	return r.json()
+	data= request.get_json()
+	res = netsuite_req({"request":"login", "email":data["username"], "password":data["password"]})["data"]
+	if res["login_ok"]:
+		print("yes")
+		return {
+			"success":True,
+			"data":res
+		}
+	return {
+		"success":False,
+	}

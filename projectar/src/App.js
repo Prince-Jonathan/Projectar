@@ -46,12 +46,12 @@ const App = (props) => {
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   // const baseUrl = "https://projectar.devcodes.co";
-  const baseUrl = "https://c3e6e88f11b7.ngrok.io";
-  // const baseUrl = "http://localhost:8050"; 
+  // const baseUrl = "https://c3e6e88f11b7.ngrok.io";
+  const baseUrl = "http://localhost:8050";
 
   const OneSignal = window.OneSignal;
   OneSignal.push(function() {
-    OneSignal.setExternalUserId(user.id);
+    OneSignal.setExternalUserId(user.user_id);
   });
 
   const fetchData = (url, params) =>
@@ -91,16 +91,16 @@ const App = (props) => {
   };
   const fetchProjects = () =>
     // trackPromise(
-      fetchData("/api/project/all").then(({ data: { data } }) => {
-        const concat = data.map((project) => {
-          return {
-            ...project,
-            ...{ name: `${project.number} - ${project.name}` },
-          };
-        });
-        setProjects(concat);
-      })
-    // );
+    fetchData("/api/project/all").then(({ data: { data } }) => {
+      const concat = data.map((project) => {
+        return {
+          ...project,
+          ...{ name: `${project.number} - ${project.name}` },
+        };
+      });
+      setProjects(concat);
+    });
+  // );
   const fetchProjectTasks = () =>
     fetchData("/api/task/all").then(({ data }) => setProjectTasks(data));
   const fetchPersonnel = () =>
@@ -171,7 +171,7 @@ const App = (props) => {
         <Layout
           showSideMenu={showSideMenu}
           aside={<Aside onPopUpClick={handlePopUpClick} />}
-          name={user.first_name}
+          name={user.name}
           onShowSideMenu={handleShowSideMenu}
           onFetchData={fetchData}
           onSync={syncEvents}

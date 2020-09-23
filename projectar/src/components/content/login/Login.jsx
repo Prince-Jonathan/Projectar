@@ -29,11 +29,12 @@ const Login = (props) => {
       });
     } else {
       props
-        .postData("/api/login", userInfo)
+        .postData("/api/authenticate", userInfo)
         .then(({ data }) => {
           if (data.success) {
             //expecting obj
-            login(data.message[0]);
+            // login(data.message[0]);
+            login(data.data);
           } else {
             throw "Incorrect credentials";
           }

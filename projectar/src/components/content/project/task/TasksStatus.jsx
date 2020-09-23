@@ -21,8 +21,13 @@ const TasksStatus = (props) => {
     [props.toggler, props.projectID]
   );
   const oTasks = React.useMemo(
-    () =>
-      tasks.filter((task) => parseInt(task.achieved) !== parseInt(task.target)),
+    () => {
+      try {
+        return tasks.filter(
+          (task) => parseInt(task.achieved) !== parseInt(task.target)
+        );
+      } catch (err) {}
+    },
     [tasks]
   );
   return (
