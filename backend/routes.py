@@ -8,7 +8,7 @@ from sqlalchemy import text
 from onesignal_sdk.error import OneSignalHTTPError
 import requests
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client
-from models import Project, User, Task, Register
+from models import Project, User, Task, Task_Detail, Register
 from modules import fetch, log, netsuite_req
 from datetime import datetime
 
@@ -151,17 +151,28 @@ def add_task():
 			project = Project(
 					id=data["project_id"]
 				)
-
+		#create task
 		task = Task(
 			title=data["title"],
 			description=data["description"],
-			target=data["target"],
-			date=data["date"],
 			project=project
 		)
 		db.session.add(task)
 		db.session.commit()
 
+		#add task details
+		task_detail = Task_Detail(
+			target_date=data["date"],
+			entry_type=data["entry_type"],
+			achieved=data["achieved"],
+			target=data["target"],
+			comment=data["comment"],
+			task=task
+		)
+		db.session.add(task)
+		db.session.commit()
+
+		#enrol personnel to task
 		for personnel in data["personnel"]:
 			db_pers = User.query.get(personnel["id"])
 			if db_pers is None:
@@ -329,12 +340,23 @@ def all_tasks():
 	data = []
 	try:
 		tasks = Task.query.order_by(Task.id).all()
+
 		#fetch(tasks, data)
 		# return {
 		# 	"success":True,
 		# 	"data":data
 		# }
-		return jsonify(Task.serialize_list(tasks))
+		tasks_obj = Task.serialize_list(tasks)
+		print("tasks_obj",tasks_obj)
+		for task in tasks:
+			details = Task_Detail.serialize_list(db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all())
+			print(details)
+			if len(details) !=0:
+				obj = [x for x in tasks_obj if x["id"] == details[0]["task_id"]][0]
+
+			tasks_obj[tasks_obj.index(obj)]["details"] = details
+
+		return jsonify(tasks_obj)
 	except SQLAlchemyError as err:
 		print(err)
 		return {
@@ -363,7 +385,9 @@ def enrol_user_proj(personnel_id, project_id):
 def enrol_user_task(task_id, personnel_id):
 	'''Passes task id and personnel id to enrol personnel to a task '''
 	try:
+		print(1)
 		personnel=User.query.get_or_404(personnel_id)
+		print(2)
 		task = Task.query.get_or_404(task_id)
 		task.personnel.append(personnel)
 		db.session.commit()
@@ -383,27 +407,57 @@ def update_task(task_id):
 	data = request.get_json()
 	try:
 		task = Task.query.get_or_404(task_id)
-
+		print(1)
 		task.title = data["title"]
 		task.description = data["description"]
-		task.target = data["target"]
-		task.date = data["date"]
-		task.comment = data["comment"]
-		if data["achieved"] is not None:
-			task.achieved = data["achieved"]
+		if data["entry_type"]==1:
+			print(2)
 
+			#update corresponding task_detail
+			recent_task_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).first()
+			recent_task_detail.target = data["target"]
+			recent_task_detail.target_date = data["date"]
+			recent_task_detail.comment = data["comment"] if "comment" in data else None
+			recent_task_detail.achieved = data["achieved"] if "achieved" in data else None
+			recent_task_detail.entry_type = data["entry_type"]
+		elif data["entry_type"]==2:
+			print(3)
+			#execute task by passing task_detail entry
+			task_detail = Task_Detail(
+				target_date=data["date"],
+				entry_type=data["entry_type"],
+				achieved=data["achieved"],
+				target=data["target"],
+				comment=data["comment"],
+				task=task
+			)
+			print(4)
+			db.session.add(task_detail)
+		db.session.commit()
+		print(5)
 		for personnel in task.personnel[:]:
+			print(6)
 			print("deleting",personnel)
 			task.personnel.remove(personnel)
 		db.session.commit()
 		if data["personnel"] is not None:
-			for personnel_id in data["personnel"]:
-				print("adding",personnel_id)
-				enrol_user_task(task.id, personnel_id)
+			print(7)
+			for personnel in data["personnel"]:
+				print("adding",personnel["id"])
+				db_pers = User.query.get(personnel["id"])
+				if db_pers is None:
+					#add personnel
+					db_pers = User(
+							id=personnel["id"],
+							name=personnel["name"]
+						)
+					db.session.add(db_pers)
+					db.session.commit()
+				enrol_user_task(task.id, personnel["id"])
 		db.session.commit()
+		print(8)
 		return {
 			"success":True,
-			"data":data
 		} 
 	except SQLAlchemyError as err:
 		print(err)
@@ -415,22 +469,56 @@ def update_task(task_id):
 @app.route('/api/project/task/<int:project_id>')
 def proj_tasks(project_id):
 	'''Get all tasks that project of id has assigned'''
+	# try:
+	# 	project = Project.query.get(project_id)
+	# 	msg = "does not exist"
+	# 	if project is not None:
+	# 		tasks = project.tasks
+	# 		if len(tasks) != 0:
+	# 			return {
+	# 				"success":True,
+	# 				"data":Task.serialize_list(tasks)
+	# 			}
+	# 		msg = "has not yet been assigned tasks"
+	# 	return {
+	# 		"success":False,
+	# 		"msg":"Project with ID: %d %s" % (project_id, msg)
+	# 	}
+	# except SQLAlchemyError as err:
+	# 	print(err)
+	# 	return{
+	# 		"success":False
+	# 	}
 	try:
 		project = Project.query.get(project_id)
-		msg = "does not exist"
 		if project is not None:
 			tasks = project.tasks
-			if len(tasks) != 0:
-				return jsonify(Task.serialize_list(tasks))
-			msg = "has not yet been assigned tasks"
+			# if len(tasks) != 0:
+			# 	return {
+			# 		"success":True,
+			# 		"data":Task.serialize_list(tasks)
+			# 	}
+			tasks_obj = Task.serialize_list(tasks)
+			print("tasks_obj",tasks_obj)
+			for task in tasks:
+				details = Task_Detail.serialize_list(db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all())
+				print(details)
+				if len(details) !=0:
+					obj = [x for x in tasks_obj if x["id"] == details[0]["task_id"]][0]
+
+				tasks_obj[tasks_obj.index(obj)]["details"] = details
+
+			return {
+				"success":True,
+				"data":tasks_obj
+			}
 		return {
 			"success":False,
-			"msg":"Project with ID: %d %s" % (project_id, msg)
 		}
 	except SQLAlchemyError as err:
 		print(err)
-		return{
-			"success":False
+		return {
+			"success":False	
 		}
 @app.route('/api/user/enrolments/<int:personnel_id>')
 def user_projs(personnel_id):
@@ -568,37 +656,39 @@ def del_task(task_id):
 
 @app.route('/api/project/verbose/<int:proj_id>')
 def project_verbose(proj_id):
-  '''Details of project tasks of specified id'''
-  try:
-    plist = []
-    # pnames = ""
-    project = Project.query.get(proj_id)
-    msg = "does not exist"
-    if project is not None:
-      tasks = project.tasks
-      if len(tasks) == 0:
-      	print("project has no tasks")
-    for task in tasks:
-      temp_ = ''
-      task_users = User.serialize_list(task.personnel)
-      # print(task_users)
-      for task_user in task_users:
-        temp_ += task_user['name']
-        if not task_users[-1]==task_user:
-        	temp_+=", "
-      plist.append(temp_)
-      # plist.append(User.serialize_list(task.personnel))
-      # for
-    return {
-    "success":True,
-    "tasks_list":Task.serialize_list(tasks),
-    "personnel_list":plist
-    }
-  except SQLAlchemyError as err:
-    print(err)
-    return{
-    "success":False
-    }
+	'''Details of project tasks of specified id'''
+	try:
+		plist = []
+		# pnames = ""
+		project = Project.query.get(proj_id)
+		msg = "does not exist"
+		if project is not None:
+			tasks = project.tasks
+			if len(tasks) == 0:
+				print("project %id has no tasks" % (project.id))
+			for task in tasks:
+				temp_ = ''
+				task_users = User.serialize_list(task.personnel)
+				# print(task_users)
+				for task_user in task_users:
+					temp_ += task_user['name']
+					if not task_users[-1]==task_user:
+						temp_+=", "
+				plist.append(temp_)
+				# plist.append(User.serialize_list(task.personnel))
+			return {
+				"success":True,
+				"tasks_list":Task.serialize_list(tasks),
+				"personnel_list":plist
+			}
+		return {
+			"msg":"project awaiting sync"
+		}
+	except SQLAlchemyError as err:
+		print(err)
+		return{
+		"success":False
+		}
 
 @app.route('/api/attendance/<int:proj_id>', methods=['POST'])
 def attendance(proj_id):

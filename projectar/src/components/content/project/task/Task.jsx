@@ -45,7 +45,7 @@ const Task = (props) => {
       return location.state
         ? props.data.filter(
             (task) => parseInt(task.id) === location.state.taskID
-          )
+          )[0]
         : [];
     },
     [location.state, props.data]
@@ -54,9 +54,15 @@ const Task = (props) => {
   useEffect(
     () => {
       // setStartDate({ date: new Date(task[0].date) });
-      setState({ ...task[0] });
       try {
-        setStartDate({ date: new Date(task[0].date) });
+        setState({
+          ...task,
+          target: task.details[0].target,
+          achieved: task.details[0].achieved,
+        });
+      } catch (err) {}
+      try {
+        setStartDate({ date: new Date(task.details[0].target_date) });
       } catch (error) {}
     },
     [task]
@@ -103,17 +109,23 @@ const Task = (props) => {
         position: "bottom center",
       });
     } else {
-      let personnel = state.personnel || {
-        personnel: assignedPersonnel.map((personnel) => personnel.value),
-      };
+      let personnel =
+        state.personnel ||
+        assignedPersonnel.map((personnel) => {
+          return { name: personnel.label, id: personnel.value };
+        });
+      let targets = state.personnel
+        ? state.personnel.map((personnel) => personnel.id)
+        : assignedPersonnel.map((personnel) => personnel.value);
 
       let task = {
         ...state,
         ...startDate,
         project_id: location.state.projectID,
         comment: comment,
-        targets: state.personnel,
-        ...personnel,
+        targets: targets,
+        personnel: personnel,
+        entry_type: location.state.entry_type,
       };
       props.onAlert("info", "Executing...", {
         timeout: 3000,

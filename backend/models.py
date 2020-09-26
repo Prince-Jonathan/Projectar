@@ -52,7 +52,7 @@ class Project(db.Model, Serializer):
 	registers = db.relationship('Register', backref='project', lazy=True)
 
 	def __repr__(self): 
-		return '<Project %r>' % self.name
+		return '<Project %r>' % self.id
 
 #Model Task Table
 class Task(db.Model, Serializer):
@@ -61,12 +61,13 @@ class Task(db.Model, Serializer):
 	description = db.Column(db.String(500), nullable=False)
 	date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
+	project_id=db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
 	details = db.relationship('Task_Detail', backref='task', lazy=True)
+
 	# target=db.Column(db.String(5), nullable=False)
 	# achieved=db.Column(db.String(5), nullable=True)
 	# comment=db.Column(db.String(2000),nullable=True)
 	# date =  db.Column(db.DateTime)
-	# project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
 	# child_task=db.relationship('Reassigned_Task', backref='parent_task', uselist=False)
 
 
@@ -75,7 +76,8 @@ class Task(db.Model, Serializer):
 
 #Model Task Detailes Table
 class Task_Detail(db.Model, Serializer):
-	task_id = db.Column(db.Integer, db.ForeignKey('task.id'), primary_key=True)
+	id = db.Column(db.Integer, primary_key=True)
+	task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
 	date_updated = db.Column(db.DateTime, default=datetime.utcnow)
 	target_date = db.Column(db.DateTime, nullable=True)
 	entry_type = db.Column(db.Integer, nullable=False)
@@ -84,7 +86,7 @@ class Task_Detail(db.Model, Serializer):
 	comment = db.Column(db.String(2000), nullable=True)
 
 	def __repr__(self): 
-		return '<Task_Detail %r>' % self.task_id
+		return '<Task_Detail %r>' % self.id
 
 #Model Register Table
 class Register(db.Model, Serializer):

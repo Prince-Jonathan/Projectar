@@ -1,2 +1,4 @@
 [0823/192002.687:ERROR:file_io.cc(134)] WriteFile: The pipe is being closed. (0xE8)
 [0911/113817.893:ERROR:settings.cc(320)] Settings magic is not 1129342067
+[0923/144317.866:ERROR:process_info.cc(118)] ReadProcessMemory bool __cdecl crashpad::(anonymous namespace)::ReadStruct(HANDLE, crashpad::WinVMAddress, T *) [T = crashpad::process_types::PEB<crashpad::process_types::internal::Traits64>]: Only part of a ReadProcessMemory or WriteProcessMemory request was completed. (0x12B)
+[0923/144317.975:ERROR:process_info.cc(551)] ReadProcessData failed

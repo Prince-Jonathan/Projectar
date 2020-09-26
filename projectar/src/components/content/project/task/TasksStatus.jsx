@@ -11,8 +11,7 @@ const TasksStatus = (props) => {
   const fetchTasks = (projectId) =>
     props
       .onFetchData(`/api/project/task/${projectId}`)
-      //check if messsage exists: msg only exist on error
-      .then(({ data }) => (data.msg ? null : setTasks(data)));
+      .then(({ data }) => (data.success ? setTasks(data.data) : null));
 
   useEffect(
     () => {
@@ -24,12 +23,15 @@ const TasksStatus = (props) => {
     () => {
       try {
         return tasks.filter(
-          (task) => parseInt(task.achieved) !== parseInt(task.target)
+          (task) =>
+            parseInt(task.details[0].achieved) !==
+            parseInt(task.details[0].target)
         );
       } catch (err) {}
     },
     [tasks]
   );
+  
   return (
     <div>
       <Button

@@ -99,7 +99,7 @@ const Export = (props) => {
         border: "0.25px solid black",
         borderRadius: 12,
         margin: 4,
-        paddingLeft:3
+        paddingLeft: 3,
       }}
       required
       onClick={onClick}
@@ -109,14 +109,14 @@ const Export = (props) => {
 
   return (
     <div>
-      <Button onClick={() => exportPDF()} disabled={!tasks.length}>
-        {!tasks.length ? "Loading..." : props.caption}
+      <Button onClick={() => exportPDF()} disabled={tasks ? false : true}>
+        {tasks ? (!tasks.length ? "Loading..." : props.caption) : "Loading..."}
       </Button>
       <label>
         From
         <DatePicker
           selected={startDate}
-          disabled={!tasks.length}
+          disabled={tasks ? false : true}
           onChange={(date) => setStartDate(date)}
           selectsStart
           startDate={startDate}
@@ -129,7 +129,7 @@ const Export = (props) => {
         To
         <DatePicker
           selected={endDate}
-          disabled={!tasks.length}
+          disabled={tasks ? false : true}
           onChange={(date) => setEndDate(date)}
           selectsEnd
           startDate={startDate}

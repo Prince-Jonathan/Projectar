@@ -34,7 +34,7 @@ const App = (props) => {
   const [syncing, setSyncing] = useState(false);
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
-  const [projectTasks, setProjectTasks] = useState([]);
+  const [projectsTasks, setProjectsTasks] = useState([]);
   const [personnel, setPersonnel] = useState();
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showTask, setShowTask] = useState(false);
@@ -46,7 +46,7 @@ const App = (props) => {
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   // const baseUrl = "https://projectar.devcodes.co";
-  // const baseUrl = "https://c3e6e88f11b7.ngrok.io";
+  // const baseUrl = "https://18de38291e0c.ngrok.io";
   const baseUrl = "http://localhost:8050";
 
   const OneSignal = window.OneSignal;
@@ -102,7 +102,7 @@ const App = (props) => {
     });
   // );
   const fetchProjectTasks = () =>
-    fetchData("/api/task/all").then(({ data }) => setProjectTasks(data));
+    fetchData("/api/task/all").then(({ data }) => setProjectsTasks(data));
   const fetchPersonnel = () =>
     fetchData("/api/user/all").then(({ data }) => setPersonnel(data));
 
@@ -182,7 +182,7 @@ const App = (props) => {
             <Workspace
               onShowTask={handleShowTask}
               onSelect={(id) => setSelectedID(id)}
-              projects={projectTasks}
+              projects={projectsTasks}
               selectedID={selectedID}
               onFetchData={fetchData}
               toggler={isTaskCreated}
@@ -203,7 +203,7 @@ const App = (props) => {
                 handleShowTask();
                 setSeletedTaskID(id);
               }}
-              tasks={projectTasks}
+              tasks={projectsTasks}
               selectedTaskID={selectedTaskID}
               onFetchData={fetchData}
               onAlert={handleAlert}
@@ -245,7 +245,7 @@ const App = (props) => {
               onAlert={handleAlert}
               onTaskUpdate={handleTaskCreated}
               personnel={personnel}
-              tasks={projectTasks}
+              tasks={projectsTasks}
               resetSelectedTaskID={() => setSeletedTaskID(0)}
               onFetchData={fetchData}
             />

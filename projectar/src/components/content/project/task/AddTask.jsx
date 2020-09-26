@@ -54,8 +54,8 @@ const AddTask = (props) => {
   const [state, setState] = useState({
     title: "",
     description: "",
-    target: "",
-    achieved: "",
+    target: null,
+    achieved: null,
     personnel: null,
   });
 
@@ -98,7 +98,11 @@ const AddTask = (props) => {
       ...startDate,
       project_id: location.state.projectID,
       targets: state.personnel,
+      entry_type: location.state.entry_type,
+      comment: null,
+      achieved: null,
     };
+    const taskDetails = {};
     props.onAlert("info", "Saving...", {
       timeout: 3000,
       position: "bottom center",

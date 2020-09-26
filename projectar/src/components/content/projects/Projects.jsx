@@ -147,7 +147,10 @@ const Projects = (props) => {
               onClick={() => {
                 setRowID(row.original.id);
                 // props.onShowTask();
-                history.push(`${url}/bay`, { projectID: row.original.id });
+                history.push(`${url}/bay`, {
+                  projectID: row.original.id,
+                  entry_type: 1,
+                });
               }}
             >
               Add Task

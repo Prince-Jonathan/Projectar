@@ -37,6 +37,7 @@ const EditTask = (props) => {
     target: "",
     achieved: "",
     personnel: null,
+    entry: "",
   });
 
   const options = useMemo(
@@ -58,10 +59,15 @@ const EditTask = (props) => {
     () => {
       task = props.tasks.filter(
         (t) => parseInt(t.id) === location.state.taskID
-      );
-      console.log("query move", location.state.taskID);
-      setState(task[0]);
-      setStartDate({ date: new Date(task[0].date) });
+      )[0];
+      setState({
+        ...task,
+        target: task.details[0].target,
+        achieved: task.details[0].achieved,
+        entry_type: task.details[0].entry_type,
+        comment: task.details[0].comment,
+      });
+      setStartDate({ date: new Date(task.details[0].target_date) });
     },
     [location.state, props.tasks]
   );
@@ -79,17 +85,27 @@ const EditTask = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    let personnel =
+      state.personnel ||
+      assignedPersonnel.map((personnel) => {
+        return { name: personnel.label, id: personnel.value };
+      });
+    let targets = state.personnel
+      ? state.personnel.map((personnel) => personnel.id)
+      : assignedPersonnel.map((personnel) => personnel.value);
+
     let task = {
       ...state,
       ...startDate,
       project_id: props.selectedID,
-      targets: state.personnel,
+      targets: targets,
+      personnel: personnel,
     };
     props.onAlert("info", "Updating...", {
       timeout: 3000,
       position: "bottom center",
     });
-    console.log("this is the outgoing", task);
+    console.log("the outgoing task:", task);
     props
       .postData(`/api/task/update/${location.state.taskID}`, task)
       .then((data) => console.log("returned from post", data))
@@ -112,7 +128,9 @@ const EditTask = (props) => {
   };
 
   const handleSelection = (selectedOption) => {
-    const personnel = selectedOption.map((option) => option.value);
+    const personnel = selectedOption.map((option) => {
+      return { name: option.label, id: option.value };
+    });
     setState({ ...state, personnel });
   };
 

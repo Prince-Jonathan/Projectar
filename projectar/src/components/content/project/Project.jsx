@@ -81,35 +81,38 @@ const Project = (props) => {
     fetchProjectPersonnel();
   }, []);
 
-  useEffect(() => {
-    let assignedPersonnel = [];
-    const fetchTasksPersonnel = async () => {
-      data.forEach((task) =>
-        trackPromise(
-          props
-            .onFetchData(`/api/task/enrolments/${task.id}`)
-            .then((data) => {
-              console.log(data);
-              return data;
-            })
-            .then(({ data }) => {
-              try {
-                let personnel = data.map((personnel) => {
-                  return {
-                    label: personnel.name,
-                    value: personnel.id,
-                    id: task.id,
-                  };
-                });
-                assignedPersonnel = assignedPersonnel.concat(personnel);
-                setTasksPersonnel(assignedPersonnel);
-              } catch (err) {}
-            })
-        )
-      );
-    };
-    fetchTasksPersonnel();
-  }, []);
+  useEffect(
+    () => {
+      let assignedPersonnel = [];
+      const fetchTasksPersonnel = async () => {
+        data.forEach((task) =>
+          trackPromise(
+            props
+              .onFetchData(`/api/task/enrolments/${task.id}`)
+              .then((data) => {
+                console.log(data);
+                return data;
+              })
+              .then(({ data }) => {
+                try {
+                  let personnel = data.map((personnel) => {
+                    return {
+                      label: personnel.name,
+                      value: personnel.id,
+                      id: task.id,
+                    };
+                  });
+                  assignedPersonnel = assignedPersonnel.concat(personnel);
+                  setTasksPersonnel(assignedPersonnel);
+                } catch (err) {}
+              })
+          )
+        );
+      };
+      fetchTasksPersonnel();
+    },
+    [location.state]
+  ); //the location.state changes after editing success: this should refresh assigned personnel list
 
   const fetchAttendance = async () => {
     trackPromise(
@@ -219,7 +222,16 @@ const Project = (props) => {
             >
               Edit
             </Button>
-            <Button>Re-assign</Button>
+            <Button
+              onClick={() => {
+                history.push(`${url}`, {
+                  taskID: row.original.id,
+                  projectID: id,
+                });
+              }}
+            >
+              Re-assign
+            </Button>
 
             <Button onClick={() => deleteTask(row.original.id)}>Delete</Button>
           </div>
@@ -236,10 +248,12 @@ const Project = (props) => {
     [tasksPersonnel]
   );
   const outstandingTasks = data.filter(
-    (task) => parseInt(task.achieved) !== parseInt(task.target)
+    (task) =>
+      parseInt(task.details[0].achieved) !== parseInt(task.details[0].target)
   );
   const completedTasks = data.filter(
-    (task) => parseInt(task.achieved) === parseInt(task.target)
+    (task) =>
+      parseInt(task.details[0].achieved) === parseInt(task.details[0].target)
   );
 
   const handleClick = ({ row }) => {
@@ -248,6 +262,7 @@ const Project = (props) => {
     history.push(`${url}/outstanding-tasks/${row.original.id}/execute`, {
       taskID: row.original.id,
       projectID: id,
+      entry_type: 2,
     });
   };
 
