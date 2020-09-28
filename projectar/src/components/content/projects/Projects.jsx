@@ -160,13 +160,8 @@ const Projects = (props) => {
               projectID={row.original.id}
               onFetchData={props.onFetchData}
               caption="Report"
-              title={`${row.original.name} - Tasks List [Target vs. Achieved]`}
+              title={row.original.name}
               logo={props.logo}
-              tableItem={<Table
-            columns={columns}
-            data={data}
-            // renderRowSubComponent={renderRowSubComponent}
-          />}
             />
             <Button
               onClick={() =>
