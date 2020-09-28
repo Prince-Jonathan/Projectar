@@ -1,3 +1,4 @@
+// this component duals as both editing and reassignment component
 import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -37,7 +38,7 @@ const EditTask = (props) => {
     target: "",
     achieved: "",
     personnel: null,
-    entry: "",
+    entry_type: null,
   });
 
   const options = useMemo(
@@ -64,7 +65,9 @@ const EditTask = (props) => {
         ...task,
         target: task.details[0].target,
         achieved: task.details[0].achieved,
-        entry_type: task.details[0].entry_type,
+        entry_type: location.state.reAssign
+          ? location.state.reAssign.entry_type
+          : task.details[0].entry_type,
         comment: task.details[0].comment,
       });
       setStartDate({ date: new Date(task.details[0].target_date) });
@@ -101,29 +104,46 @@ const EditTask = (props) => {
       targets: targets,
       personnel: personnel,
     };
-    props.onAlert("info", "Updating...", {
-      timeout: 3000,
-      position: "bottom center",
-    });
+    props.onAlert(
+      "info",
+      location.state.reAssign ? "Re-assigning..." : "Updating...",
+      {
+        timeout: 3000,
+        position: "bottom center",
+      }
+    );
     console.log("the outgoing task:", task);
     props
-      .postData(`/api/task/update/${location.state.taskID}`, task)
+      .postData(
+        location.state.reAssign
+          ? `/api/task/update/${location.state.taskID}`
+          : `/api/task/edit/${location.state.taskID}`,
+        task
+      )
       .then((data) => console.log("returned from post", data))
       .then(() =>
-        props.onAlert("success", "Task Updated", {
-          timeout: 5000,
-          position: "bottom center",
-        })
+        props.onAlert(
+          "success",
+          `Task ${location.state.reAssign ? "Re-assigned" : "Updated"} `,
+          {
+            timeout: 5000,
+            position: "bottom center",
+          }
+        )
       )
       .then(() => props.onTaskUpdate())
       .then(() => props.postData("/api/notify/edited-task", task))
       // .then(() => props.resetSelectedTaskID())
       .then(() => history.goBack())
       .catch(() =>
-        props.onAlert("error", "Failed to Update Task", {
-          timeout: 3000,
-          position: "bottom center",
-        })
+        props.onAlert(
+          "error",
+          `Failed to ${location.state.reAssign ? "Re-assign" : "Update"} Task`,
+          {
+            timeout: 3000,
+            position: "bottom center",
+          }
+        )
       );
   };
 
@@ -151,7 +171,9 @@ const EditTask = (props) => {
     <div>
       <form onSubmit={handleSubmit} className="form-container">
         <span>
-          <strong>Assign Task To Specific Days</strong>
+          <strong>{`${
+            location.state.reAssign ? "Re-" : ""
+          }Assign Task To Specific Day`}</strong>
         </span>
 
         <input
@@ -199,6 +221,7 @@ const EditTask = (props) => {
             onChange={(date) => setStartDate({ date })}
             customInput={<CustomInput />}
             withPortal={isMobile}
+            showTimeInput
           />
         </div>
 

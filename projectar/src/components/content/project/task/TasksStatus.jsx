@@ -7,12 +7,11 @@ import Button from "../../uiElements/Button";
 const TasksStatus = (props) => {
   const [tasks, setTasks] = useState([]);
   const history = useHistory();
-
   const fetchTasks = (projectId) =>
     props
       .onFetchData(`/api/project/task/${projectId}`)
       .then(({ data }) => (data.success ? setTasks(data.data) : null));
-
+  //could pass the state of the tasks above through route to the Project component: in order to refresh list on rendering TasksStatus
   useEffect(
     () => {
       fetchTasks(props.projectID);
@@ -31,7 +30,7 @@ const TasksStatus = (props) => {
     },
     [tasks]
   );
-  
+
   return (
     <div>
       <Button

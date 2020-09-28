@@ -162,6 +162,11 @@ const Projects = (props) => {
               caption="Report"
               title={`${row.original.name} - Tasks List [Target vs. Achieved]`}
               logo={props.logo}
+              tableItem={<Table
+            columns={columns}
+            data={data}
+            // renderRowSubComponent={renderRowSubComponent}
+          />}
             />
             <Button
               onClick={() =>

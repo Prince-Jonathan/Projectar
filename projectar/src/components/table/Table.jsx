@@ -44,7 +44,7 @@ const Table = ({
 
   const firstPageRows = rows.slice(0, 2);
   return (
-    <table {...getTableProps()}>
+    <table id="tableComp" {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>

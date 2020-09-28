@@ -170,19 +170,19 @@ const Project = (props) => {
         },
         {
           Header: "Target (%)",
-          accessor: "target",
+          accessor: "details[0].target",
           Filter: SliderFilter,
           filter: filterGreaterThan,
         },
         {
           Header: "Achieved (%)",
-          accessor: "achieved",
+          accessor: "details[0].achieved",
           Filter: SliderFilter,
           filter: filterGreaterThan,
         },
         {
           Header: "Date Scheduled",
-          accessor: "date",
+          accessor: "details[0].target_date",
           Filter: () => null,
         },
       ];
@@ -227,6 +227,7 @@ const Project = (props) => {
                 history.push(`${url}`, {
                   taskID: row.original.id,
                   projectID: id,
+                  reAssign: { entry_type: 3 },
                 });
               }}
             >
@@ -238,7 +239,7 @@ const Project = (props) => {
           <Description
             onFetchData={props.onFetchData}
             description={row.original.description}
-            comment={row.original.comment}
+            comment={row.original.details[0].comment}
             taskID={row.original.id}
             tasksPersonnel={tasksPersonnel}
           />

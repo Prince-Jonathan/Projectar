@@ -401,49 +401,27 @@ def enrol_user_task(task_id, personnel_id):
 			"success":False
 		}
 
-@app.route('/api/task/update/<int:task_id>', methods=['POST'])
-def update_task(task_id):
+@app.route('/api/task/edit/<int:task_id>', methods=['POST'])
+def edit_task(task_id):
 	'''edits the task of the specified id'''
 	data = request.get_json()
 	try:
 		task = Task.query.get_or_404(task_id)
-		print(1)
 		task.title = data["title"]
 		task.description = data["description"]
-		if data["entry_type"]==1:
-			print(2)
-
-			#update corresponding task_detail
-			recent_task_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).first()
-			recent_task_detail.target = data["target"]
-			recent_task_detail.target_date = data["date"]
-			recent_task_detail.comment = data["comment"] if "comment" in data else None
-			recent_task_detail.achieved = data["achieved"] if "achieved" in data else None
-			recent_task_detail.entry_type = data["entry_type"]
-		elif data["entry_type"]==2:
-			print(3)
-			#execute task by passing task_detail entry
-			task_detail = Task_Detail(
-				target_date=data["date"],
-				entry_type=data["entry_type"],
-				achieved=data["achieved"],
-				target=data["target"],
-				comment=data["comment"],
-				task=task
-			)
-			print(4)
-			db.session.add(task_detail)
+		recent_task_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).first()
+		recent_task_detail.target = data["target"]
+		recent_task_detail.target_date = data["date"]
+		recent_task_detail.comment = data["comment"] if "comment" in data else None
+		recent_task_detail.achieved = data["achieved"] if "achieved" in data else None
+		recent_task_detail.entry_type = data["entry_type"]
+		recent_task_detail.date_updated = datetime.now()
 		db.session.commit()
-		print(5)
 		for personnel in task.personnel[:]:
-			print(6)
-			print("deleting",personnel)
 			task.personnel.remove(personnel)
 		db.session.commit()
 		if data["personnel"] is not None:
-			print(7)
 			for personnel in data["personnel"]:
-				print("adding",personnel["id"])
 				db_pers = User.query.get(personnel["id"])
 				if db_pers is None:
 					#add personnel
@@ -455,7 +433,6 @@ def update_task(task_id):
 					db.session.commit()
 				enrol_user_task(task.id, personnel["id"])
 		db.session.commit()
-		print(8)
 		return {
 			"success":True,
 		} 
@@ -465,6 +442,105 @@ def update_task(task_id):
 		return {
 			"success":False
 		}
+			
+@app.route('/api/task/update/<int:task_id>', methods=['POST'])
+def update_task(task_id):
+	'''update the task of the specified id'''
+	data = request.get_json()
+	try:
+		task = Task.query.get_or_404(task_id)
+		task.title = data["title"]
+		task.description = data["description"]
+		if data["entry_type"]==1:
+			#update corresponding task_detail
+			recent_task_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).first()
+			recent_task_detail.target = data["target"]
+			recent_task_detail.target_date = data["date"]
+			recent_task_detail.comment = data["comment"] if "comment" in data else None
+			recent_task_detail.achieved = data["achieved"] if "achieved" in data else None
+			recent_task_detail.entry_type = data["entry_type"]
+		elif data["entry_type"]!=1:
+			#execute task by passing task_detail entry
+			task_detail = Task_Detail(
+				target_date=data["date"],
+				entry_type=data["entry_type"],
+				achieved=data["achieved"] if data["entry_type"]==2 else None,
+				target=data["target"],
+				comment=data["comment"] if data["entry_type"]==2 else None,
+				task=task
+			)
+			db.session.add(task_detail)
+		db.session.commit()
+		for personnel in task.personnel[:]:
+			task.personnel.remove(personnel)
+		db.session.commit()
+		if data["personnel"] is not None:
+			for personnel in data["personnel"]:
+				db_pers = User.query.get(personnel["id"])
+				if db_pers is None:
+					#add personnel
+					db_pers = User(
+							id=personnel["id"],
+							name=personnel["name"]
+						)
+					db.session.add(db_pers)
+					db.session.commit()
+				enrol_user_task(task.id, personnel["id"])
+		db.session.commit()
+		return {
+			"success":True,
+		} 
+	except SQLAlchemyError as err:
+		print(err)
+		db.session.rollback()
+		return {
+			"success":False
+		}
+
+# @app.route('/api/task/reassign/<int:task_id>', methods=['POST'])
+# def reassign_task(task_id):
+# 	'''reassign task of the specified id'''
+# 	data = request.get_json()
+# 	try:
+# 		task = Task.query.get_or_404(task_id)
+# 		print(1)
+# 		task.title = data["title"]
+# 		task.description = data["description"]	
+# 		task_detail = Task_Detail(
+# 				target_date=data["date"],
+# 				entry_type=data["entry_type"],
+# 				# achieved=data["achieved"],
+# 				target=data["target"],
+# 				# comment=data["comment"],
+# 				task=task
+# 			)
+# 		db.session.add(task_detail)
+# 		db.session.commit()
+# 		for personnel in task.personnel[:]:
+# 			task.personnel.remove(personnel)
+# 		db.session.commit()
+# 		if data["personnel"] is not None:
+# 			for personnel in data["personnel"]:
+# 				db_pers = User.query.get(personnel["id"])
+# 				if db_pers is None:
+# 					#add personnel
+# 					db_pers = User(
+# 							id=personnel["id"],
+# 							name=personnel["name"]
+# 						)
+# 					db.session.add(db_pers)
+# 					db.session.commit()
+# 				enrol_user_task(task.id, personnel["id"])
+# 		db.session.commit()
+# 		return {
+# 			"success":True,
+# 		} 
+# 	except SQLAlchemyError as err:
+# 		print(err)
+# 		db.session.rollback()
+# 		return {
+# 			"success":False
+# 		}	
 
 @app.route('/api/project/task/<int:project_id>')
 def proj_tasks(project_id):
@@ -498,8 +574,10 @@ def proj_tasks(project_id):
 			# 		"success":True,
 			# 		"data":Task.serialize_list(tasks)
 			# 	}
+
+
 			tasks_obj = Task.serialize_list(tasks)
-			print("tasks_obj",tasks_obj)
+			# append task details
 			for task in tasks:
 				details = Task_Detail.serialize_list(db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all())
 				print(details)
@@ -658,7 +736,7 @@ def del_task(task_id):
 def project_verbose(proj_id):
 	'''Details of project tasks of specified id'''
 	try:
-		plist = []
+		# plist = []
 		# pnames = ""
 		project = Project.query.get(proj_id)
 		msg = "does not exist"
@@ -666,23 +744,34 @@ def project_verbose(proj_id):
 			tasks = project.tasks
 			if len(tasks) == 0:
 				print("project %id has no tasks" % (project.id))
+			tasks_obj = Task.serialize_list(tasks)
 			for task in tasks:
-				temp_ = ''
+				# append personnel list
+				personnel = ''
 				task_users = User.serialize_list(task.personnel)
-				# print(task_users)
+				print(task_users)
 				for task_user in task_users:
-					temp_ += task_user['name']
+					personnel += task_user['name']
 					if not task_users[-1]==task_user:
-						temp_+=", "
-				plist.append(temp_)
-				# plist.append(User.serialize_list(task.personnel))
+						personnel+=", "
+				# plist.append(personnel)
+				# append task details
+				details = Task_Detail.serialize_list(db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all())
+				if len(details) !=0:
+					# find task object that mataches id of details
+					obj = [x for x in tasks_obj if x["id"] == details[0]["task_id"]][0]
+				# append details and personnel
+				tasks_obj[tasks_obj.index(obj)]["details"] = details
+				tasks_obj[tasks_obj.index(obj)]["personnel"] = personnel
 			return {
 				"success":True,
-				"tasks_list":Task.serialize_list(tasks),
-				"personnel_list":plist
+				"tasks_list":tasks_obj,
+				# "personnel_list":plist
 			}
 		return {
-			"msg":"project awaiting sync"
+			"msg":"project awaiting sync",
+			"tasks_list":[],
+			"personnel_list":[]
 		}
 	except SQLAlchemyError as err:
 		print(err)

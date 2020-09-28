@@ -11,14 +11,14 @@ const Export = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [tasks, setTasks] = useState([]);
-  const [personnel, setPersonnel] = useState([]);
+  // const [personnel, setPersonnel] = useState([]);
 
   const fetchVerbose = (projectID) => {
     props.onFetchData(`/api/project/verbose/${projectID}`).then(({ data }) => {
       // tasks = data.tasks_list;
       // personnel = data.personnel_list;
       setTasks(data.tasks_list);
-      setPersonnel(data.personnel_list);
+      // setPersonnel(data.personnel_list);
     });
   };
 
@@ -36,9 +36,9 @@ const Export = (props) => {
 
     doc.setFontSize(15);
 
-    for (let i = 0; i < tasks.length; i++) {
-      tasks[i].personnel = personnel[i];
-    }
+    // for (let i = 0; i < tasks.length; i++) {
+    //   tasks[i].personnel = personnel[i];
+    // }
 
     const title = props.title;
     const headers = [
@@ -55,19 +55,19 @@ const Export = (props) => {
     const filteredTasks = tasks.length
       ? tasks.filter(
           (task) =>
-            +new Date(task.date).setHours(0, 0, 0, 0) >=
+            +new Date(task.date_created).setHours(0, 0, 0, 0) >=
               +new Date(startDate).setHours(0, 0, 0, 0) &&
-            +new Date(task.date).setHours(0, 0, 0, 0) <=
+            +new Date(task.date_created).setHours(0, 0, 0, 0) <=
               +new Date(endDate).setHours(0, 0, 0, 0)
         )
       : tasks;
     const data = filteredTasks.map((task) => [
-      task.date,
+      task.date_created,
       task.title,
       task.description,
       task.personnel,
-      task.target ? parseInt(task.target) : "-",
-      task.achieved ? parseInt(task.achieved) : "-",
+      task.details[0].target ? parseInt(task.details[0].target) : "-",
+      task.details[0].achieved ? parseInt(task.details[0].achieved) : "-",
     ]);
 
     let content = {
@@ -86,6 +86,7 @@ const Export = (props) => {
     doc.setFontSize(12);
     doc.text(splitTitle, marginLeft, 56);
     doc.autoTable(content);
+    // doc.autoTable({ html: "#tableComp" });
     doc.save(`${props.title}.pdf`);
   };
 
@@ -110,7 +111,7 @@ const Export = (props) => {
   return (
     <div>
       <Button onClick={() => exportPDF()} disabled={tasks ? false : true}>
-        {tasks ? (!tasks.length ? "Loading..." : props.caption) : "Loading..."}
+        {tasks ? props.caption : "Loading..."}
       </Button>
       <label>
         From
