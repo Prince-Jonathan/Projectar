@@ -195,9 +195,8 @@ const Export = (props) => {
             data.column.dataKey === "target" ||
             data.column.dataKey === "achieved"
           ) {
-            console.log(data);
-            // data.cell.text =
-            // data.row.raw.details[0][data.column.dataKey] || "-";
+            data.cell.text =
+            data.row.raw.details[0][data.column.dataKey] || "-";
           } else if (data.column.dataKey === "date_created") {
             data.cell.text = new Date(
               data.row.raw.date_created
