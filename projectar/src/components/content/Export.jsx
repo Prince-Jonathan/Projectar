@@ -15,10 +15,7 @@ const Export = (props) => {
 
   const fetchVerbose = (projectID) => {
     props.onFetchData(`/api/project/verbose/${projectID}`).then(({ data }) => {
-      // tasks = data.tasks_list;
-      // personnel = data.personnel_list;
       setTasks(data.tasks_list);
-      // setPersonnel(data.personnel_list);
     });
   };
   const fetchAttendance = (projectID) => {
@@ -37,30 +34,9 @@ const Export = (props) => {
     const size = "A4"; // Use A1, A2, A3 or A4
     const orientation = "portrait"; // portrait or landscape
 
-    // const marginLeft = 40;
-    // const top = 56;
     const doc = new jsPDF(orientation, unit, size);
 
-    // doc.setFontSize(15);
-
-    // for (let i = 0; i < tasks.length; i++) {
-    //   tasks[i].personnel = personnel[i];
-    // }
-
     const title = props.title;
-    // const taskHeaders = [
-    //   [
-    //     "DATE",
-    //     "TITLE",
-    //     "DESCRIPTION",
-    //     "PERSONNEL",
-    //     "TARGET (%)",
-    //     "ACHIEVED (%)",
-    //   ],
-    // ];
-    // const attendanceHeaders = [
-    //   ["DATE", "TIME IN", "TIME OUT", "T & T", "PERSONNEL", "LUNCH"],
-    // ];
 
     const filteredTasks = tasks.length
       ? tasks.filter(
@@ -71,14 +47,7 @@ const Export = (props) => {
               +new Date(endDate).setHours(0, 0, 0, 0)
         )
       : tasks;
-    // const tasksData = filteredTasks.map((task) => [
-    //   new Date(task.date_created).toLocaleDateString(),
-    //   task.title,
-    //   task.description,
-    //   task.personnel,
-    //   task.details[0].target ? parseInt(task.details[0].target) : "-",
-    //   task.details[0].achieved ? parseInt(task.details[0].achieved) : "-",
-    // ]);
+
     const filteredAttendance = attendance.filter((register) => {
       return (
         +new Date(register.date).setHours(0, 0, 0, 0) >=
@@ -88,30 +57,7 @@ const Export = (props) => {
         register.is_present === true
       );
     });
-    // const attendanceData = filteredAttendance.map((register) => [
-    //   new Date(register.date).toLocaleDateString(),
-    //   register.time_in,
-    //   register.time_out,
-    //   register.t_and_t ? parseInt(register.t_and_t) : "-",
-    //   register.personnel_name,
-    //   register.lunch ? "Yes" : "No",
-    // ]);
 
-    // doc.setFont("helvetica", "normal");
-    // console.log("the props", doc.getFontList());
-    // var imageData = new Image();
-    // imageData.src = props.logo;
-    // doc.addImage(imageData, "png", 140, 0, 50, 50);
-    // var logoLabel = "THE AUTOMATION GHANA GROUP";
-    // doc.text(logoLabel, 190, 30);
-
-    // doc.text(splitTitle, marginLeft, top);
-    // doc.setFont("times", "bolditalic");
-    // doc.text(
-    //   "Tasks List [Target vs. Achieved]",
-    //   marginLeft,
-    //   doc.getTextDimensions(splitTitle).h + top + 5
-    // );
     doc.autoTable({
       columnStyles: {
         0: {
@@ -139,13 +85,12 @@ const Export = (props) => {
         );
       },
     });
+
     doc.autoTable({
       body: [
         [
           {
             content: title,
-            // colSpan: 2,
-            // rowSpan: 2,
             styles: {
               font: "helvetica",
               fontStyle: "bold",
@@ -164,8 +109,6 @@ const Export = (props) => {
         [
           {
             content: "Tasks List [Target vs. Achieved]",
-            // colSpan: 2,
-            // rowSpan: 2,
             styles: {
               font: "helvetica",
               fontStyle: "bolditalic",
@@ -178,6 +121,7 @@ const Export = (props) => {
         ],
       ],
     });
+
     //the filtered tasks table
     doc.autoTable({
       body: filteredTasks,
@@ -196,7 +140,7 @@ const Export = (props) => {
             data.column.dataKey === "achieved"
           ) {
             data.cell.text =
-            data.row.raw.details[0][data.column.dataKey] || "-";
+              data.row.raw.details[0][data.column.dataKey] || "-";
           } else if (data.column.dataKey === "date_created") {
             data.cell.text = new Date(
               data.row.raw.date_created
@@ -205,13 +149,12 @@ const Export = (props) => {
         }
       },
     });
+
     doc.autoTable({
       body: [
         [
           {
             content: "Attendance Register",
-            // colSpan: 1,
-            // rowSpan: 2,
             styles: {
               font: "helvetica",
               fontStyle: "bolditalic",
@@ -224,16 +167,7 @@ const Export = (props) => {
         ],
       ],
     });
-    // doc.autoTable({
-    //   head: attendanceHeaders,
-    //   body: attendanceData,
-    // });
 
-    // register.time_in,
-    // register.time_out,
-    // register.t_and_t ? parseInt(register.t_and_t) : "-",
-    // register.personnel_name,
-    // register.lunch ? "Yes" : "No",
     doc.autoTable({
       body: filteredAttendance,
       columns: [
@@ -256,7 +190,7 @@ const Export = (props) => {
         }
       },
     });
-    // doc.autoTable({ html: "#tableComp" });
+
     doc.save(`${props.title}.pdf`);
   };
 
