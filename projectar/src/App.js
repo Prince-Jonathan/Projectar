@@ -30,7 +30,7 @@ import Logo from "./logos/logo2.png";
 
 const App = (props) => {
   const alert = useAlert();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
