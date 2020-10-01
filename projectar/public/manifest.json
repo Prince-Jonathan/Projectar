@@ -1,7 +1,7 @@
 {
   "name": "Project Archive",
   "short_name": "Projectar",
-  "theme_color": "#ffee00",
+  "theme_color": "#ffee007a",
   "background_color": "#10292e",
   "display": "standalone",
   "scope": "/",
