@@ -256,11 +256,10 @@ def all_users():
 # 			"success":False	
 # 		}
 
-@app.route('/api/project/all/<int:project_id>')
-def all_projects(project_id):
+@app.route('/api/project/all')
+def all_projects():
 	'''Get all Projects'''
-	# data = netsuite_req({"request": "projects"})["data"]
-	data = netsuite_req({request: "user-projects", id: project_id})["data"]
+	data = netsuite_req({"request": "projects"})["data"]
 	return {
 		"success":True,
 		"data":data

@@ -5,7 +5,7 @@ import "./Slate.css";
 const Slate = (props) => {
   return (
     <div>
-      <Row className="slate">
+      <Row className="slate" slate>
         <Column scroll>{props.children}</Column>
       </Row>
     </div>

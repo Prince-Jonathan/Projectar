@@ -11,6 +11,7 @@ const Row = styled.div.attrs((props) => ({ className: props.className }))`
   width: 100%;
   backface-visibility: hidden;
   will-change: overflow;
+  ${({ slate }) => (slate ? " height: 80vh" : " height: 100vh")};
   ${({ backgroundColor }) => `background-color:${backgroundColor}`};
   ${({ flexDirection }) => `flex-direction:${flexDirection}`};
   ${({ justifyContent }) => `justify-content:${justifyContent}`};
@@ -20,7 +21,7 @@ const Row = styled.div.attrs((props) => ({ className: props.className }))`
 
 const Column = styled.div`
   &::-webkit-scrollbar {
-    ${(props)=>!props.scroll && "display: none"};
+    ${(props) => !props.scroll && "display: none"};
   }
   overflow: auto;
   height: auto;

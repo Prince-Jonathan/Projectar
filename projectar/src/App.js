@@ -46,8 +46,8 @@ const App = (props) => {
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   // const baseUrl = "https://projectar.devcodes.co";
-  // const baseUrl = "https://6a619d662666.ngrok.io";
-  const baseUrl = "http://localhost:8050";
+  const baseUrl = "https://6f4f9de4f7f1.ngrok.io";
+  // const baseUrl = "http://localhost:8050";
 
   const OneSignal = window.OneSignal;
   OneSignal.push(function() {

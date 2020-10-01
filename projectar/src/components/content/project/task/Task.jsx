@@ -187,7 +187,7 @@ const Task = (props) => {
           </Slate>
         </Route>
         <Route path={`${path}/:id/execute/`}>
-          <Caption flabel="Task" slabel=" -Outstanding" />
+          <Caption flabel="Execute" slabel="Task" />
           <ExecuteTask
             handleSubmit={handleSubmit}
             state={state}
