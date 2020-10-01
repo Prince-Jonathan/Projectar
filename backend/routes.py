@@ -256,10 +256,11 @@ def all_users():
 # 			"success":False	
 # 		}
 
-@app.route('/api/project/all')
-def all_projects():
+@app.route('/api/project/all/<int:project_id>')
+def all_projects(project_id):
 	'''Get all Projects'''
-	data = netsuite_req({"request": "projects"})["data"]
+	# data = netsuite_req({"request": "projects"})["data"]
+	data = netsuite_req({request: "user-projects", id: project_id})["data"]
 	return {
 		"success":True,
 		"data":data
@@ -794,8 +795,8 @@ def attendance(proj_id):
 			db.session.commit()
 
 		for personnel in data["body"]:
-			time_in = None if personnel["signIn"]==None else datetime.strptime(personnel["signIn"], "%H:%M:%S %p").time()
-			time_out =  None if personnel["signOut"]==None else datetime.strptime(personnel["signOut"], "%H:%M:%S %p").time()
+			time_in = None if personnel["signIn"]==None else datetime.strptime(personnel["signIn"], "%H:%M").time()
+			time_out =  None if personnel["signOut"]==None else datetime.strptime(personnel["signOut"], "%H:%M").time()
 
 			register = Register(
 				date=data["date"],

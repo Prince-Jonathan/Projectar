@@ -41,9 +41,9 @@ const Export = (props) => {
     const filteredTasks = tasks.length
       ? tasks.filter(
           (task) =>
-            +new Date(task.date_created).setHours(0, 0, 0, 0) >=
+            +new Date(task.details[0].date_updated).setHours(0, 0, 0, 0) >=
               +new Date(startDate).setHours(0, 0, 0, 0) &&
-            +new Date(task.date_created).setHours(0, 0, 0, 0) <=
+            +new Date(task.details[0].date_updated).setHours(0, 0, 0, 0) <=
               +new Date(endDate).setHours(0, 0, 0, 0)
         )
       : tasks;
@@ -126,9 +126,10 @@ const Export = (props) => {
     doc.autoTable({
       body: filteredTasks,
       columns: [
-        { header: "DATE", dataKey: "date_created" },
+        { header: "DATE", dataKey: "date_updated" },
         { header: "TITLE", dataKey: "title" },
         { header: "DESCRIPTION", dataKey: "description" },
+        { header: "STATUS", dataKey: "entry_type" },
         { header: "PERSONNEL", dataKey: "personnel" },
         { header: "TARGET", dataKey: "target" },
         { header: "ACHIEVED", dataKey: "achieved" },
@@ -141,10 +142,14 @@ const Export = (props) => {
           ) {
             data.cell.text =
               data.row.raw.details[0][data.column.dataKey] || "-";
-          } else if (data.column.dataKey === "date_created") {
+          } else if (data.column.dataKey === "date_updated") {
             data.cell.text = new Date(
-              data.row.raw.date_created
+              data.row.raw.details[0].date_updated
             ).toLocaleDateString();
+          } else if (data.column.dataKey === "entry_type") {
+            const status = [null, "New", "Executed", "Rescheduled"];
+            data.cell.text =
+              status[data.row.raw.details[0][data.column.dataKey]];
           }
         }
       },
@@ -214,11 +219,29 @@ const Export = (props) => {
 
   return (
     <div>
-      <Button
-        onClick={() => exportPDF()}
-        disabled={tasks && attendance ? false : true}
-      >
-        {tasks && attendance ? props.caption : "Loading..."}
+      <Button disabled={tasks && attendance ? false : true}>
+        {tasks && attendance ? (
+          <div>
+            <img
+              onClick={() => exportPDF()}
+              src={props.pdfLogo}
+              alt="pdf Logo"
+              width="30"
+              height="37"
+              style={{ cursor: "pointer" }}
+            />
+            <img
+              onClick={() => console.log("exportPDF()")}
+              src={props.spreadSheet}
+              alt="spreadSheet Logo"
+              width="50"
+              height="50"
+              style={{ cursor: "pointer" }}
+            />
+          </div>
+        ) : (
+          "Loading..."
+        )}
       </Button>
       <label>
         From

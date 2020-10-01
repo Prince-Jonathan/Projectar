@@ -150,21 +150,81 @@ const Register = (props) => {
   const columns = useMemo(
     () => [
       {
-        id: "time",
-        Header: "Time",
-        // The cell can use the individual row's getToggleRowSelectedProps method
-        // to the render a checkbox
+        id: "isPresent",
+        Cell: ({ row }) => {
+          const [isPresent] = useState(() => {
+            try {
+              return isPresents.filter(
+                (isPresent) => isPresent.id === row.original.id
+              )[0].isPresent;
+            } catch (err) {}
+          });
+
+          const isPersonnelPresent = isPresent ? isPresent : false;
+          return (
+            <input
+              type="checkbox"
+              name="isPresent"
+              style={{ cursor: "pointer" }}
+              checked={isPersonnelPresent}
+              onChange={() => {
+                handleIsPresent([
+                  {
+                    id: row.original.id,
+                    isPresent: !isPersonnelPresent,
+                  },
+                ]);
+              }}
+            />
+          );
+        },
+      },
+      {
+        Header: "Time In",
         Cell: ({ row }) => {
           //holding state for each selector and forwarding the state to parent. This is because the selector unmounts
           //it is not possible to update state from parent
-          const [signIn] = useState(() => {
+          const [signIn, setSignIn] = useState(() => {
             try {
               return signIns.filter(
                 (signIn) => signIn.id === row.original.id
               )[0].signIn;
             } catch (err) {}
           });
-          const [signOut] = useState(() => {
+
+          const [isPresent] = useState(() => {
+            try {
+              return isPresents.filter(
+                (isPresent) => isPresent.id === row.original.id
+              )[0].isPresent;
+            } catch (err) {}
+          });
+
+          const isPersonnelPresent = isPresent ? isPresent : false;
+          console.log("signIn", signIn);
+
+          return (
+            <input
+              type="time"
+              disabled={!isPersonnelPresent}
+              value={signIn}
+              onChange={(e) => {
+                setSignIn(e.target.value);
+              }}
+              onBlur={() =>
+                handleSetSignIn([{ id: row.original.id, signIn: signIn }])
+              }
+            />
+          );
+        },
+      },
+      {
+        Header: "Time Out",
+        Cell: ({ row }) => {
+          //holding state for each selector and forwarding the state to parent. This is because the selector unmounts
+          //it is not possible to update state from parent
+
+          const [signOut, setSignOut] = useState(() => {
             try {
               return signOuts.filter(
                 (signOut) => signOut.id === row.original.id
@@ -178,73 +238,21 @@ const Register = (props) => {
               )[0].isPresent;
             } catch (err) {}
           });
-          const timeIn = signIn ? signIn : "00:00:00";
-          const timeOut = signOut ? signOut : "00:00:00";
+
           const isPersonnelPresent = isPresent ? isPresent : false;
+
           return (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-evenly",
+            <input
+              type="time"
+              disabled={!isPersonnelPresent}
+              value={signOut}
+              onChange={(e) => {
+                setSignOut(e.target.value);
               }}
-            >
-              <input
-                type="checkbox"
-                name="isPresent"
-                style={{ cursor: "pointer" }}
-                checked={isPersonnelPresent}
-                onChange={() => {
-                  handleIsPresent([
-                    {
-                      id: row.original.id,
-                      isPresent: !isPersonnelPresent,
-                    },
-                  ]);
-                }}
-              />
-              <DatePicker
-                //setting dummy date "01/01/01 "value for the sake of  datePicker Library
-                selected={new Date("01/01/01 " + timeIn)}
-                disabled={!isPersonnelPresent}
-                onChange={(date) => {
-                  handleSetSignIn([
-                    {
-                      id: row.original.id,
-                      signIn: new Date(date).toLocaleTimeString(),
-                    },
-                  ]);
-                }}
-                popperPlacement="bottom-end"
-                customInput={<CustomInput />}
-                withPortal={isMobile}
-                showTimeSelect
-                showTimeSelectOnly
-                timeIntervals={5}
-                timeCaption="Time In"
-                dateFormat="h:mm aa"
-              />
-              <DatePicker
-                selected={new Date("01/01/01 " + timeOut)}
-                disabled={!isPersonnelPresent}
-                onChange={(date) => {
-                  handleSetSignOut([
-                    {
-                      id: row.original.id,
-                      signOut: new Date(date).toLocaleTimeString(),
-                    },
-                  ]);
-                }}
-                popperPlacement="bottom-end"
-                customInput={<CustomInput />}
-                withPortal={isMobile}
-                showTimeSelect
-                showTimeSelectOnly
-                timeIntervals={5}
-                timeCaption="Time Out"
-                dateFormat="h:mm aa"
-              />
-            </div>
+              onBlur={() =>
+                handleSetSignOut([{ id: row.original.id, signOut: signOut }])
+              }
+            />
           );
         },
       },
@@ -339,12 +347,13 @@ const Register = (props) => {
               ? true
               : false
             : false;
+
           return {
             signIn: null,
             signOut: null,
             ...signIn[0],
             ...signOut[0],
-            ...(tandt[0].tandt ? tandt[0] : { tandt: null }),
+            ...(tandt[0] ? tandt[0] : { tandt: null }),
             ...isPresent[0],
             lunch: lunch,
             id: personnel.id,
@@ -403,13 +412,25 @@ const Register = (props) => {
         customInput={<MainDate />}
         withPortal={true}
       />
-      <Slate>
+      {/* <Slate> */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          padding: 5,
+          margin: "15px 0px",
+          color: "#10292e",
+          borderRadius: 5,
+          backgroundColor: "#adb7a9c2",
+        }}
+      >
         <Table
           data={data}
           columns={columns}
           selectedRows={(data) => extractLunchData(data)}
         />
-      </Slate>
+      </div>
+      {/* </Slate> */}
     </div>
   );
 };

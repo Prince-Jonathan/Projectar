@@ -1,7 +1,7 @@
 .slate {
   position: relative;
 
-  max-height: 515px;
+  /* max-height: 515px; */
   min-height: min-content;
   /* max-width: 800px; */
   min-width: min-content;

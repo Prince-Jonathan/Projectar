@@ -17,6 +17,7 @@ th {
   color: #ffee00;
   border: none;
   position: sticky;
+  font-weight: 300;
   top: 0; /* Don't forget this, required for the stickiness */
   box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
   margin: 5px;

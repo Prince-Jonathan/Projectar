@@ -17,6 +17,8 @@ import TasksStatus from "../project/task/TasksStatus";
 import Caption from "../Caption";
 import Export from "../Export";
 import Button from "../uiElements/Button";
+import pdfLogo from "../../../logos/pdfLogo.svg.png";
+import spreadSheet from "../../../logos/spreadSheet.png";
 
 import "./Projects.css";
 
@@ -162,6 +164,8 @@ const Projects = (props) => {
               caption="Report"
               title={row.original.name}
               logo={props.logo}
+              pdfLogo={pdfLogo}
+              spreadSheet={spreadSheet}
             />
             <Button
               onClick={() =>
