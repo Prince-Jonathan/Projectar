@@ -132,7 +132,14 @@ const EditTask = (props) => {
         )
       )
       .then(() => props.onTaskUpdate())
-      .then(() => props.postData("/api/notify/edited-task", task))
+      .then(() =>
+        props.postData(
+          location.state.reAssign
+            ? `/api/notify/reassigned-task`
+            : `/api/notify/edited-task`,
+          task
+        )
+      )
       // .then(() => props.resetSelectedTaskID())
       .then(() => history.goBack())
       .catch(() =>

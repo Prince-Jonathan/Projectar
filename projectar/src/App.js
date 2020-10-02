@@ -45,8 +45,8 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "https://projectar.devcodes.co";
-  // const baseUrl = "https://6a619d662666.ngrok.io";
+  // const baseUrl = "https://projectar.devcodes.co";
+  const baseUrl = "https://664db5f169e6.ngrok.io";
   // const baseUrl = "http://localhost:8050";
 
   const OneSignal = window.OneSignal;
@@ -89,10 +89,10 @@ const App = (props) => {
           })
         );
   };
-  const fetchProjects = () =>
+  const fetchProjects = (userID) =>
     // trackPromise(
-    fetchData(`/api/project/all/${user.user_id}`).then(({ data: { data } }) => {
-    // fetchData(`/api/project/all`).then(({ data: { data } }) => {
+    fetchData(`/api/project/all/${userID}`).then(({ data: { data } }) => {
+      // fetchData(`/api/project/all`).then(({ data: { data } }) => {
       const concat = data.map((project) => {
         return {
           ...project,
@@ -109,7 +109,7 @@ const App = (props) => {
 
   useEffect(() => {
     // syncEvents();
-    fetchProjects();
+    // fetchProjects();
     fetchProjectTasks();
     fetchPersonnel();
   }, []);
@@ -165,6 +165,7 @@ const App = (props) => {
               postData={postData}
               onAlert={handleAlert}
               authenticate={handleAuthenticate}
+              fetchProjects={fetchProjects}
               logo={Logo}
             />
           </Row>

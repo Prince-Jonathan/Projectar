@@ -54,7 +54,7 @@ const Project = (props) => {
   const { id } = useParams();
 
   const tasks = React.useMemo(() => props.tasks, [props.tasks]);
-  const data = tasks.filter((task) => task.project_id === parseInt(id));
+  let data = tasks.filter((task) => task.project_id === parseInt(id));
   const projects = React.useMemo(() => props.projects, [props.projects]);
   const project = projects.filter((project) => project.id === parseInt(id));
   const [toggleFetchAttendance, setToggleFetchAttendance] = useState(false);
@@ -136,11 +136,12 @@ const Project = (props) => {
     [attendanceDate, toggleFetchAttendance]
   );
 
-  data.sort((a, b) => {
-    let dateA = new Date(a.date),
-      dateB = new Date(b.date);
+  data = data.sort((a, b) => {
+    let dateA = new Date(a.details[0].target_date);
+    let dateB = new Date(b.details[0].target_date);
     return dateB - dateA;
   });
+  console.log(data, "data");
 
   const columns = React.useMemo(
     () => {

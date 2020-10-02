@@ -12,6 +12,7 @@ const Login = (props) => {
   let { from } = location.state || { from: { pathname: "/" } };
   let login = (user) => {
     props.authenticate(user);
+    props.fetchProjects(user.user_id);
     history.replace(from);
   };
   const formStyle = {

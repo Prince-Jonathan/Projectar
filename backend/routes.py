@@ -23,19 +23,19 @@ from datetime import datetime
 
 # loop = asyncio.get_event_loop()
 async def create_note(note,status):
-    try:
-        notification_body = {
-            'contents': {'en': note["description"]},
-            'include_external_user_ids': note["targets"],
-            "headings": {"en":status+": "+note["title"]},
-            'url':"https://projectar.devcodes.co/"
-        }
-        response = await client.send_notification(notification_body)
-        return response.body
-    except OneSignalHTTPError as e:
-        print(e)
-        print(e.status_code)
-        print(e.http_response.json()) # You can see the details of error by parsing original response
+	try:
+		notification_body = {
+			'contents': {'en': note["description"]},
+			'include_external_user_ids': note["targets"],
+			"headings": {"en":status+": "+note["title"]},
+			'url':"https://projectar.devcodes.co/"
+		}
+		response = await client.send_notification(notification_body)
+		return response.body
+	except OneSignalHTTPError as e:
+		print(e)
+		print(e.status_code)
+		print(e.http_response.json()) # You can see the details of error by parsing original response
 
 loop = asyncio.get_event_loop()
 
@@ -47,6 +47,11 @@ def api():
 def notify_edit():
 	note=request.get_json()
 	return loop.run_until_complete(create_note(note,"Updated Task"))
+
+@app.route('/api/notify/reassigned-task', methods=['POST'])
+def notify_reassign():
+	note=request.get_json()
+	return loop.run_until_complete(create_note(note,"Reassigned Task"))
 
 @app.route('/api/notify/completed-task', methods=['POST'])
 def notify_complete():
@@ -266,10 +271,10 @@ def all_users():
 # 	}
 
 # passed authentication route
-@app.route('/api/project/all/<int:project_id>')
-def all_projects(project_id):
+@app.route('/api/project/all/<int:user_id>')
+def all_projects(user_id):
 	'''Get all Projects'''
-	data = netsuite_req({request: "user-projects", id: project_id})["data"]
+	data = netsuite_req({"request": "user-projects", "id": 8413})["data"]
 	return {
 		"success":True,
 		"data":data

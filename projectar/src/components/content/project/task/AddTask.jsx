@@ -92,12 +92,12 @@ const AddTask = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    let targets = state.personnel.map((personnel) => personnel.id);
     const task = {
       ...state,
       ...startDate,
       project_id: location.state.projectID,
-      targets: state.personnel,
+      targets: targets,
       entry_type: location.state.entry_type,
       comment: null,
       achieved: null,
