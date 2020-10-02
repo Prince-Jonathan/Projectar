@@ -347,12 +347,18 @@ const Register = (props) => {
               ? true
               : false
             : false;
-
+          //with the inconsistencies with the input time type, signIns and outs will require refactoring as follows:
           return {
             signIn: null,
             signOut: null,
-            ...signIn[0],
-            ...signOut[0],
+            // ...signIn[0],
+            // ...signOut[0],
+            signIn: `${new Date(`01-01-1970 ${signIn[0].signIn}`).getHours()}:${new Date(
+              `01-01-1970 ${signIn[0].signIn}`
+            ).getMinutes()}`,
+            signOut: `${new Date(`01-01-1970 ${signOut[0].signOut}`).getHours()}:${new Date(
+              `01-01-1970 ${signOut[0].signOut}`
+            ).getMinutes()}`,
             ...(tandt[0] ? tandt[0] : { tandt: null }),
             ...isPresent[0],
             lunch: lunch,

@@ -149,7 +149,7 @@ const AddTask = (props) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="form-container">
+      <form onSubmit={handleSubmit} className="form-container column">
         <span>
           <strong>Assign Task To Specific Days</strong>
         </span>

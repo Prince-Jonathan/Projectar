@@ -169,7 +169,7 @@ const EditTask = (props) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="form-container">
+      <form onSubmit={handleSubmit} className="form-container column">
         <span>
           <strong>{`${
             location.state.reAssign ? "Re-" : ""

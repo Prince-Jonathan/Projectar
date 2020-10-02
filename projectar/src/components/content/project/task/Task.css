@@ -1,8 +1,8 @@
-.form-container {
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* max-width: 300px; */
-  /* padding: 10px; */
+.column{
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  padding: 10px;
   background-color: rgba(255, 255, 255, 0.514);
 }
 .form-container .btn {
