@@ -30,7 +30,7 @@ import Logo from "./logos/logo2.png";
 
 const App = (props) => {
   const alert = useAlert();
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
@@ -91,8 +91,8 @@ const App = (props) => {
   };
   const fetchProjects = () =>
     // trackPromise(
-    // fetchData(`/api/project/all/${user.user_id}`).then(({ data: { data } }) => {
-    fetchData(`/api/project/all`).then(({ data: { data } }) => {
+    fetchData(`/api/project/all/${user.user_id}`).then(({ data: { data } }) => {
+    // fetchData(`/api/project/all`).then(({ data: { data } }) => {
       const concat = data.map((project) => {
         return {
           ...project,

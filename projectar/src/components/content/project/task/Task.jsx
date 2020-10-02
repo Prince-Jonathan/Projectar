@@ -157,7 +157,9 @@ const Task = (props) => {
   };
 
   const handleSelection = (selectedOption) => {
-    const personnel = selectedOption.map((option) => option.value);
+    const personnel = selectedOption.map((option) => {
+      return { name: option.label, id: option.value };
+    });
     setState({ ...state, personnel });
   };
 
@@ -187,7 +189,7 @@ const Task = (props) => {
           </Slate>
         </Route>
         <Route path={`${path}/:id/execute/`}>
-          <Caption flabel="Task" slabel=" -Outstanding" />
+          <Caption flabel="Execute" slabel="Task" />
           <ExecuteTask
             handleSubmit={handleSubmit}
             state={state}
