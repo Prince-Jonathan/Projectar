@@ -52,7 +52,11 @@ const Toolbar = (props) => {
             })
           }
         >
-          <Link to="/login" style={{ color: "black", textDecoration: "none" }}>
+          <Link
+            onClick={() => localStorage.removeItem("netsuite_id")}
+            to="/login"
+            style={{ color: "black", textDecoration: "none" }}
+          >
             <i className="fa fa-user-o fa-fw" aria-hidden="true" />
             Logout
           </Link>

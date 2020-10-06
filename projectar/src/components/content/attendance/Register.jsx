@@ -353,10 +353,14 @@ const Register = (props) => {
             signOut: null,
             // ...signIn[0],
             // ...signOut[0],
-            signIn: `${new Date(`01-01-1970 ${signIn[0].signIn}`).getHours()}:${new Date(
+            signIn: `${new Date(
+              `01-01-1970 ${signIn[0].signIn}`
+            ).getHours()}:${new Date(
               `01-01-1970 ${signIn[0].signIn}`
             ).getMinutes()}`,
-            signOut: `${new Date(`01-01-1970 ${signOut[0].signOut}`).getHours()}:${new Date(
+            signOut: `${new Date(
+              `01-01-1970 ${signOut[0].signOut}`
+            ).getHours()}:${new Date(
               `01-01-1970 ${signOut[0].signOut}`
             ).getMinutes()}`,
             ...(tandt[0] ? tandt[0] : { tandt: null }),
@@ -406,7 +410,7 @@ const Register = (props) => {
     <div>
       <Caption flabel="Time" slabel="Sheet" />
       <Caption
-        flabel={props.project[0].name}
+        flabel={props.project[0] ? props.project[0].name : null}
         style={{ fontSize: 15, color: "white" }}
       />
       <DatePicker

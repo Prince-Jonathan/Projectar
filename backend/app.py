@@ -1,7 +1,7 @@
 '''
 This script sets up flask and configures its working with sqlalchemy
 '''
-from flask import Flask
+from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -11,11 +11,18 @@ from onesignal_sdk.client import AsyncClient
 
 #initialising flask object
 APP = Flask(__name__)
+
 cors=CORS(APP, resources={r"/api/*": {"origins": "*"}})
+APP.config['CORS_HEADERS'] = ["Content-Type"]
+
 APP.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jona:jona132435@35.202.128.59:5432/projectar'
 # consumes lot of memory: set to false
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+#set app secret key
+APP.secret_key = b'\x12\xfc+\xf9\x81\x9d\tU_%\x81\xc2\xb2z\r]'
+
+# Session(APP)
 #initialising database with flask object
 DB = SQLAlchemy(APP)
 

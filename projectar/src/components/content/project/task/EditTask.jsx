@@ -63,14 +63,18 @@ const EditTask = (props) => {
       )[0];
       setState({
         ...task,
-        target: task.details[0].target,
-        achieved: task.details[0].achieved,
+        target: task ? task.details[0].target : null,
+        achieved: task ? task.details[0].achieved : null,
         entry_type: location.state.reAssign
           ? location.state.reAssign.entry_type
-          : task.details[0].entry_type,
-        comment: task.details[0].comment,
+          : task
+          ? task.details[0].entry_type
+          : null,
+        comment: task ? task.details[0].comment : null,
       });
-      setStartDate({ date: new Date(task.details[0].target_date) });
+      setStartDate({
+        date: new Date(task ? task.details[0].target_date : null),
+      });
     },
     [location.state, props.tasks]
   );

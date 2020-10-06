@@ -76,6 +76,7 @@ class Task(db.Model):
 	description = db.Column(db.String(500), nullable=False)
 	date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
+	creator = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
 	details = db.relationship('Task_Detail', backref='task', lazy=True)
 

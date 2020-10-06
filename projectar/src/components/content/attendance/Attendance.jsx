@@ -263,7 +263,7 @@ const Attendance = (props) => {
         <Route exact path={path}>
           <Caption flabel="Attendance" slabel="List" />
           <Caption
-            flabel={props.project[0].name}
+            flabel={props.project[0] ? props.project[0].name : null}
             style={{ fontSize: 15, color: "white" }}
           />
           <DatePicker

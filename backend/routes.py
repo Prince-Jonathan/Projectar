@@ -7,7 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
 from onesignal_sdk.error import OneSignalHTTPError
 import requests
-from app import APP as app, DB as db, ONESIGNAL_CLIENT as client
+from app import APP as app, DB as db, ONESIGNAL_CLIENT as client, session
 from models import Project, User, Task, Task_Detail, Register
 from modules import fetch, log, netsuite_req
 from datetime import datetime
@@ -182,7 +182,6 @@ def add_task():
 			db_pers = User.query.get(personnel["id"])
 			if db_pers is None:
 				#add personnel
-				print("personnel_id",personnel)
 				db_pers = User(
 						id=personnel["id"],
 						name=personnel["name"]
@@ -286,7 +285,6 @@ def sync_projects():
 	data = netsuite_req({"request":"projects"})["data"]
 	try:
 		for project in data:
-			print("at project:",project["id"])
 			db_proj = Project.query.get(project["id"])
 			if db_proj is not None:
 				db.session.query(Project).filter(Project.id==db_proj.id).update({"id":project["id"]})
@@ -314,7 +312,6 @@ def sync_projects():
 			
 			data = netsuite_req( {"request": "personnel", "project_id": project["id"]})["data"]
 			if len(data) != 0:
-				print("syncing personnel for project:", project["id"])
 				try:
 					for personnel in data:
 						db_pers = User.query.get(personnel["id"])
@@ -362,10 +359,8 @@ def all_tasks():
 		# 	"data":data
 		# }
 		tasks_obj = Task.serialize_list(tasks)
-		print("tasks_obj",tasks_obj)
 		for task in tasks:
 			details = Task_Detail.serialize_list(db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all())
-			print(details)
 			if len(details) !=0:
 				obj = [x for x in tasks_obj if x["id"] == details[0]["task_id"]][0]
 
@@ -400,9 +395,7 @@ def enrol_user_proj(personnel_id, project_id):
 def enrol_user_task(task_id, personnel_id):
 	'''Passes task id and personnel id to enrol personnel to a task '''
 	try:
-		print(1)
 		personnel=User.query.get_or_404(personnel_id)
-		print(2)
 		task = Task.query.get_or_404(task_id)
 		task.personnel.append(personnel)
 		db.session.commit()
@@ -595,7 +588,6 @@ def proj_tasks(project_id):
 			# append task details
 			for task in tasks:
 				details = Task_Detail.serialize_list(db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all())
-				print(details)
 				if len(details) !=0:
 					obj = [x for x in tasks_obj if x["id"] == details[0]["task_id"]][0]
 
@@ -764,7 +756,6 @@ def project_verbose(proj_id):
 				# append personnel list
 				personnel = ''
 				task_users = User.serialize_list(task.personnel)
-				print(task_users)
 				for task_user in task_users:
 					personnel += task_user['name']
 					if not task_users[-1]==task_user:
@@ -872,13 +863,23 @@ def login():
 			"success":False	
 		}
 
+@app.route('/set')
+def set():
+    
+    return 'ok'
+
+@app.route('/get/')
+def get():
+    return session.get('key', 'not set')
+
 @app.route('/api/authenticate', methods=['POST'])
 def authenticate():
 	'''login authentication'''
 	data= request.get_json()
 	res = netsuite_req({"request":"login", "email":data["username"], "password":data["password"]})["data"]
 	if res["login_ok"]:
-		print("yes")
+		#with unique username (email preferrably)
+		session['netsuite_id'] = data["username"]
 		return {
 			"success":True,
 			"data":res
@@ -886,3 +887,19 @@ def authenticate():
 	return {
 		"success":False,
 	}
+
+@app.route('/api/logout')
+def logout():
+	'''destroy session'''
+	session.clear()
+	return {
+		"success":True
+	}
+
+
+@app.route('/api/check_loggedin')
+def check_loggedin():
+	if "netsuite_id" in session:
+		print("the session id", session["netsuite_id"])
+		return {"success": True}
+	return {"success": False}

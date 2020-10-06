@@ -45,14 +45,26 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "https://projectar.devcodes.co";
+  // const baseUrl = "https://projectar.devcodes.co";
   // const baseUrl = "https://664db5f169e6.ngrok.io";
-  // const baseUrl = "http://localhost:8050";
+  const baseUrl = "http://localhost:8050";
 
   const OneSignal = window.OneSignal;
   OneSignal.push(function() {
     OneSignal.setExternalUserId(user.user_id);
   });
+
+  const axiosWithCookies = axios.create({
+    withCredentials: true,
+  });
+  const authenticateRoute = (url, body, params) =>
+    axiosWithCookies.post(baseUrl + url, body, {
+      params: {
+        ...params,
+      },
+      // withCredentials: true,
+    });
+  // const promise = axiosWithCookies.get(url);
 
   const fetchData = (url, params) =>
     axios.get(baseUrl + url, {
@@ -180,7 +192,12 @@ const App = (props) => {
           onAlert={handleAlert}
           logo={Logo2}
         >
-          <PrivateRoute exact isAuthenticated={isAuthenticated} path="/">
+          <PrivateRoute
+            fetchProjects={fetchProjects}
+            exact
+            isAuthenticated={isAuthenticated}
+            path="/"
+          >
             <Workspace
               onShowTask={handleShowTask}
               onSelect={(id) => setSelectedID(id)}
@@ -190,7 +207,11 @@ const App = (props) => {
               toggler={isTaskCreated}
             />
           </PrivateRoute>
-          <PrivateRoute isAuthenticated={isAuthenticated} path="/personnel">
+          <PrivateRoute
+            fetchProjects={fetchProjects}
+            isAuthenticated={isAuthenticated}
+            path="/personnel"
+          >
             <Personnel
               onSelect={(id) => setSelectedID(id)}
               personnel={personnel}
@@ -199,7 +220,11 @@ const App = (props) => {
               toggler={isTaskCreated}
             />
           </PrivateRoute>
-          <PrivateRoute isAuthenticated={isAuthenticated} path="/project/:id">
+          <PrivateRoute
+            fetchProjects={fetchProjects}
+            isAuthenticated={isAuthenticated}
+            path="/project/:id"
+          >
             <Project
               onShowTask={(id) => {
                 handleShowTask();
@@ -215,7 +240,11 @@ const App = (props) => {
               projects={projects}
             />
           </PrivateRoute>
-          <PrivateRoute isAuthenticated={isAuthenticated} path="/all-projects">
+          <PrivateRoute
+            fetchProjects={fetchProjects}
+            isAuthenticated={isAuthenticated}
+            path="/all-projects"
+          >
             <Projects
               onShowTask={handleShowTask}
               onSelect={(id) => setSelectedID(id)}
@@ -229,12 +258,16 @@ const App = (props) => {
               onAlert={handleAlert}
             />
           </PrivateRoute>
-          <PrivateRoute isAuthenticated={isAuthenticated} path="/reports">
+          <PrivateRoute
+            fetchProjects={fetchProjects}
+            isAuthenticated={isAuthenticated}
+            path="/reports"
+          >
             <Report />
           </PrivateRoute>
-          <Route path="*">
+          {/* <Route path="*">
             <Redirect to="/" />
-          </Route>
+          </Route> */}
           {/* {showTask ? (
             <Bay
               showTask={showTask}

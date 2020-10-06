@@ -58,6 +58,7 @@ const Layout = (props) => {
               onSync={props.onSync}
               onClick={props.onShowSideMenu}
               logo={props.logo}
+              onFetchData={props.onFetchData}
             />
           </Column>
           <Column>
