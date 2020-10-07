@@ -22,6 +22,7 @@ class User(db.Model, Serializer):
 	# role=db.Column(db.String(50), nullable=True)
 	# role_id=db.Column(db.Integer, nullable=True)
 
+	tasks = db.relationship('Task', backref='project', lazy=True)
 	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 	tasks = db.relationship('Task', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 
