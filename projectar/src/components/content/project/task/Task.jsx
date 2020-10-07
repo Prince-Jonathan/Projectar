@@ -22,6 +22,12 @@ import ExecuteTask from "./ExecuteTask";
 import "./Task.css";
 import "react-datepicker/dist/react-datepicker.css";
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: ${(props) => (props.isMobile ? "row" : "column")};
+  justify-content: space-around;
+`;
+
 const Task = (props) => {
   const history = useHistory();
   const location = useLocation();
@@ -190,18 +196,20 @@ const Task = (props) => {
         </Route>
         <Route path={`${path}/:id/execute/`}>
           <Caption flabel="Execute" slabel="Task" />
-          <ExecuteTask
-            handleSubmit={handleSubmit}
-            state={state}
-            handleChange={handleChange}
-            startDate={startDate}
-            handleSelection={handleSelection}
-            options={options}
-            assignedPersonnel={assignedPersonnel}
-            selectedOption={selectedOption}
-            handleClose={handleClose}
-            handleEditorChange={handleEditorChange}
-          />
+          <Wrapper isMobile>
+              <ExecuteTask
+                handleSubmit={handleSubmit}
+                state={state}
+                handleChange={handleChange}
+                startDate={startDate}
+                handleSelection={handleSelection}
+                options={options}
+                assignedPersonnel={assignedPersonnel}
+                selectedOption={selectedOption}
+                handleClose={handleClose}
+                handleEditorChange={handleEditorChange}
+              />
+          </Wrapper>
         </Route>
       </Switch>
     </div>

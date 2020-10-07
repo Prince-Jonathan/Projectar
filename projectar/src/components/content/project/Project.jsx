@@ -54,9 +54,13 @@ const Project = (props) => {
   const { id } = useParams();
 
   const tasks = React.useMemo(() => props.tasks, [props.tasks]);
-  let data = tasks.filter((task) => task.project_id === parseInt(id));
+  let data = tasks
+    ? tasks.filter((task) => task.project_id === parseInt(id))
+    : null;
   const projects = React.useMemo(() => props.projects, [props.projects]);
-  const project = projects.filter((project) => project.id === parseInt(id));
+  const project = projects
+    ? projects.filter((project) => project.id === parseInt(id))
+    : null;
   const [toggleFetchAttendance, setToggleFetchAttendance] = useState(false);
   const [attendance, setAttendance] = useState([]);
   const [attendanceDate, setAttendanceDate] = useState(new Date());

@@ -5,8 +5,10 @@ import "./Slate.css";
 const Slate = (props) => {
   return (
     <div>
-      <Row className="slate" slate>
-        <Column scroll>{props.children}</Column>
+      <Row slate className="slate">
+        <Column scroll style={{ alignSelf: "center" }}>
+          {props.children}
+        </Column>
       </Row>
     </div>
   );

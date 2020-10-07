@@ -160,7 +160,8 @@ def add_task():
 		task = Task(
 			title=data["title"],
 			description=data["description"],
-			project=project
+			project=project,
+			creator=data["creator"]
 		)
 		db.session.add(task)
 		db.session.commit()

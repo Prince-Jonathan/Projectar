@@ -187,7 +187,7 @@ const Projects = (props) => {
   );
   return (
     <div>
-      <Wrapper isMobile={isMobile}>
+      <Wrapper isMobile>
         <Caption flabel="Projects" slabel="List" />
         <Slate>
           <Table

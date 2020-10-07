@@ -35,15 +35,15 @@ const Layout = (props) => {
           <Column className={asideClass.join(" ")} backgroundColor={bgcolor}>
             {props.aside}
           </Column>
-          <Column xs="2" sm="3" md="4" lg="5" className="section">
+          <Column scroll xs="2" sm="3" md="4" lg="5" className="section">
             <Row justifyContent="space-evenly">
               <Column>
                 <Route exact path="/">
-                  <Greeting name={props.name} />
+                  <Greeting name={props.user.name} />
                 </Route>
                 {props.children}
                 <Route path="/">
-                  <Wall name={props.name} />
+                  <Wall name={props.user.name} />
                 </Route>
               </Column>
             </Row>
@@ -71,10 +71,10 @@ const Layout = (props) => {
               </Column>
               <Column className="section pad">
                 <Route exact path="/">
-                  <Greeting name={props.name} />
+                  <Greeting name={props.user.name} />
                 </Route>
                 {props.children}
-                <Wall name={props.name} />
+                <Wall name={props.user.name} />
               </Column>
             </Row>
           </Column>

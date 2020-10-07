@@ -37,7 +37,6 @@ class User(db.Model):
 	# role=db.Column(db.String(50), nullable=True)
 	# role_id=db.Column(db.Integer, nullable=True)
 
-	tasks = db.relationship('Task', backref='project', lazy=True)
 	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 	tasks = db.relationship('Task', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 
@@ -77,7 +76,7 @@ class Task(db.Model):
 	description = db.Column(db.String(500), nullable=False)
 	date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
-	creator = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	creator = db.Column(db.Integer, nullable=False)
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
 	details = db.relationship('Task_Detail', backref='task', lazy=True)
 

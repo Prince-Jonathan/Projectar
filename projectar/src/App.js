@@ -50,9 +50,11 @@ const App = (props) => {
   const baseUrl = "http://localhost:8050";
 
   const OneSignal = window.OneSignal;
-  OneSignal.push(function() {
-    OneSignal.setExternalUserId(user.user_id);
-  });
+  try {
+    OneSignal.push(function() {
+      OneSignal.setExternalUserId(user.user_id);
+    });
+  } catch (err) {}
 
   const axiosWithCookies = axios.create({
     withCredentials: true,
@@ -105,12 +107,14 @@ const App = (props) => {
     // trackPromise(
     fetchData(`/api/project/all/${userID}`).then(({ data: { data } }) => {
       // fetchData(`/api/project/all`).then(({ data: { data } }) => {
-      const concat = data.map((project) => {
-        return {
-          ...project,
-          ...{ name: `${project.number} - ${project.name}` },
-        };
-      });
+      const concat = data
+        ? data.map((project) => {
+            return {
+              ...project,
+              ...{ name: `${project.number} - ${project.name}` },
+            };
+          })
+        : null;
       setProjects(concat);
     });
   // );
@@ -185,7 +189,7 @@ const App = (props) => {
         <Layout
           showSideMenu={showSideMenu}
           aside={<Aside onPopUpClick={handlePopUpClick} />}
-          name={user.name}
+          user={user}
           onShowSideMenu={handleShowSideMenu}
           onFetchData={fetchData}
           onSync={syncEvents}
