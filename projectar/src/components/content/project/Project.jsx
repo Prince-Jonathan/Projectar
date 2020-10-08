@@ -358,6 +358,7 @@ const Project = (props) => {
               data={completedTasks}
               renderRowSubComponent={renderRowSubComponent}
               clickable={false}
+              onTaskUpdate={props.onTaskUpdate}
               selectedTaskID={selectedTaskID}
               projectPersonnel={projectPersonnel}
               tasksPersonnel={tasksPersonnel}

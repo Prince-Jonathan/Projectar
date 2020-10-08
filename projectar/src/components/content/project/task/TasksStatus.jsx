@@ -32,7 +32,12 @@ const TasksStatus = (props) => {
   );
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+      }}
+    >
       <Button
         onClick={() =>
           history.push(`/project/${props.projectID}/outstanding-tasks`)

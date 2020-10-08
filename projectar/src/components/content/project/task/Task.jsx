@@ -148,7 +148,10 @@ const Task = (props) => {
         .then(() => props.onTaskUpdate())
         .then(() => {
           if (parseInt(state.achieved) === parseInt(state.target)) {
-            props.postData("/api/notify/completed-task", task);
+            props.postData("/api/notify/completed-task", {
+              ...task,
+              targets_include: [task.creator],
+            });
           }
         })
         // .then(() => props.resetSelectedTaskID())
@@ -163,9 +166,11 @@ const Task = (props) => {
   };
 
   const handleSelection = (selectedOption) => {
-    const personnel = selectedOption.map((option) => {
-      return { name: option.label, id: option.value };
-    });
+    const personnel = selectedOption
+      ? selectedOption.map((option) => {
+          return { name: option.label, id: option.value };
+        })
+      : null;
     setState({ ...state, personnel });
   };
 

@@ -49,7 +49,6 @@ const ExecuteTask = (props) => {
   const CustomInput = ({ value, onClick }) => (
     <Button
       type="button"
-      // style={{ cursor: "pointer" }}
       required
       className="btn date"
       onClick={onClick}
@@ -60,7 +59,7 @@ const ExecuteTask = (props) => {
     </Button>
   );
 
-  //currently working on finishing creator notification and the execute task component for mobile
+  //currently working on finishing creator notification
 
   return isMobile ? (
     <div>
@@ -159,7 +158,12 @@ const ExecuteTask = (props) => {
             <div className="report-wrapper">
               <CKEditor
                 editor={ClassicEditor}
-                data="<p><i>What is your comment?</i></p>"
+                data={
+                  props.state.details
+                    ? props.state.details[0].comment ||
+                      "<p><i>What is your comment?</i></p>"
+                    : "<p><i>What is your comment?</i></p>"
+                }
                 onChange={props.handleEditorChange}
                 config={{
                   ckfinder: {
@@ -278,7 +282,12 @@ const ExecuteTask = (props) => {
               <div className="report-wrapper">
                 <CKEditor
                   editor={ClassicEditor}
-                  data="<p><i>What is your comment?</i></p>"
+                  data={
+                    props.state.details
+                      ? props.state.details[0].comment ||
+                        "<p><i>What is your comment?</i></p>"
+                      : "<p><i>What is your comment?</i></p>"
+                  }
                   onChange={props.handleEditorChange}
                   config={{
                     ckfinder: {

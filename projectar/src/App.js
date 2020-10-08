@@ -45,14 +45,14 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  // const baseUrl = "https://projectar.devcodes.co";
+  const baseUrl = "https://projectar.devcodes.co";
   // const baseUrl = "https://664db5f169e6.ngrok.io";
-  const baseUrl = "http://localhost:8050";
+  // const baseUrl = "http://localhost:8050";
 
   const OneSignal = window.OneSignal;
   try {
     OneSignal.push(function() {
-      OneSignal.setExternalUserId(user.user_id);
+      OneSignal.setExternalUserId(localStorage.netsuite_id);
     });
   } catch (err) {}
 

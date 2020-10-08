@@ -23,6 +23,12 @@ from datetime import datetime
 
 # loop = asyncio.get_event_loop()
 async def create_note(note,status):
+	if "targets_include" in note:
+		#code below code be optimised with sets; sets function malware, hence code below:
+		for id in note["targets_include"]:
+			if id not in note["targets"]:
+				note["targets"].append(id)
+	print('the targets to be notified', note["targets"])
 	try:
 		notification_body = {
 			'contents': {'en': note["description"]},
@@ -460,16 +466,21 @@ def update_task(task_id):
 		task = Task.query.get_or_404(task_id)
 		task.title = data["title"]
 		task.description = data["description"]
-		if data["entry_type"]==1:
+
+		#get the recent task detail
+		recent_task_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).first()
+		recent_update_interval = datetime.now() - recent_task_detail.date_updated
+		#only update recently executed task details not older than 24 hours
+		if data["entry_type"]==2 and (recent_update_interval.total_seconds() < 86400):
 			#update corresponding task_detail
-			recent_task_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).first()
+			print("in here")
 			recent_task_detail.target = data["target"]
 			recent_task_detail.target_date = data["date"]
 			recent_task_detail.comment = data["comment"] if "comment" in data else None
 			recent_task_detail.achieved = data["achieved"] if "achieved" in data else None
 			recent_task_detail.entry_type = data["entry_type"]
-		elif data["entry_type"]!=1:
-			#execute task by passing task_detail entry
+		elif data["entry_type"] in [2,3]:
+			#execute task by passing task_detail, to create enrtry row in database
 			task_detail = Task_Detail(
 				target_date=data["date"],
 				entry_type=data["entry_type"],
