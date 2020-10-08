@@ -11,19 +11,17 @@ import { isMobile } from "../../../Responsive";
 import Caption from "../../Caption";
 
 const Row = styled.div`
-  display: "flex",
- &::-webkit-scrollbar {
-    display: none;
-  }
   display: flex;
-  overflow: hidden;
-  height: 82vh;
+  flex-direction: column;
+  overflow: visible;
+  border-radius: 5px;
   position: relative;
-  min-height: min-content;
+  min-height: max-content;
   width: 100%;
   color: #ffff;
   backface-visibility: hidden;
-  will-change: overflow;
+  backdrop-filter: blur(3px);
+  box-shadow: 0 8px 6px -6px black;
   ${({ backgroundColor }) => `background-color:${backgroundColor}`};
   ${({ flexDirection }) => `flex-direction:${flexDirection}`};
   ${({ justifyContent }) => `justify-content:${justifyContent}`};
@@ -66,7 +64,7 @@ const ExecuteTask = (props) => {
     ? new Date().getTime() -
         new Date(props.state.details[0].date_updated).getTime() <
       1000 * 60 * 60 * 24
-    : null;
+    : true;
 
   const limitUpdateLabel = !isUpdatable ? (
     <Caption
@@ -200,7 +198,7 @@ const ExecuteTask = (props) => {
   ) : (
     <Row justifyContent="center">
       {limitUpdateLabel}
-      <div style={{ flex: 1, padding: 10, backgroundColor: "#adb7a9c2" }}>
+      <div style={{ flex: 1, padding: 8, backgroundColor: "#adb7a9c2" }}>
         <form onSubmit={props.handleSubmit} className="form-container">
           <div style={{ display: "flex" }}>
             <div style={{ flex: 1, padding: 10 }}>
