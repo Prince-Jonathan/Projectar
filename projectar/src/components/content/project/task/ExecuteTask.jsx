@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import DatePicker from "react-datepicker";
 import styled from "styled-components";
@@ -7,6 +8,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 import Slate from "../../slate/Slate";
 import { isMobile } from "../../../Responsive";
+import Caption from "../../Caption";
 
 const Row = styled.div`
   display: "flex",
@@ -46,6 +48,7 @@ const Button = styled.button`
 `;
 
 const ExecuteTask = (props) => {
+  const location = useLocation();
   const CustomInput = ({ value, onClick }) => (
     <Button
       type="button"
@@ -59,10 +62,22 @@ const ExecuteTask = (props) => {
     </Button>
   );
 
-  //currently working on finishing creator notification
+  const isUpdatable = props.state.details
+    ? new Date().getTime() -
+        new Date(props.state.details[0].date_updated).getTime() <
+      1000 * 60 * 60 * 24
+    : null;
+
+  const limitUpdateLabel = !isUpdatable ? (
+    <Caption
+      style={{ fontSize: 18, color: "#adb7a9c2" }}
+      flabel="Update session expired!"
+    />
+  ) : null;
 
   return isMobile ? (
     <div>
+      {location.state.taskStatus === "completed" && limitUpdateLabel}
       <Slate>
         <form onSubmit={props.handleSubmit} className="form-container column">
           <input
@@ -73,7 +88,6 @@ const ExecuteTask = (props) => {
             value={props.state.title}
             readOnly
           />
-
           <textarea
             type="text"
             style={{ flex: "1", backgroundColor: "#B2BEB5" }}
@@ -143,7 +157,13 @@ const ExecuteTask = (props) => {
               justifyContent: "center",
             }}
           >
-            <Button type="submit" className="btn">
+            <Button
+              disabled={
+                location.state.taskStatus === "completed" && !isUpdatable
+              }
+              type="submit"
+              className="btn"
+            >
               Save
             </Button>
             <Button
@@ -179,6 +199,7 @@ const ExecuteTask = (props) => {
     </div>
   ) : (
     <Row justifyContent="center">
+      {limitUpdateLabel}
       <div style={{ flex: 1, padding: 10, backgroundColor: "#adb7a9c2" }}>
         <form onSubmit={props.handleSubmit} className="form-container">
           <div style={{ display: "flex" }}>
@@ -266,7 +287,13 @@ const ExecuteTask = (props) => {
                   justifyContent: "center",
                 }}
               >
-                <Button type="submit" className="btn">
+                <Button
+                  disabled={
+                    location.state.taskStatus === "completed" && !isUpdatable
+                  }
+                  type="submit"
+                  className="btn"
+                >
                   Save
                 </Button>
                 <Button

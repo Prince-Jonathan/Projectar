@@ -47,7 +47,6 @@ const Task = (props) => {
 
   let task = useMemo(
     () => {
-      // replace filter with find
       return location.state
         ? props.data.filter(
             (task) => parseInt(task.id) === location.state.taskID
@@ -115,6 +114,7 @@ const Task = (props) => {
         position: "bottom center",
       });
     } else {
+
       let personnel =
         state.personnel ||
         assignedPersonnel.map((personnel) => {
@@ -181,7 +181,7 @@ const Task = (props) => {
     <div>
       <Switch>
         <Route exact path={path}>
-          {props.outstanding ? (
+          {location.taskStatus === "outstanding" ? (
             <Caption flabel="Tasks" slabel=" -Outstanding" />
           ) : (
             <Caption flabel="Tasks" slabel=" -Completed" />
@@ -205,7 +205,7 @@ const Task = (props) => {
             />
           </Slate>
         </Route>
-        <Route path={`${path}/:id/execute/`}>
+        <Route path={`${path}/:id/execute`}>
           <Caption flabel="Execute" slabel="Task" />
           <Wrapper isMobile>
             <ExecuteTask

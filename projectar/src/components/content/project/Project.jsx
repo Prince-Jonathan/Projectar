@@ -94,7 +94,6 @@ const Project = (props) => {
             props
               .onFetchData(`/api/task/enrolments/${task.id}`)
               .then((data) => {
-                console.log(data);
                 return data;
               })
               .then(({ data }) => {
@@ -145,7 +144,6 @@ const Project = (props) => {
     let dateB = new Date(b.details[0].target_date);
     return dateB - dateA;
   });
-  console.log(data, "data");
 
   const columns = React.useMemo(
     () => {
@@ -262,13 +260,23 @@ const Project = (props) => {
       parseInt(task.details[0].achieved) === parseInt(task.details[0].target)
   );
 
-  const handleClick = ({ row }) => {
+  const handleOClick = ({ row }) => {
     setSelectedTaskID(row.original.id);
-    // setPersonnelName(row.original.first_name + " " + row.original.last_name);
     history.push(`${url}/outstanding-tasks/${row.original.id}/execute`, {
       taskID: row.original.id,
       projectID: id,
       entry_type: 2,
+      taskStatus: "outstanding",
+    });
+  };
+
+  const handleCClick = ({ row }) => {
+    setSelectedTaskID(row.original.id);
+    history.push(`${url}/completed-tasks/${row.original.id}/execute`, {
+      taskID: row.original.id,
+      projectID: id,
+      entry_type: 2,
+      taskStatus: "completed",
     });
   };
 
@@ -322,11 +330,11 @@ const Project = (props) => {
           </Route>
           <Route path={`${path}/outstanding-tasks`}>
             <Task
-              outstanding
+              outstanding={true}
               columns={columns}
               data={outstandingTasks}
               renderRowSubComponent={renderRowSubComponent}
-              clickable={handleClick}
+              clickable={handleOClick}
               // selectedTaskID={selectedTaskID}
               onTaskUpdate={props.onTaskUpdate}
               projectPersonnel={projectPersonnel}
@@ -357,11 +365,13 @@ const Project = (props) => {
               columns={columns}
               data={completedTasks}
               renderRowSubComponent={renderRowSubComponent}
-              clickable={false}
+              clickable={handleCClick}
               onTaskUpdate={props.onTaskUpdate}
-              selectedTaskID={selectedTaskID}
+              // selectedTaskID={selectedTaskID}
               projectPersonnel={projectPersonnel}
               tasksPersonnel={tasksPersonnel}
+              onAlert={props.onAlert}
+              postData={props.postData}
               project={project}
             />
           </Route>

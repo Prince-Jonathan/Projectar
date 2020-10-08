@@ -40,7 +40,9 @@ const TasksStatus = (props) => {
     >
       <Button
         onClick={() =>
-          history.push(`/project/${props.projectID}/outstanding-tasks`)
+          history.push(`/project/${props.projectID}/outstanding-tasks`, {
+            taskStatus: "outstanding",
+          })
         }
         style={{ cursor: "pointer" }}
       >
@@ -51,7 +53,9 @@ const TasksStatus = (props) => {
       </Button>
       <Button
         onClick={() =>
-          history.push(`/project/${props.projectID}/completed-tasks`)
+          history.push(`/project/${props.projectID}/completed-tasks`, {
+            taskStatus: "completed",
+          })
         }
       >
         Completed Tasks:{" "}
