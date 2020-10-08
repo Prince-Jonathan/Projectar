@@ -182,7 +182,13 @@ const Task = (props) => {
             <Caption flabel="Tasks" slabel=" -Completed" />
           )}
           <Caption
-            flabel={props.project[0] ? props.project[0].name : null}
+            flabel={
+              props.project
+                ? props.project[0]
+                  ? props.project[0].name
+                  : null
+                : null
+            }
             style={{ fontSize: 15, color: "white" }}
           />
           <Slate>
@@ -197,18 +203,18 @@ const Task = (props) => {
         <Route path={`${path}/:id/execute/`}>
           <Caption flabel="Execute" slabel="Task" />
           <Wrapper isMobile>
-              <ExecuteTask
-                handleSubmit={handleSubmit}
-                state={state}
-                handleChange={handleChange}
-                startDate={startDate}
-                handleSelection={handleSelection}
-                options={options}
-                assignedPersonnel={assignedPersonnel}
-                selectedOption={selectedOption}
-                handleClose={handleClose}
-                handleEditorChange={handleEditorChange}
-              />
+            <ExecuteTask
+              handleSubmit={handleSubmit}
+              state={state}
+              handleChange={handleChange}
+              startDate={startDate}
+              handleSelection={handleSelection}
+              options={options}
+              assignedPersonnel={assignedPersonnel}
+              selectedOption={selectedOption}
+              handleClose={handleClose}
+              handleEditorChange={handleEditorChange}
+            />
           </Wrapper>
         </Route>
       </Switch>

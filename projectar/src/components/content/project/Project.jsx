@@ -290,22 +290,22 @@ const Project = (props) => {
                 data={data}
                 renderRowSubComponent={renderRowSubComponent}
               />
-              {location.state ? (
-                <Bay>
-                  <EditTask
-                    postData={props.postData}
-                    onAlert={props.onAlert}
-                    onFetchTasks={props.onFetchTasks}
-                    onTaskUpdate={props.onTaskUpdate}
-                    projectPersonnel={projectPersonnel}
-                    tasksPersonnel={tasksPersonnel}
-                    tasks={props.tasks}
-                    resetSelectedTaskID={props.resetSelectedTaskID}
-                    onFetchData={props.onFetchData}
-                  />{" "}
-                </Bay>
-              ) : null}
             </Slate>
+            {location.state ? (
+              <Bay>
+                <EditTask
+                  postData={props.postData}
+                  onAlert={props.onAlert}
+                  onFetchTasks={props.onFetchTasks}
+                  onTaskUpdate={props.onTaskUpdate}
+                  projectPersonnel={projectPersonnel}
+                  tasksPersonnel={tasksPersonnel}
+                  tasks={props.tasks}
+                  resetSelectedTaskID={props.resetSelectedTaskID}
+                  onFetchData={props.onFetchData}
+                />{" "}
+              </Bay>
+            ) : null}
           </Route>
           <Route path={`${path}/attendance`}>
             <Attendance
