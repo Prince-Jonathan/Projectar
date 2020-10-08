@@ -60,6 +60,7 @@ const ExecuteTask = (props) => {
     </Button>
   );
 
+  // verify if task is updatable: against 24hrs
   const isUpdatable = props.state.details
     ? new Date().getTime() -
         new Date(props.state.details[0].date_updated).getTime() <
