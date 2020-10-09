@@ -9,7 +9,7 @@ const Wall = (props) => {
   let name = props.name ? `${props.name}'s ` : "";
   return (
     <div>
-      {name}
+      <span style={{ fontWeight: 300 }}>{name}</span>
       <span style={text}>Project</span>
       ar
     </div>

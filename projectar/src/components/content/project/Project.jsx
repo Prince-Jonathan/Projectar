@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import styled from "styled-components";
 import {
   Route,
@@ -211,43 +213,78 @@ const Project = (props) => {
 
   const renderRowSubComponent = React.useCallback(
     ({ row }) => (
-      <Styles>
-        <div className="project">
-          <div className="left">
-            <Button
-              onClick={() => {
-                // props.onShowTask(row.original.id);
-                history.push(`${url}`, {
-                  taskID: row.original.id,
-                  projectID: id,
-                });
-              }}
-            >
-              Edit
-            </Button>
-            <Button
-              onClick={() => {
-                history.push(`${url}`, {
-                  taskID: row.original.id,
-                  projectID: id,
-                  reAssign: { entry_type: 3 },
-                });
-              }}
-            >
-              Re-assign
-            </Button>
+      <div styles={{ display: "flex", flexDirection: "column" }}>
+        <Styles>
+          <div className="project">
+            <div className="left">
+              <Button
+                onClick={() => {
+                  // props.onShowTask(row.original.id);
+                  history.push(`${url}`, {
+                    taskID: row.original.id,
+                    projectID: id,
+                  });
+                }}
+              >
+                Edit
+              </Button>
+              <Button
+                onClick={() => {
+                  history.push(`${url}`, {
+                    taskID: row.original.id,
+                    projectID: id,
+                    reAssign: { entry_type: 3 },
+                  });
+                }}
+              >
+                Re-assign
+              </Button>
 
-            <Button onClick={() => deleteTask(row.original.id)}>Delete</Button>
+              <Button onClick={() => deleteTask(row.original.id)}>
+                Delete
+              </Button>
+            </div>
+            <Description
+              onFetchData={props.onFetchData}
+              description={row.original.description}
+              comment={row.original.details[0].comment}
+              taskID={row.original.id}
+              tasksPersonnel={tasksPersonnel}
+            />
           </div>
-          <Description
-            onFetchData={props.onFetchData}
-            description={row.original.description}
-            comment={row.original.details[0].comment}
-            taskID={row.original.id}
-            tasksPersonnel={tasksPersonnel}
-          />
-        </div>
-      </Styles>
+        </Styles>
+        {row.original.details[0].comment ? (
+          <div style={{ color: "10292e", fontWeight: 700 }}>
+            Comment:{" "}
+            <div
+              style={{
+                color: "white",
+                fontWeight: 300,
+                border: "1px solid #ffee00",
+                padding: 10,
+                borderRadius: 16,
+                marginTop: 5,
+                // textShadow: "1px 1px 1px #000",
+              }}
+            >
+              <CKEditor
+                editor={ClassicEditor}
+                name="comment"
+                data={row.original.details[0].comment}
+                onInit={(editor, config) => {
+                  editor.isReadOnly = true;
+                }}
+                config={{
+                  removePlugins: "toolbar",
+                  ckfinder: {
+                    uploadUrl: "https://projectar.devcodes.co/upload",
+                  },
+                }}
+              />
+            </div>
+          </div>
+        ) : null}
+      </div>
     ),
     [tasksPersonnel]
   );
