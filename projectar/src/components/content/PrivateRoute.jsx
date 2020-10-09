@@ -8,18 +8,13 @@ const PrivateRoute = ({
   ...rest
 }) => {
   useEffect(() => {
-    // isAuthenticated || localStorage.getItem("netsuite_id")
-    //   ? fetchProjects(localStorage.getItem("netsuite_id"))
     fetchProjects(localStorage.getItem("netsuite_id"));
-    //   : null,
-    console.log("in here");
   }, []);
   return (
     <Route
       {...rest}
       render={
         ({ location }) =>
-          // onFetchData("/api/check_loggedin").then(({ data }) =>
           isAuthenticated || localStorage.getItem("netsuite_id") ? (
             children
           ) : (

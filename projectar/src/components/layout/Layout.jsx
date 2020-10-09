@@ -39,11 +39,11 @@ const Layout = (props) => {
             <Row justifyContent="space-evenly">
               <Column>
                 <Route exact path="/">
-                  <Greeting name={props.user.name} />
+                  <Greeting name={localStorage.netsuite_name} />
                 </Route>
                 {props.children}
                 <Route path="/">
-                  <Wall name={props.user.name} />
+                  <Wall name={localStorage.netsuite_name} />
                 </Route>
               </Column>
             </Row>
@@ -71,10 +71,10 @@ const Layout = (props) => {
               </Column>
               <Column className="section pad">
                 <Route exact path="/">
-                  <Greeting name={props.user.name} />
+                  <Greeting name={localStorage.netsuite_name} />
                 </Route>
                 {props.children}
-                <Wall name={props.user.name} />
+                <Wall name={localStorage.netsuite_name} />
               </Column>
             </Row>
           </Column>

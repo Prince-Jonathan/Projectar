@@ -46,8 +46,8 @@ const App = (props) => {
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
   // const baseUrl = "https://projectar.devcodes.co";
-  // const baseUrl = "https://664db5f169e6.ngrok.io";
-  const baseUrl = "http://localhost:8050";
+  const baseUrl = "https://b9ce9d07aee4.ngrok.io";
+  // const baseUrl = "http://localhost:8050";
 
   const OneSignal = window.OneSignal;
   try {
@@ -189,7 +189,6 @@ const App = (props) => {
         <Layout
           showSideMenu={showSideMenu}
           aside={<Aside onPopUpClick={handlePopUpClick} />}
-          user={user}
           onShowSideMenu={handleShowSideMenu}
           onFetchData={fetchData}
           onSync={syncEvents}
