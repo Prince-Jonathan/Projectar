@@ -157,27 +157,23 @@ const Attendance = (props) => {
   const data = useMemo(() => props.attendance, [props.attendance]);
   const columns = useMemo(
     () => {
-      let _temp = [
+      let forDesktop = [
         {
           Header: "Time In",
           accessor: "time_in",
-          Filter: isMobile ? () => null : ColumnFilter,
         },
         {
           Header: "Time Out",
           accessor: "time_out",
-          Filter: isMobile ? () => null : ColumnFilter,
         },
         {
           Header: "Personnel",
           accessor: "personnel_name",
-          Filter: isMobile ? () => null : ColumnFilter,
         },
 
         {
           Header: "T & T (GH\u20B5)",
           accessor: "t_and_t",
-          Filter: isMobile ? () => null : SliderFilter,
         },
         {
           id: "lunch",
@@ -193,7 +189,46 @@ const Attendance = (props) => {
           ),
         },
       ];
-      return isMobile ? _temp.slice(2) : _temp;
+      let forMobile = [
+        {
+          Header: "Time (In-Out)",
+          id: "timeIn&Out",
+          Filter: () => null,
+          Cell: ({ row }) => {
+            return (
+              <div>
+                {row.original.time_in} - {row.original.time_out}
+              </div>
+            );
+          },
+        },
+
+        {
+          Header: "Personnel",
+          accessor: "personnel_name",
+          Filter: () => null,
+        },
+
+        {
+          Header: "T & T (GH\u20B5)",
+          accessor: "t_and_t",
+          Filter: () => null,
+        },
+        {
+          id: "lunch",
+          Header: "Lunch",
+          Cell: ({ row }) => (
+            <div>
+              <input
+                type="checkbox"
+                checked={row.original.lunch}
+                onClick={() => false}
+              />
+            </div>
+          ),
+        },
+      ];
+      return isMobile ? forMobile : forDesktop;
     },
     [isMobile]
   );
