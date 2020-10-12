@@ -371,12 +371,13 @@ const Register = (props) => {
                   }}
                 />
                 <div>
-                  <label>
-                    In
+                  <div>
+                    <label>In</label>
                     <input
                       type="time"
                       disabled={!isPersonnelPresent}
                       value={signIn}
+                      style={{ maxWidth: 65 }}
                       onChange={(e) => {
                         setSignIn(e.target.value);
                       }}
@@ -386,13 +387,15 @@ const Register = (props) => {
                         ])
                       }
                     />
-                  </label>
+                  </div>
+
                   <label>
                     Out
                     <input
                       type="time"
                       disabled={!isPersonnelPresent}
                       value={signOut}
+                      style={{ maxWidth: 65 }}
                       onChange={(e) => {
                         setSignOut(e.target.value);
                       }}
@@ -412,7 +415,13 @@ const Register = (props) => {
           Header: ({ getToggleAllRowsSelectedProps }) => (
             <div>
               Name/
-              <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
                 <span> Lunch</span>
                 <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
               </div>
@@ -421,7 +430,13 @@ const Register = (props) => {
           id: "personnel&Lunch",
           Cell: ({ row }) => {
             return (
-              <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
                 <span>{row.original.name}</span>
                 <div>
                   <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
