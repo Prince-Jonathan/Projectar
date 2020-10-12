@@ -176,13 +176,21 @@ const Project = (props) => {
         {
           Header: "Target (%)",
           accessor: "details[0].target",
-          Filter: SliderFilter,
+          Filter: location.state
+            ? location.state.taskStatus === "outstanding"
+              ? SliderFilter
+              : () => null
+            : () => null,
           filter: filterGreaterThan,
         },
         {
           Header: "Achieved (%)",
           accessor: "details[0].achieved",
-          Filter: SliderFilter,
+          Filter: location.state
+            ? location.state.taskStatus === "outstanding"
+              ? SliderFilter
+              : () => null
+            : () => null,
           filter: filterGreaterThan,
         },
         {
@@ -289,12 +297,10 @@ const Project = (props) => {
     [tasksPersonnel]
   );
   const outstandingTasks = data.filter(
-    (task) =>
-      parseInt(task.details[0].achieved) !== parseInt(task.details[0].target)
+    (task) => parseInt(task.details[0].achieved) !== 100
   );
   const completedTasks = data.filter(
-    (task) =>
-      parseInt(task.details[0].achieved) === parseInt(task.details[0].target)
+    (task) => parseInt(task.details[0].achieved) === 100
   );
 
   const handleOClick = ({ row }) => {

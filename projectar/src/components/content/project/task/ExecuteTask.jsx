@@ -60,23 +60,23 @@ const ExecuteTask = (props) => {
     </Button>
   );
 
-  // verify if task is updatable: against 24hrs
-  const isUpdatable = props.state.details
-    ? new Date().getTime() -
-        new Date(props.state.details[0].date_updated).getTime() <
-      1000 * 60 * 60 * 24
-    : true;
+  // // verify if task is updatable: against 24hrs
+  // const isUpdatable = props.state.details
+  //   ? new Date().getTime() -
+  //       new Date(props.state.details[0].date_updated).getTime() <
+  //     1000 * 60 * 60 * 24
+  //   : true;
 
-  const limitUpdateLabel = !isUpdatable ? (
-    <Caption
-      style={{ fontSize: 18, color: "#adb7a9c2" }}
-      flabel="Update session expired!"
-    />
-  ) : null;
+  // const limitUpdateLabel = !isUpdatable ? (
+  //   <Caption
+  //     style={{ fontSize: 18, color: "#adb7a9c2" }}
+  //     flabel="Update session expired!"
+  //   />
+  // ) : null;
 
   return isMobile ? (
     <div>
-      {location.state.taskStatus === "completed" && limitUpdateLabel}
+      {/* {location.state.taskStatus === "completed" && limitUpdateLabel} */}
       <Slate>
         <form onSubmit={props.handleSubmit} className="form-container column">
           <input
@@ -157,9 +157,9 @@ const ExecuteTask = (props) => {
             }}
           >
             <Button
-              disabled={
-                location.state.taskStatus === "completed" && !isUpdatable
-              }
+              // disabled={
+              //   location.state.taskStatus === "completed" && !isUpdatable
+              // }
               type="submit"
               className="btn"
             >
@@ -178,10 +178,7 @@ const ExecuteTask = (props) => {
               <CKEditor
                 editor={ClassicEditor}
                 data={
-                  props.state.details
-                    ? props.state.details[0].comment ||
-                      "<p><i>What is your comment?</i></p>"
-                    : "<p><i>What is your comment?</i></p>"
+                  props.state.details ? props.state.details[0].comment : null
                 }
                 onChange={props.handleEditorChange}
                 config={{
@@ -189,6 +186,7 @@ const ExecuteTask = (props) => {
                     maxSize: 3000,
                     uploadUrl: "https://projectar.devcodes.co/upload",
                   },
+                  placeholder: "What is your comment?",
                 }}
               />
             </div>
@@ -198,7 +196,7 @@ const ExecuteTask = (props) => {
     </div>
   ) : (
     <Row justifyContent="center">
-      {limitUpdateLabel}
+      {/* {limitUpdateLabel} */}
       <div style={{ flex: 1, padding: 8, backgroundColor: "#adb7a9c2" }}>
         <form onSubmit={props.handleSubmit} className="form-container">
           <div style={{ display: "flex" }}>
@@ -287,9 +285,9 @@ const ExecuteTask = (props) => {
                 }}
               >
                 <Button
-                  disabled={
-                    location.state.taskStatus === "completed" && !isUpdatable
-                  }
+                  // disabled={
+                  //   location.state.taskStatus === "completed" && !isUpdatable
+                  // }
                   type="submit"
                   className="btn"
                 >
@@ -309,10 +307,7 @@ const ExecuteTask = (props) => {
                 <CKEditor
                   editor={ClassicEditor}
                   data={
-                    props.state.details
-                      ? props.state.details[0].comment ||
-                        "<p><i>What is your comment?</i></p>"
-                      : "<p><i>What is your comment?</i></p>"
+                    props.state.details ? props.state.details[0].comment : null
                   }
                   onChange={props.handleEditorChange}
                   config={{
@@ -320,6 +315,7 @@ const ExecuteTask = (props) => {
                       maxSize: 3000,
                       uploadUrl: "https://projectar.devcodes.co/upload",
                     },
+                    placeholder: "What is your comment?",
                   }}
                 />
               </div>

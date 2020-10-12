@@ -22,9 +22,7 @@ const TasksStatus = (props) => {
     () => {
       try {
         return tasks.filter(
-          (task) =>
-            parseInt(task.details[0].achieved) !==
-            parseInt(task.details[0].target)
+          (task) => parseInt(task.details[0].achieved) !== 100
         );
       } catch (err) {}
     },

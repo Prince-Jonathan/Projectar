@@ -105,16 +105,12 @@ const Task = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (
-      parseInt(state.achieved) > parseInt(state.target) ||
-      parseInt(state.achieved) > 100
-    ) {
+    if (parseInt(state.achieved) > 100) {
       props.onAlert("error", "Invalid Achieved Input", {
         timeout: 3000,
         position: "bottom center",
       });
     } else {
-
       let personnel =
         state.personnel ||
         assignedPersonnel.map((personnel) => {
@@ -181,7 +177,7 @@ const Task = (props) => {
     <div>
       <Switch>
         <Route exact path={path}>
-          {location.taskStatus === "outstanding" ? (
+          {location.state.taskStatus === "outstanding" ? (
             <Caption flabel="Tasks" slabel=" -Outstanding" />
           ) : (
             <Caption flabel="Tasks" slabel=" -Completed" />

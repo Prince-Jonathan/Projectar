@@ -94,13 +94,21 @@ const Register = (props) => {
   );
   const MainDate = ({ value, onClick }) => (
     <div style={{ display: "flex", alignItems: "center" }}>
-      <i
-        style={{ position: "relative", top: -5, margin: 5 }}
-        className="fa fa-calendar"
-        aria-hidden="true"
-      />
+      {!isMobile && (
+        <i
+          style={{ position: "relative", top: -5, margin: 5 }}
+          className="fa fa-calendar"
+          aria-hidden="true"
+        />
+      )}
       <label>
-        {" "}
+        {isMobile && (
+          <i
+            style={{ position: "relative", margin: 5 }}
+            className="fa fa-calendar"
+            aria-hidden="true"
+          />
+        )}
         <span style={{ color: "white" }}>Register</span> Date
         <input
           style={{
@@ -148,161 +156,330 @@ const Register = (props) => {
   const data = props.personnel;
 
   const columns = useMemo(
-    () => [
-      {
-        id: "isPresent",
-        Cell: ({ row }) => {
-          const [isPresent] = useState(() => {
-            try {
-              return isPresents.filter(
-                (isPresent) => isPresent.id === row.original.id
-              )[0].isPresent;
-            } catch (err) {}
-          });
+    () => {
+      let forDesktop = [
+        {
+          id: "isPresent",
+          Cell: ({ row }) => {
+            const [isPresent] = useState(() => {
+              try {
+                return isPresents.filter(
+                  (isPresent) => isPresent.id === row.original.id
+                )[0].isPresent;
+              } catch (err) {}
+            });
 
-          const isPersonnelPresent = isPresent ? isPresent : false;
-          return (
-            <input
-              type="checkbox"
-              name="isPresent"
-              style={{ cursor: "pointer" }}
-              checked={isPersonnelPresent}
-              onChange={() => {
-                handleIsPresent([
-                  {
-                    id: row.original.id,
-                    isPresent: !isPersonnelPresent,
-                  },
-                ]);
-              }}
-            />
-          );
+            const isPersonnelPresent = isPresent ? isPresent : false;
+            return (
+              <input
+                type="checkbox"
+                name="isPresent"
+                style={{ cursor: "pointer" }}
+                checked={isPersonnelPresent}
+                onChange={() => {
+                  handleIsPresent([
+                    {
+                      id: row.original.id,
+                      isPresent: !isPersonnelPresent,
+                    },
+                  ]);
+                }}
+              />
+            );
+          },
         },
-      },
-      {
-        Header: "Time In",
-        Cell: ({ row }) => {
-          //holding state for each selector and forwarding the state to parent. This is because the selector unmounts
-          //it is not possible to update state from parent
-          const [signIn, setSignIn] = useState(() => {
-            try {
-              return signIns.filter(
-                (signIn) => signIn.id === row.original.id
-              )[0].signIn;
-            } catch (err) {}
-          });
+        {
+          Header: "Time In",
+          Cell: ({ row }) => {
+            //holding state for each selector and forwarding the state to parent. This is because the selector unmounts
+            //it is not possible to update state from parent
+            const [signIn, setSignIn] = useState(() => {
+              try {
+                return signIns.filter(
+                  (signIn) => signIn.id === row.original.id
+                )[0].signIn;
+              } catch (err) {}
+            });
 
-          const [isPresent] = useState(() => {
-            try {
-              return isPresents.filter(
-                (isPresent) => isPresent.id === row.original.id
-              )[0].isPresent;
-            } catch (err) {}
-          });
+            const [isPresent] = useState(() => {
+              try {
+                return isPresents.filter(
+                  (isPresent) => isPresent.id === row.original.id
+                )[0].isPresent;
+              } catch (err) {}
+            });
 
-          const isPersonnelPresent = isPresent ? isPresent : false;
-          console.log("signIn", signIn);
+            const isPersonnelPresent = isPresent ? isPresent : false;
+            console.log("signIn", signIn);
 
-          return (
-            <input
-              type="time"
-              disabled={!isPersonnelPresent}
-              value={signIn}
-              onChange={(e) => {
-                setSignIn(e.target.value);
-              }}
-              onBlur={() =>
-                handleSetSignIn([{ id: row.original.id, signIn: signIn }])
-              }
-            />
-          );
+            return (
+              <input
+                type="time"
+                disabled={!isPersonnelPresent}
+                value={signIn}
+                onChange={(e) => {
+                  setSignIn(e.target.value);
+                }}
+                onBlur={() =>
+                  handleSetSignIn([{ id: row.original.id, signIn: signIn }])
+                }
+              />
+            );
+          },
         },
-      },
-      {
-        Header: "Time Out",
-        Cell: ({ row }) => {
-          //holding state for each selector and forwarding the state to parent. This is because the selector unmounts
-          //it is not possible to update state from parent
+        {
+          Header: "Time Out",
+          Cell: ({ row }) => {
+            //holding state for each selector and forwarding the state to parent. This is because the selector unmounts
+            //it is not possible to update state from parent
 
-          const [signOut, setSignOut] = useState(() => {
-            try {
-              return signOuts.filter(
-                (signOut) => signOut.id === row.original.id
-              )[0].signOut;
-            } catch (err) {}
-          });
-          const [isPresent] = useState(() => {
-            try {
-              return isPresents.filter(
-                (isPresent) => isPresent.id === row.original.id
-              )[0].isPresent;
-            } catch (err) {}
-          });
+            const [signOut, setSignOut] = useState(() => {
+              try {
+                return signOuts.filter(
+                  (signOut) => signOut.id === row.original.id
+                )[0].signOut;
+              } catch (err) {}
+            });
+            const [isPresent] = useState(() => {
+              try {
+                return isPresents.filter(
+                  (isPresent) => isPresent.id === row.original.id
+                )[0].isPresent;
+              } catch (err) {}
+            });
 
-          const isPersonnelPresent = isPresent ? isPresent : false;
+            const isPersonnelPresent = isPresent ? isPresent : false;
 
-          return (
-            <input
-              type="time"
-              disabled={!isPersonnelPresent}
-              value={signOut}
-              onChange={(e) => {
-                setSignOut(e.target.value);
-              }}
-              onBlur={() =>
-                handleSetSignOut([{ id: row.original.id, signOut: signOut }])
-              }
-            />
-          );
+            return (
+              <input
+                type="time"
+                disabled={!isPersonnelPresent}
+                value={signOut}
+                onChange={(e) => {
+                  setSignOut(e.target.value);
+                }}
+                onBlur={() =>
+                  handleSetSignOut([{ id: row.original.id, signOut: signOut }])
+                }
+              />
+            );
+          },
         },
-      },
-      { Header: "Name", accessor: "name" },
-      {
-        id: "lunch",
-        // The header can use the table's getToggleAllRowsSelectedProps method
-        // to render a checkbox
-        Header: ({ getToggleAllRowsSelectedProps }) => (
-          <div>
-            <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            <span> Lunch</span>
-          </div>
-        ),
-        // The cell can use the individual row's getToggleRowSelectedProps method
-        // to the render a checkbox
-        Cell: ({ row }) => (
-          <div>
-            <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-          </div>
-        ),
-      },
-      {
-        id: "T & T",
-        Header: "T & T (GH\u20B5)",
-
-        Cell: ({ row }) => {
-          const [tandt, setTandt] = useState(() => {
-            try {
-              return tandts.filter((tandt) => tandt.id === row.original.id)[0]
-                .tandt;
-            } catch (err) {}
-          });
-          return (
-            <input
-              type="number"
-              value={tandt}
-              style={{ width: 60 }}
-              onChange={(e) => {
-                setTandt(e.target.value);
-              }}
-              onBlur={() =>
-                handleSetTandts([{ id: row.original.id, tandt: tandt }])
-              }
-            />
-          );
+        { Header: "Name", accessor: "name" },
+        {
+          id: "lunch",
+          // The header can use the table's getToggleAllRowsSelectedProps method
+          // to render a checkbox
+          Header: ({ getToggleAllRowsSelectedProps }) => (
+            <div>
+              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+              <span> Lunch</span>
+            </div>
+          ),
+          // The cell can use the individual row's getToggleRowSelectedProps method
+          // to the render a checkbox
+          Cell: ({ row }) => (
+            <div>
+              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+            </div>
+          ),
         },
-      },
-    ],
-    [signIns, signOuts, tandts, isPresents]
+        {
+          id: "T & T",
+          Header: "T & T (GH\u20B5)",
+
+          Cell: ({ row }) => {
+            const [tandt, setTandt] = useState(() => {
+              try {
+                return tandts.filter((tandt) => tandt.id === row.original.id)[0]
+                  .tandt;
+              } catch (err) {}
+            });
+            return (
+              <input
+                type="number"
+                value={tandt}
+                style={{ width: 60 }}
+                onChange={(e) => {
+                  setTandt(e.target.value);
+                }}
+                onBlur={() =>
+                  handleSetTandts([{ id: row.original.id, tandt: tandt }])
+                }
+              />
+            );
+          },
+        },
+      ];
+      let forMobile = [
+        {
+          Header: "Time",
+          id: "isPresent&Time",
+          Cell: ({ row }) => {
+            // isPresent
+            const [isPresent] = useState(() => {
+              try {
+                return isPresents.filter(
+                  (isPresent) => isPresent.id === row.original.id
+                )[0].isPresent;
+              } catch (err) {}
+            });
+            // end of isPresent
+
+            //timeIn
+            const [signIn, setSignIn] = useState(() => {
+              try {
+                return signIns.filter(
+                  (signIn) => signIn.id === row.original.id
+                )[0].signIn;
+              } catch (err) {}
+            });
+            // end of timeIn
+
+            // timeOut
+            const [signOut, setSignOut] = useState(() => {
+              try {
+                return signOuts.filter(
+                  (signOut) => signOut.id === row.original.id
+                )[0].signOut;
+              } catch (err) {}
+            });
+            // end of timeOut
+
+            const isPersonnelPresent = isPresent ? isPresent : false;
+
+            return (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  name="isPresent"
+                  style={{ cursor: "pointer" }}
+                  checked={isPersonnelPresent}
+                  onChange={() => {
+                    handleIsPresent([
+                      {
+                        id: row.original.id,
+                        isPresent: !isPersonnelPresent,
+                      },
+                    ]);
+                  }}
+                />
+                <div>
+                  <label>
+                    In
+                    <input
+                      type="time"
+                      disabled={!isPersonnelPresent}
+                      value={signIn}
+                      onChange={(e) => {
+                        setSignIn(e.target.value);
+                      }}
+                      onBlur={() =>
+                        handleSetSignIn([
+                          { id: row.original.id, signIn: signIn },
+                        ])
+                      }
+                    />
+                  </label>
+                  <label>
+                    Out
+                    <input
+                      type="time"
+                      disabled={!isPersonnelPresent}
+                      value={signOut}
+                      onChange={(e) => {
+                        setSignOut(e.target.value);
+                      }}
+                      onBlur={() =>
+                        handleSetSignOut([
+                          { id: row.original.id, signOut: signOut },
+                        ])
+                      }
+                    />
+                  </label>
+                </div>
+              </div>
+            );
+          },
+        },
+        {
+          Header: ({ getToggleAllRowsSelectedProps }) => (
+            <div>
+              Name/
+              <div>
+                <span> Lunch</span>
+                <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+              </div>
+            </div>
+          ),
+          id: "personnel&Lunch",
+          Cell: ({ row }) => {
+            return (
+              <div style={{ display: "flex" }}>
+                <span>{row.original.name}</span>
+                <div>
+                  <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+                </div>
+              </div>
+            );
+          },
+        },
+
+        // {
+        //   id: "lunch",
+        //   // The header can use the table's getToggleAllRowsSelectedProps method
+        //   // to render a checkbox
+        //   Header: ({ getToggleAllRowsSelectedProps }) => (
+        //     <div>
+        //       <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+        //       <span> Lunch</span>
+        //     </div>
+        //   ),
+        //   // The cell can use the individual row's getToggleRowSelectedProps method
+        //   // to the render a checkbox
+        //   Cell: ({ row }) => (
+        //     <div>
+        //       <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+        //     </div>
+        //   ),
+        // },
+        {
+          id: "T & T",
+          Header: "T & T (GH\u20B5)",
+
+          Cell: ({ row }) => {
+            const [tandt, setTandt] = useState(() => {
+              try {
+                return tandts.filter((tandt) => tandt.id === row.original.id)[0]
+                  .tandt;
+              } catch (err) {}
+            });
+            return (
+              <input
+                type="number"
+                value={tandt}
+                style={{ width: 60 }}
+                onChange={(e) => {
+                  setTandt(e.target.value);
+                }}
+                onBlur={() =>
+                  handleSetTandts([{ id: row.original.id, tandt: tandt }])
+                }
+              />
+            );
+          },
+        },
+      ];
+
+      return isMobile ? forMobile : forDesktop;
+    },
+    [signIns, signOuts, tandts, isPresents, isMobile]
   );
   const IndeterminateCheckbox = forwardRef(
     ({ indeterminate, ...rest }, ref) => {
@@ -410,7 +587,13 @@ const Register = (props) => {
     <div>
       <Caption flabel="Time" slabel="Sheet" />
       <Caption
-        flabel={props.project[0] ? props.project[0].name : null}
+        flabel={
+          props.project
+            ? props.project[0]
+              ? props.project[0].name
+              : null
+            : null
+        }
         style={{ fontSize: 15, color: "white" }}
       />
       <DatePicker

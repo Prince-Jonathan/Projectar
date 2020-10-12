@@ -6,6 +6,8 @@ import DatePicker from "react-datepicker";
 
 import Slate from "../slate/Slate";
 import { isMobile } from "../../Responsive";
+import SliderFilter from "../../table/filters/SliderFilter";
+import ColumnFilter from "../../table//filters/ColumnFilter";
 import Caption from "../../content/Caption";
 import Register from "./Register";
 import Button from "../uiElements/Button";
@@ -96,13 +98,21 @@ const Attendance = (props) => {
   // );
   const MainDate = ({ value, onClick }) => (
     <div style={{ display: "flex", alignItems: "center" }}>
-      <i
-        style={{ position: "relative", top: -5, margin: 5 }}
-        className="fa fa-calendar"
-        aria-hidden="true"
-      />
+      {!isMobile && (
+        <i
+          style={{ position: "relative", top: -5, margin: 5 }}
+          className="fa fa-calendar"
+          aria-hidden="true"
+        />
+      )}
       <label>
-        {" "}
+        {isMobile && (
+          <i
+            style={{ position: "relative", margin: 5 }}
+            className="fa fa-calendar"
+            aria-hidden="true"
+          />
+        )}
         <span style={{ color: "white" }}>Register</span> Date
         <input
           style={{
@@ -146,29 +156,46 @@ const Attendance = (props) => {
 
   const data = useMemo(() => props.attendance, [props.attendance]);
   const columns = useMemo(
-    () => [
-      { Header: "Time In", accessor: "time_in" },
-      { Header: "Time Out", accessor: "time_out" },
-      {
-        Header: "Personnel",
-        accessor: "personnel_name",
-      },
-      { Header: "T & T (GH\u20B5)", accessor: "t_and_t" },
-      {
-        id: "lunch",
-        Header: "Lunch",
-        Cell: ({ row }) => (
-          <div>
-            <input
-              type="checkbox"
-              checked={row.original.lunch}
-              onClick={() => false}
-            />
-          </div>
-        ),
-      },
-    ],
-    []
+    () => {
+      let _temp = [
+        {
+          Header: "Time In",
+          accessor: "time_in",
+          Filter: isMobile ? () => null : ColumnFilter,
+        },
+        {
+          Header: "Time Out",
+          accessor: "time_out",
+          Filter: isMobile ? () => null : ColumnFilter,
+        },
+        {
+          Header: "Personnel",
+          accessor: "personnel_name",
+          Filter: isMobile ? () => null : ColumnFilter,
+        },
+
+        {
+          Header: "T & T (GH\u20B5)",
+          accessor: "t_and_t",
+          Filter: isMobile ? () => null : SliderFilter,
+        },
+        {
+          id: "lunch",
+          Header: "Lunch",
+          Cell: ({ row }) => (
+            <div>
+              <input
+                type="checkbox"
+                checked={row.original.lunch}
+                onClick={() => false}
+              />
+            </div>
+          ),
+        },
+      ];
+      return isMobile ? _temp.slice(2) : _temp;
+    },
+    [isMobile]
   );
   // const IndeterminateCheckbox = forwardRef(
   //   ({ indeterminate, ...rest }, ref) => {
@@ -263,7 +290,13 @@ const Attendance = (props) => {
         <Route exact path={path}>
           <Caption flabel="Attendance" slabel="List" />
           <Caption
-            flabel={props.project[0] ? props.project[0].name : null}
+            flabel={
+              props.project
+                ? props.project[0]
+                  ? props.project[0].name
+                  : null
+                : null
+            }
             style={{ fontSize: 15, color: "white" }}
           />
           <DatePicker

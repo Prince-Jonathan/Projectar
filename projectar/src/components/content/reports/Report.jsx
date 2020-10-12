@@ -19,15 +19,13 @@ const App = (props) => {
         <CKEditor
           editor={ClassicEditor}
           name="comment"
-          data="<p><i>What will you want to report?</i></p>"
-          onInit={(editor) => {
-            // You can store the "editor" and use when it is needed.
-            console.log("Editor is ready to use!", editor.config);
-          }}
+          // data="<p><i>What will you want to report?</i></p>"
+          onInit={(editor) => {}}
           onChange={handleOnChange}
           config={{
             // ckfinder: { uploadUrl: "http://localhost:9000/upload" },
             ckfinder: { uploadUrl: "https://projectar.devcodes.co/upload" },
+            placeholder: "What report will you want drafted?",
           }}
           // onBlur={(event, editor) => {
           //   console.log("Blur.", editor);

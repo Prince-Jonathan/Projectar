@@ -34,7 +34,9 @@ async def create_note(note,status):
 			'contents': {'en': note["description"]},
 			'include_external_user_ids': note["targets"],
 			"headings": {"en":status+": "+note["title"]},
-			'url':"https://projectar.devcodes.co/"
+			# 'url':"https://projectar.devcodes.co/"
+			'url':note["url"] if "url" in note else "https://projectar.devcodes.co/"
+
 		}
 		response = await client.send_notification(notification_body)
 		return response.body
@@ -788,6 +790,52 @@ def project_verbose(proj_id):
 			}
 		return {
 			"msg":"project awaiting sync",
+			"tasks_list":[],
+			"personnel_list":[]
+		}
+	except SQLAlchemyError as err:
+		print(err)
+		return{
+		"success":False
+		}
+
+@app.route('/api/task/verbose/<int:proj_id>')
+def task_verbose(proj_id):
+	'''Details of task tasks of specified id'''
+	try:
+		# plist = []
+		# pnames = ""
+		task = task.query.get(proj_id)
+		msg = "does not exist"
+		if task is not None:
+			tasks = task.tasks
+			if len(tasks) == 0:
+				print("task %id has no tasks" % (task.id))
+			tasks_obj = Task.serialize_list(tasks)
+			for task in tasks:
+				# append personnel list
+				personnel = ''
+				task_users = User.serialize_list(task.personnel)
+				for task_user in task_users:
+					personnel += task_user['name']
+					if not task_users[-1]==task_user:
+						personnel+=", "
+				# plist.append(personnel)
+				# append task details
+				details = Task_Detail.serialize_list(db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all())
+				if len(details) !=0:
+					# find task object that mataches id of details
+					obj = [x for x in tasks_obj if x["id"] == details[0]["task_id"]][0]
+				# append details and personnel
+				tasks_obj[tasks_obj.index(obj)]["details"] = details
+				tasks_obj[tasks_obj.index(obj)]["personnel"] = personnel
+			return {
+				"success":True,
+				"tasks_list":tasks_obj,
+				# "personnel_list":plist
+			}
+		return {
+			"msg":"task awaiting sync",
 			"tasks_list":[],
 			"personnel_list":[]
 		}

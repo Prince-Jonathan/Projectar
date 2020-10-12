@@ -102,6 +102,13 @@ const AddTask = (props) => {
       comment: null,
       achieved: null,
       creator: localStorage.netsuite_id,
+      url:
+        window.location.protocol +
+        "//" +
+        window.location.hostname +
+        "/project/" +
+        location.state.projectID +
+        "/outstanding-tasks",
     };
     const taskDetails = {};
     props.onAlert("info", "Saving...", {
