@@ -310,6 +310,12 @@ const ExecuteTask = (props) => {
                     props.state.details ? props.state.details[0].comment : null
                   }
                   onChange={props.handleEditorChange}
+                  onInit={(editor) => 
+                  {
+                    if(props.state.details){
+                      props.state.details[0].comment?editor.setData(props.state.details[0].comment):editor.setData("")
+                    }
+                  }}
                   config={{
                     ckfinder: {
                       maxSize: 3000,
