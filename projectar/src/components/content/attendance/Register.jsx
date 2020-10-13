@@ -669,7 +669,7 @@ const Register = (props) => {
             ).getMinutes()}`,
             ...(tandt[0] ? tandt[0] : { tandt: null }),
             ...isPresent[0],
-            ...lunch[0],
+            ...(lunch[0] ? lunch[0] : { lunch: false }),
             id: personnel.id,
             name: personnel.name,
           };
