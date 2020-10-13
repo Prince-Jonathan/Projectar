@@ -1,4 +1,4 @@
-import React, { useState, useMemo, forwardRef, useRef } from "react";
+import React, { useState, useEffect, useMemo, forwardRef, useRef } from "react";
 import { useHistory, useLocation, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import Table from "../../table/Table";
@@ -25,6 +25,13 @@ const Button = styled.button`
   }
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: ${(props) => (props.isMobile ? "row" : "column")};
+  justify-content: space-around;
+  flex-wrap: wrap;
+`;
+
 const Register = (props) => {
   const history = useHistory();
   const { url, path } = useLocation();
@@ -33,7 +40,64 @@ const Register = (props) => {
   const [isPresents, setIsPresents] = useState([]);
   const [signIns, setSignIns] = useState([]);
   const [signOuts, setSignOuts] = useState([]);
+  const [lunchs, setLunchs] = useState([]);
   const [tandts, setTandts] = useState([]);
+  console.log("main", signIns);
+  useEffect(
+    () => {
+      let isPresents = props.attendance.map((data) => {
+        return {
+          id: data.personnel_id,
+          isPresent: data.is_present,
+        };
+      });
+      handleIsPresent(isPresents);
+
+      let signIns = props.attendance.map((data) => {
+        return {
+          id: data.personnel_id,
+          signIn: new Date("01/01/1991 " + data.time_in).toLocaleTimeString(
+            "en-US",
+            {
+              hour12: false,
+              hour: "2-digit",
+              minute: "2-digit",
+            }
+          ),
+        };
+      });
+      handleSetSignIn(signIns);
+
+      let signOuts = props.attendance.map((data) => {
+        return {
+          id: data.personnel_id,
+          signOut: new Date("01/01/1991 " + data.time_out).toLocaleTimeString(
+            "en-US",
+            {
+              hour12: false,
+              hour: "2-digit",
+              minute: "2-digit",
+            }
+          ),
+        };
+      });
+      handleSetSignOut(signOuts);
+      let tandts = props.attendance.map((data) => {
+        return { id: data.personnel_id, tandt: data.t_and_t };
+      });
+
+      let lunchs = props.attendance.map((data) => {
+        return {
+          id: data.personnel_id,
+          lunch: data.lunch,
+        };
+      });
+      handleHadLunch(lunchs);
+
+      handleSetTandts(tandts);
+    },
+    [props.attendance]
+  );
 
   const handleIsPresent = React.useCallback(
     (data) => {
@@ -78,6 +142,21 @@ const Register = (props) => {
     },
     [signOuts]
   );
+  const handleHadLunch = React.useCallback(
+    (data) => {
+      let prev = [...lunchs];
+      let personnel = prev.filter((personnel) => personnel.id === data[0].id);
+      if (personnel.length !== 0) {
+        const index = prev.indexOf(personnel[0]);
+        prev[index] = { ...data[0] };
+        return setLunchs(prev);
+      }
+      const update = prev.concat(data);
+      setLunchs(update);
+    },
+    [lunchs]
+  );
+
   const handleSetTandts = React.useCallback(
     (data) => {
       let prev = [...tandts];
@@ -175,7 +254,7 @@ const Register = (props) => {
                 type="checkbox"
                 name="isPresent"
                 style={{ cursor: "pointer" }}
-                checked={isPersonnelPresent}
+                defaultChecked={isPersonnelPresent}
                 onChange={() => {
                   handleIsPresent([
                     {
@@ -268,21 +347,34 @@ const Register = (props) => {
         { Header: "Name", accessor: "name" },
         {
           id: "lunch",
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-              <span> Lunch</span>
-            </div>
-          ),
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
-          Cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            </div>
-          ),
+          Header: "Lunch",
+          Cell: ({ row }) => {
+            const [lunch] = useState(() => {
+              try {
+                return lunchs.filter((lunch) => lunch.id === row.original.id)[0]
+                  .lunch;
+              } catch (err) {}
+            });
+
+            const hadLunch = lunch ? lunch : false;
+
+            return (
+              <input
+                type="checkbox"
+                name="hadLunch"
+                style={{ cursor: "pointer" }}
+                defaultChecked={hadLunch}
+                onChange={() => {
+                  handleHadLunch([
+                    {
+                      id: row.original.id,
+                      lunch: !hadLunch,
+                    },
+                  ]);
+                }}
+              />
+            );
+          },
         },
         {
           id: "T & T",
@@ -360,7 +452,7 @@ const Register = (props) => {
                   type="checkbox"
                   name="isPresent"
                   style={{ cursor: "pointer" }}
-                  checked={isPersonnelPresent}
+                  defaultChecked={isPersonnelPresent}
                   onChange={() => {
                     handleIsPresent([
                       {
@@ -370,14 +462,20 @@ const Register = (props) => {
                     ]);
                   }}
                 />
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignContent: "flex-end",
+                  }}
+                >
                   <div>
                     <label>In</label>
                     <input
                       type="time"
                       disabled={!isPersonnelPresent}
                       value={signIn}
-                      style={{ maxWidth: 65 }}
+                      style={{ maxWidth: 95 }}
                       onChange={(e) => {
                         setSignIn(e.target.value);
                       }}
@@ -388,14 +486,13 @@ const Register = (props) => {
                       }
                     />
                   </div>
-
-                  <label>
-                    Out
+                  <div>
+                    <label>Out</label>
                     <input
                       type="time"
                       disabled={!isPersonnelPresent}
                       value={signOut}
-                      style={{ maxWidth: 65 }}
+                      style={{ maxWidth: 95 }}
                       onChange={(e) => {
                         setSignOut(e.target.value);
                       }}
@@ -405,45 +502,16 @@ const Register = (props) => {
                         ])
                       }
                     />
-                  </label>
+                  </div>
                 </div>
               </div>
             );
           },
         },
         {
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              Name/
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <span> Lunch</span>
-                <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-              </div>
-            </div>
-          ),
-          id: "personnel&Lunch",
-          Cell: ({ row }) => {
-            return (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <span>{row.original.name}</span>
-                <div>
-                  <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-                </div>
-              </div>
-            );
-          },
+          Header: "Name",
+          accessor: "name",
+          Filter: () => null,
         },
 
         // {
@@ -465,28 +533,68 @@ const Register = (props) => {
         //   ),
         // },
         {
-          id: "T & T",
-          Header: "T & T (GH\u20B5)",
+          id: "Lunch/T & T",
+          Header: () => (
+            <div>
+              Lunch/
+              <br />T & T {"(GH\u20B5)"}
+            </div>
+          ),
 
           Cell: ({ row }) => {
+            // lunch info
+            const [lunch] = useState(() => {
+              try {
+                return lunchs.filter((lunch) => lunch.id === row.original.id)[0]
+                  .lunch;
+              } catch (err) {}
+            });
+            const hadLunch = lunch ? lunch : false;
+            // end of lunch info
+
+            // tandt
             const [tandt, setTandt] = useState(() => {
               try {
                 return tandts.filter((tandt) => tandt.id === row.original.id)[0]
                   .tandt;
               } catch (err) {}
             });
+            // end of tandt
+
             return (
-              <input
-                type="number"
-                value={tandt}
-                style={{ width: 60 }}
-                onChange={(e) => {
-                  setTandt(e.target.value);
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
                 }}
-                onBlur={() =>
-                  handleSetTandts([{ id: row.original.id, tandt: tandt }])
-                }
-              />
+              >
+                <input
+                  type="checkbox"
+                  name="hadLunch"
+                  style={{ cursor: "pointer" }}
+                  defaultChecked={hadLunch}
+                  onChange={() => {
+                    handleHadLunch([
+                      {
+                        id: row.original.id,
+                        lunch: !hadLunch,
+                      },
+                    ]);
+                  }}
+                />
+                <input
+                  type="number"
+                  value={tandt}
+                  style={{ width: 60 }}
+                  onChange={(e) => {
+                    setTandt(e.target.value);
+                  }}
+                  onBlur={() =>
+                    handleSetTandts([{ id: row.original.id, tandt: tandt }])
+                  }
+                />
+              </div>
             );
           },
         },
@@ -515,10 +623,10 @@ const Register = (props) => {
       );
     }
   );
-  let lunchList;
-  const extractLunchData = (data) => {
-    lunchList = data.map((row) => row.original.id);
-  };
+  // let lunchList;
+  // const extractLunchData = (data) => {
+  //   lunchList = data.map((row) => row.original.id);
+  // };
   const handleSubmit = () => {
     let body = data.map((personnel) => {
       let isPresent;
@@ -534,11 +642,15 @@ const Register = (props) => {
             (signOut) => signOut.id === personnel.id
           );
           const tandt = tandts.filter((tandt) => tandt.id === personnel.id);
-          const lunch = lunchList
-            ? lunchList.find((personnelID) => personnelID === personnel.id)
-              ? true
-              : false
-            : false;
+          // const lunch = lunchList
+          //   ? lunchList.find((personnelID) => personnelID === personnel.id)
+          //     ? true
+          //     : false
+          //   : false;
+          let lunch;
+          if (lunchs.length) {
+            lunch = lunchs.filter((lunch) => lunch.id === personnel.id);
+          }
           //with the inconsistencies with the input time type, signIns and outs will require refactoring as follows:
           return {
             signIn: null,
@@ -557,7 +669,7 @@ const Register = (props) => {
             ).getMinutes()}`,
             ...(tandt[0] ? tandt[0] : { tandt: null }),
             ...isPresent[0],
-            lunch: lunch,
+            ...lunch[0],
             id: personnel.id,
             name: personnel.name,
           };
@@ -621,23 +733,26 @@ const Register = (props) => {
         withPortal={true}
       />
       {/* <Slate> */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          padding: 5,
-          margin: "15px 0px",
-          color: "#10292e",
-          borderRadius: 5,
-          backgroundColor: "#adb7a9c2",
-        }}
-      >
-        <Table
-          data={data}
-          columns={columns}
-          selectedRows={(data) => extractLunchData(data)}
-        />
-      </div>
+      <Wrapper isMobile>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: 5,
+            margin: "15px 0px",
+            color: "#10292e",
+            borderRadius: 5,
+            backgroundColor: "#adb7a9c2",
+            minWidth: "min-content",
+          }}
+        >
+          <Table
+            data={data}
+            columns={columns}
+            // selectedRows={(data) => extractLunchData(data)}
+          />
+        </div>
+      </Wrapper>
       {/* </Slate> */}
     </div>
   );

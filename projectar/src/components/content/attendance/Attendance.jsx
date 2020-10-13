@@ -28,6 +28,13 @@ import Button from "../uiElements/Button";
 //   }
 // `;
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: ${(props) => (props.isMobile ? "row" : "column")};
+  justify-content: space-around;
+  flex-wrap: wrap;
+`;
+
 const Attendance = (props) => {
   const history = useHistory();
   const { url, path } = useRouteMatch();
@@ -342,12 +349,15 @@ const Attendance = (props) => {
             customInput={<MainDate />}
             withPortal={true}
           />
-          <Slate>
-            <Table data={data} columns={columns} />
-          </Slate>
+          <Wrapper isMobile>
+            <Slate>
+              <Table data={data} columns={columns} />
+            </Slate>
+          </Wrapper>
         </Route>
         <Route path={`${path}/edit`}>
           <Register
+            attendance={props.attendance}
             personnel={props.personnel}
             postData={props.postData}
             projectID={props.projectID}
