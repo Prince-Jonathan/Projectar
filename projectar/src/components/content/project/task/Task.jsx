@@ -192,14 +192,16 @@ const Task = (props) => {
             }
             style={{ fontSize: 15, color: "white" }}
           />
-          <Slate>
-            <Table
-              columns={props.columns}
-              data={props.data}
-              renderRowSubComponent={props.renderRowSubComponent}
-              clickable={props.clickable}
-            />
-          </Slate>
+          <Wrapper isMobile>
+            <Slate>
+              <Table
+                columns={props.columns}
+                data={props.data}
+                renderRowSubComponent={props.renderRowSubComponent}
+                clickable={props.clickable}
+              />
+            </Slate>
+          </Wrapper>
         </Route>
         <Route path={`${path}/:id/execute`}>
           <Caption flabel="Execute" slabel="Task" />

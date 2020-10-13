@@ -46,6 +46,12 @@ const Styles = styled.div`
     margin: 5px 5px 5px 0;
   }
 `;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: ${(props) => (props.isMobile ? "row" : "column")};
+  justify-content: space-around;
+  flex-wrap: wrap;
+`;
 
 const Project = (props) => {
   const { path, url } = useRouteMatch();
@@ -335,13 +341,15 @@ const Project = (props) => {
         <Switch>
           <Route exact path={path}>
             <Caption flabel="Tasks" slabel="List" />
-            <Slate>
-              <Table
-                columns={columns}
-                data={data}
-                renderRowSubComponent={renderRowSubComponent}
-              />
-            </Slate>
+            <Wrapper isMobile>
+              <Slate>
+                <Table
+                  columns={columns}
+                  data={data}
+                  renderRowSubComponent={renderRowSubComponent}
+                />
+              </Slate>
+            </Wrapper>
             {location.state ? (
               <Bay>
                 <EditTask
