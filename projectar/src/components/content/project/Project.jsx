@@ -26,6 +26,7 @@ import AllTasks from "./AllTasks";
 import Attendance from "../attendance/Attendance";
 import Bay from "../../bay/Bay";
 import Button from "../uiElements/Button";
+import TaskDetailsStatus from "./task/TaskDetailsStatus";
 
 const Styles = styled.div`
   .project {
@@ -265,6 +266,7 @@ const Project = (props) => {
               taskID={row.original.id}
               tasksPersonnel={tasksPersonnel}
             />
+            <TaskDetailsStatus task={data.find((task)=>task.id===row.original.id)}/>
           </div>
         </Styles>
         {row.original.details[0].comment ? (

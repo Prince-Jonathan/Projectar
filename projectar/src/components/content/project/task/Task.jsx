@@ -173,15 +173,46 @@ const Task = (props) => {
   const handleClose = () => {
     history.goBack();
   };
+  const detailsColumns = useMemo(
+    () => [
+      {
+        Header: "Last Update",
+        accessor: "date_updated",
+      },
+      {
+        Header: "Status",
+        id: "status",
+        Cell: ({ row }) => {
+          const status = [null, "New", "Executed", "Rescheduled"];
+          return status[row.original.entry_type];
+        },
+      },
+      { Header: "Target", accessor: "target" },
+      { Header: "Achieved", accessor: "achieved" },
+      {
+        Header: "Date",
+        accessor: "target_date",
+      },
+    ],
+    []
+  );
+  const caption = {
+    default: "",
+    outstanding: "-Outstanding",
+    completed: "-Completed",
+  };
   return (
     <div>
       <Switch>
         <Route exact path={path}>
-          {location.state.taskStatus === "outstanding" ? (
-            <Caption flabel="Tasks" slabel=" -Outstanding" />
-          ) : (
-            <Caption flabel="Tasks" slabel=" -Completed" />
-          )}
+          {
+            <Caption
+              flabel="Tasks"
+              slabel={
+                caption[location.state ? location.state.taskStatus : "default"]
+              }
+            />
+          }
           <Caption
             flabel={
               props.project
@@ -202,6 +233,11 @@ const Task = (props) => {
               />
             </Slate>
           </Wrapper>
+        </Route>
+        <Route path={`${path}/:id/details`}>
+          {location.state ? (
+            <Table columns={detailsColumns} data={location.state.task} />
+          ) : null}
         </Route>
         <Route path={`${path}/:id/execute`}>
           <Caption flabel="Execute" slabel="Task" />
