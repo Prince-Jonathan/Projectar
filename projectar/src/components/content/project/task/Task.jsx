@@ -18,7 +18,7 @@ import Slate from "../../slate/Slate";
 import Table from "./../../../table/Table";
 import Caption from "../../Caption";
 import ExecuteTask from "./ExecuteTask";
-import TaskDetails from "./TaskDetails";
+import TaskDetails from "./taskDetails/TaskDetails";
 
 import "./Task.css";
 import "react-datepicker/dist/react-datepicker.css";

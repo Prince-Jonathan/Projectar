@@ -28,3 +28,37 @@ body::before {
 body {
   margin: 0;
 }
+
+.report-wrapper {
+  color: black;
+}
+
+.report-editor {
+  background-color: #0a1a1d;
+  color: white;
+}
+
+.report-toolbar {
+  background-color: green;
+}
+/* .ck-content .image img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  min-width: 50px;
+} */
+.ck-editor__editable {
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  min-height: 450px !important;
+  /* color: white; */
+  font-weight: 300;
+  background-color: #30303025 !important;
+}
+.ck-editor__editable:focus {
+  outline: none !important;
+}
+
+.ck.ck-editor__editable > .ck-placeholder::before {
+  color: white;
+}

@@ -14,7 +14,7 @@ const App = (props) => {
   return (
     <div>
       <Caption flabel="Draft" slabel="Report" />
-      <div className="report-wrapper">
+      <div className="report-wrapper" style={{ color: "white" }}>
         <CKEditor
           editor={ClassicEditor}
           name="comment"

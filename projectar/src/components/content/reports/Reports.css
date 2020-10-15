@@ -1,4 +1,4 @@
-.report-wrapper {
+/* .report-wrapper {
   color: black;
 }
 
@@ -15,8 +15,16 @@
   margin: 0 auto;
   max-width: 100%;
   min-width: 50px;
-  
 }
 .ck-editor__editable {
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   min-height: 450px !important;
+  color: white;
+  font-weight: 300;
+  background-color: #adb7a931 !important;
 }
+
+.ck.ck-editor__editable > .ck-placeholder::before {
+  color: #ffee00;
+} */

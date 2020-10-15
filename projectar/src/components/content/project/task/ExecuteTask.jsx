@@ -181,6 +181,13 @@ const ExecuteTask = (props) => {
                   props.state.details ? props.state.details[0].comment : null
                 }
                 onChange={props.handleEditorChange}
+                onInit={(editor) => {
+                  if (props.state.details) {
+                    props.state.details[0].comment
+                      ? editor.setData(props.state.details[0].comment)
+                      : editor.setData("");
+                  }
+                }}
                 config={{
                   ckfinder: {
                     maxSize: 3000,
@@ -303,17 +310,18 @@ const ExecuteTask = (props) => {
               </div>
             </div>
             <div style={{ flex: 5, padding: 10 }}>
-              <div className="report-wrapper">
+              <div className="report-wrapper" style={{ color: "white" }}>
                 <CKEditor
                   editor={ClassicEditor}
                   data={
                     props.state.details ? props.state.details[0].comment : null
                   }
                   onChange={props.handleEditorChange}
-                  onInit={(editor) => 
-                  {
-                    if(props.state.details){
-                      props.state.details[0].comment?editor.setData(props.state.details[0].comment):editor.setData("")
+                  onInit={(editor) => {
+                    if (props.state.details) {
+                      props.state.details[0].comment
+                        ? editor.setData(props.state.details[0].comment)
+                        : editor.setData("");
                     }
                   }}
                   config={{

@@ -51,11 +51,11 @@ const TaskDetailsStatus = (props) => {
           history.push(`${url}/${props.task ? props.task.id : "0"}/details`, {
             ...location.state,
             taskDetails: props.task && props.task.details,
-            taskInfo:
-              props.task &&
-              props.task.title.toUpperCase() + ": " + props.task.description,
+            taskInfo: props.task && props.task.title.toUpperCase(),
+            // taskInfo:props.task.title.toUpperCase() + ": " + props.task.description,
             taskID: props.task && props.task.id,
             projectID: id,
+            projectName: props.projectName,
           })
         }
         style={{ cursor: "pointer" }}

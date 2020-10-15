@@ -123,7 +123,7 @@ const Project = (props) => {
       };
       fetchTasksPersonnel();
     },
-    [location.state]
+    [tasks]
   ); //the location.state changes after editing success: this should refresh assigned personnel list
 
   const fetchAttendance = async () => {
@@ -268,6 +268,7 @@ const Project = (props) => {
             />
             <TaskDetailsStatus
               task={data.find((task) => task.id === row.original.id)}
+              projectName={project[0] && project[0].name}
             />
           </div>
         </Styles>
@@ -278,22 +279,21 @@ const Project = (props) => {
               style={{
                 color: "white",
                 fontWeight: 300,
-                border: "1px solid #ffee00",
-                borderRadius: 16,
-                padding: 10,
+                // padding: 10,
                 marginTop: 5,
-                // textShadow: "1px 1px 1px #000",
+                maxWidth: "90vw",
               }}
             >
               <CKEditor
                 editor={ClassicEditor}
                 name="comment"
                 data={row.original.details[0].comment}
-                onInit={(editor, config) => {
+                type="inline"
+                onInit={(editor) => {
                   editor.isReadOnly = true;
                 }}
                 config={{
-                  removePlugins: "toolbar",
+                  // removePlugins: "toolbar",
                   ckfinder: {
                     uploadUrl: "https://projectar.devcodes.co/upload",
                   },
@@ -304,7 +304,7 @@ const Project = (props) => {
         ) : null}
       </div>
     ),
-    [tasksPersonnel]
+    [tasksPersonnel, data, project]
   );
   const outstandingTasks = data.filter(
     (task) => parseInt(task.details[0].achieved) !== 100
