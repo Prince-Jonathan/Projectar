@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useRouteMatch, useHistory, useLocation } from "react-router-dom";
+import {
+  useRouteMatch,
+  useHistory,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 
 import Button from "../../uiElements/Button";
 
@@ -8,6 +13,7 @@ const TaskDetailsStatus = (props) => {
   const history = useHistory();
   const { url } = useRouteMatch();
   const location = useLocation();
+  const { id } = useParams();
 
   useEffect(() => console.log("the imported task", [props.task]));
   const fetchTasks = (projectId) =>
@@ -44,10 +50,12 @@ const TaskDetailsStatus = (props) => {
         onClick={() =>
           history.push(`${url}/${props.task ? props.task.id : "0"}/details`, {
             ...location.state,
-            task: props.task && props.task.details,
+            taskDetails: props.task && props.task.details,
             taskInfo:
               props.task &&
               props.task.title.toUpperCase() + ": " + props.task.description,
+            taskID: props.task && props.task.id,
+            projectID: id,
           })
         }
         style={{ cursor: "pointer" }}

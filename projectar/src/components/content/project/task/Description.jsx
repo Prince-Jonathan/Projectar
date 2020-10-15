@@ -23,8 +23,9 @@ const Description = (props) => {
       </div>
       <div>
         Personnel:{" "}
-        {assignedPersonnel.map((p) => (
+        {assignedPersonnel.map((p, i) => (
           <div
+            key={i}
             style={{
               color: "white",
               fontWeight: 600,

@@ -57,13 +57,14 @@ const Wrapper = styled.div`
 
 const TaskDetails = (props) => {
   const { path, url } = useRouteMatch();
-  const { status } = useParams();
   const location = useLocation();
   const history = useHistory();
   const [selectedTaskID, setSelectedTaskID] = useState(undefined);
   const { id } = useParams();
 
-  let data = React.useMemo(() => props.taskDetails, [props.taskDetails]);
+  let data = React.useMemo(() => location.state.taskDetails, [
+    location.state.taskDetails,
+  ]);
   //   let data = taskDetails
   //     ? taskDetails.filter((task) => task.project_id === parseInt(id))
   //     : null;
@@ -407,9 +408,40 @@ const TaskDetails = (props) => {
           <Route exact path={path}>
             <Caption flabel="Task" slabel="Details" />
             <Caption
-              flabel={props.taskInfo}
+              flabel={location.state.taskInfo}
               style={{ fontSize: 15, color: "white" }}
             />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+              }}
+            >
+              <Button
+                onClick={() => {
+                  console.log("use params");
+                  history.push(`${url.replace("/details", "/execute")}`, {
+                    ...location.state,
+                    entry_type: 2,
+                  });
+                }}
+                bright
+              >
+                Execute Task
+              </Button>
+              <Button
+                onClick={() => {
+                  console.log("use params");
+                  history.push(`${url.replace("/details", "/execute")}`, {
+                    ...location.state,
+                    entry_type: 2,
+                  });
+                }}
+                bright
+              >
+                
+              </Button>
+            </div>
             <Wrapper isMobile>
               <Slate>
                 <Table

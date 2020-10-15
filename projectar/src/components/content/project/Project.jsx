@@ -227,8 +227,8 @@ const Project = (props) => {
   }, []);
 
   const renderRowSubComponent = React.useCallback(
-    ({ row }) => (
-      <div styles={{ display: "flex", flexDirection: "column" }}>
+    ({ row, i }) => (
+      <div key={i} styles={{ display: "flex", flexDirection: "column" }}>
         <Styles>
           <div className="project">
             <div className="left">
