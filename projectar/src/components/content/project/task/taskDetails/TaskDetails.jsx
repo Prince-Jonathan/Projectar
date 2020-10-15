@@ -293,7 +293,7 @@ const TaskDetails = (props) => {
         Filter: isMobile ? () => null : ColumnFilter,
       },
     ];
-    return isMobile ? forDesktop.slice(0,4) : forDesktop;
+    return isMobile ? forDesktop.slice(0, 4) : forDesktop;
   }, []);
 
   const renderRowSubComponent = React.useCallback(

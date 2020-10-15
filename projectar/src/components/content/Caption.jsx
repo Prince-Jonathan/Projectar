@@ -7,6 +7,7 @@ const Caption = (props) => {
     // margin: "1px",
     fontSize: 25,
     marginRight: "auto",
+    textAlign: "left"
   };
   const text = {
     color: "white",
