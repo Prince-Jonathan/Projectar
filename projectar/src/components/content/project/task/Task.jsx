@@ -18,6 +18,7 @@ import Slate from "../../slate/Slate";
 import Table from "./../../../table/Table";
 import Caption from "../../Caption";
 import ExecuteTask from "./ExecuteTask";
+import TaskDetails from "./TaskDetails";
 
 import "./Task.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -173,29 +174,7 @@ const Task = (props) => {
   const handleClose = () => {
     history.goBack();
   };
-  const detailsColumns = useMemo(
-    () => [
-      {
-        Header: "Last Update",
-        accessor: "date_updated",
-      },
-      {
-        Header: "Status",
-        id: "status",
-        Cell: ({ row }) => {
-          const status = [null, "New", "Executed", "Rescheduled"];
-          return status[row.original.entry_type];
-        },
-      },
-      { Header: "Target", accessor: "target" },
-      { Header: "Achieved", accessor: "achieved" },
-      {
-        Header: "Date",
-        accessor: "target_date",
-      },
-    ],
-    []
-  );
+
   const caption = {
     default: "",
     outstanding: "-Outstanding",
@@ -236,7 +215,10 @@ const Task = (props) => {
         </Route>
         <Route path={`${path}/:id/details`}>
           {location.state ? (
-            <Table columns={detailsColumns} data={location.state.task} />
+            <TaskDetails
+              taskInfo={location.state.taskInfo}
+              taskDetails={location.state.task}
+            />
           ) : null}
         </Route>
         <Route path={`${path}/:id/execute`}>

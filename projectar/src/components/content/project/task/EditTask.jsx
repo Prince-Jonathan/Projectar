@@ -58,7 +58,7 @@ const EditTask = (props) => {
   let task;
   useEffect(
     () => {
-      task = props.tasks.filter(
+      task = props.tasks && props.tasks.filter(
         (t) => parseInt(t.id) === location.state.taskID
       )[0];
       setState({

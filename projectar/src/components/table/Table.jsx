@@ -5,12 +5,18 @@ import ColumnFilter from "./filters/ColumnFilter";
 
 import "./Table.css";
 
+// Create a default prop getter
+const defaultPropGetter = () => ({});
+
 const Table = ({
   columns,
   data,
   renderRowSubComponent,
   clickable,
   selectedRows,
+  getHeaderProps = defaultPropGetter,
+  getCellProps = defaultPropGetter,
+  getColumnProps = defaultPropGetter,
 }) => {
   const defaultColumn = React.useMemo(
     () => ({
@@ -49,7 +55,17 @@ const Table = ({
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>
+              <th
+                // Return an array of prop objects and react-table will merge them appropriately
+                {...column.getHeaderProps([
+                  {
+                    className: column.className,
+                    style: column.style,
+                  },
+                  getColumnProps(column),
+                  getHeaderProps(column),
+                ])}
+              >
                 {column.render("Header")}
                 {/* Render the columns filter UI */}
 
@@ -64,17 +80,27 @@ const Table = ({
           prepareRow(row);
           return (
             // Use a React.Fragment here so the table markup is still valid
-            <React.Fragment {...row.getRowProps()}>
-              <tr className="mainComp" style={cursor}>
+            <React.Fragment key={i}>
+              <tr {...row.getRowProps()} className="mainComp" style={cursor}>
                 {row.cells.map((cell) => {
                   return (
                     <td
+                      // Return an array of prop objects and react-table will merge them appropriately
+                      {...cell.getCellProps([
+                        {
+                          className: cell.column.className,
+                          style: cell.column.style,
+                        },
+                        getColumnProps(cell.column),
+                        getCellProps(cell),
+                      ])}
+                      //custom on click event handler for row via cells (refactorable)
                       onClick={() =>
                         clickable && cell.column.id !== "expander"
                           ? clickable({ row })
                           : null
                       }
-                      {...cell.getCellProps()}
+                      // {...cell.getCellProps()}
                     >
                       {cell.render("Cell")}
                     </td>

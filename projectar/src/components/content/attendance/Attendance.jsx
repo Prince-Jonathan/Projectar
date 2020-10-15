@@ -363,7 +363,6 @@ const Attendance = (props) => {
             projectID={props.projectID}
             project={props.project}
             onAlert={props.onAlert}
-            attendance={props.attendance}
             date={props.date}
             onHandleSetAttendanceDate={props.onHandleSetAttendanceDate}
             onHandleToggleFetchAttendance={props.onHandleToggleFetchAttendance}

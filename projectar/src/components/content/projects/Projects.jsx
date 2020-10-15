@@ -116,9 +116,9 @@ const Projects = (props) => {
             // to build the expander.
             <span {...row.getToggleRowExpandedProps()}>
               {row.isExpanded ? (
-                <i class="fa fa-compress" aria-hidden="true" />
+                <i className="fa fa-compress" aria-hidden="true" />
               ) : (
-                <i class="fa fa-expand" aria-hidden="true" />
+                <i className="fa fa-expand" aria-hidden="true" />
               )}
             </span>
           ),

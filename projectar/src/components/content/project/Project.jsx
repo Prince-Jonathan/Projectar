@@ -168,9 +168,9 @@ const Project = (props) => {
               // to build the expander.
               <span {...row.getToggleRowExpandedProps()}>
                 {row.isExpanded ? (
-                  <i class="fa fa-compress" aria-hidden="true" />
+                  <i className="fa fa-compress" aria-hidden="true" />
                 ) : (
-                  <i class="fa fa-expand" aria-hidden="true" />
+                  <i className="fa fa-expand" aria-hidden="true" />
                 )}
               </span>
             );
@@ -266,7 +266,9 @@ const Project = (props) => {
               taskID={row.original.id}
               tasksPersonnel={tasksPersonnel}
             />
-            <TaskDetailsStatus task={data.find((task)=>task.id===row.original.id)}/>
+            <TaskDetailsStatus
+              task={data.find((task) => task.id === row.original.id)}
+            />
           </div>
         </Styles>
         {row.original.details[0].comment ? (
@@ -277,8 +279,8 @@ const Project = (props) => {
                 color: "white",
                 fontWeight: 300,
                 border: "1px solid #ffee00",
-                padding: 10,
                 borderRadius: 16,
+                padding: 10,
                 marginTop: 5,
                 // textShadow: "1px 1px 1px #000",
               }}

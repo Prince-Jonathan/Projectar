@@ -213,7 +213,7 @@ const Export = (props) => {
       }}
       required
       onClick={onClick}
-      value={value}
+      defaultValue={value}
     />
   );
 
