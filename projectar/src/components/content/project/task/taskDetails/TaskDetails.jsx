@@ -66,9 +66,10 @@ const TaskDetails = (props) => {
   const [selectedTaskID, setSelectedTaskID] = useState(undefined);
   const { id } = useParams();
 
-  let data = React.useMemo(() => location.state.taskDetails, [
-    location.state.taskDetails,
-  ]);
+  let data = React.useMemo(
+    () => (location.state ? location.state.taskDetails : []),
+    [location.state]
+  );
   //   let data = taskDetails
   //     ? taskDetails.filter((task) => task.project_id === parseInt(id))
   //     : null;
@@ -414,11 +415,11 @@ const TaskDetails = (props) => {
           <Route exact path={path}>
             <Caption flabel="Task" slabel="Details" />
             <Caption
-              flabel={location.state.projectName}
+              flabel={location.state && location.state.projectName}
               style={{ fontSize: 15, color: "white" }}
             />
             <Caption
-              flabel={location.state.taskInfo}
+              flabel={location.state && location.state.taskInfo}
               style={{ fontSize: 15, color: "#ffee00" }}
             />
             <div
@@ -440,10 +441,10 @@ const TaskDetails = (props) => {
                 Execute Task
               </Button>
               <ExportDetails
-                taskDetails={location.state.taskDetails}
+                taskDetails={data}
                 caption="Report"
-                projectName={location.state.projectName}
-                taskInfo={location.state.taskInfo}
+                projectName={location.state ? location.state.projectName : null}
+                taskInfo={location.state ? location.state.taskInfo : null}
                 logo={logo}
                 pdfLogo={pdfLogo}
               />

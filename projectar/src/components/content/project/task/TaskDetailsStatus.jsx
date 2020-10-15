@@ -65,13 +65,7 @@ const TaskDetailsStatus = (props) => {
           {props.task ? props.task.details.length || "-" : null}
         </div>{" "}
       </Button>
-      <Button
-        onClick={() =>
-          history.push(`/project/${props.projectID}/completed-details`, {
-            taskStatus: "completed",
-          })
-        }
-      >
+      <Button>
         Recent Status:{" "}
         <div
           style={{

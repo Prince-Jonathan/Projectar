@@ -256,7 +256,7 @@ const Project = (props) => {
               </Button>
 
               <Button onClick={() => deleteTask(row.original.id)}>
-                Delete
+                Delete  
               </Button>
             </div>
             <Description
