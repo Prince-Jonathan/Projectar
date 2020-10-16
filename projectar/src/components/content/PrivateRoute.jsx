@@ -8,14 +8,14 @@ const PrivateRoute = ({
   ...rest
 }) => {
   useEffect(() => {
-    fetchProjects(localStorage.getItem("netsuite_id"));
+    fetchProjects(JSON.parse(localStorage.getItem("netsuite")).id);
   }, []);
   return (
     <Route
       {...rest}
       render={
         ({ location }) =>
-          isAuthenticated || localStorage.getItem("netsuite_id") ? (
+          isAuthenticated || JSON.parse(localStorage.getItem("netsuite")).id ? (
             children
           ) : (
             <Redirect

@@ -39,11 +39,15 @@ const Layout = (props) => {
             <Row justifyContent="space-evenly">
               <Column>
                 <Route exact path="/">
-                  <Greeting name={localStorage.netsuite_name} />
+                  <Greeting
+                    name={JSON.parse(localStorage.getItem("netsuite")).name}
+                  />
                 </Route>
                 {props.children}
                 <Route path="/">
-                  <Wall name={localStorage.netsuite_name} />
+                  <Wall
+                    name={JSON.parse(localStorage.getItem("netsuite")).name}
+                  />
                 </Route>
               </Column>
             </Row>
@@ -71,10 +75,14 @@ const Layout = (props) => {
               </Column>
               <Column className="section pad">
                 <Route exact path="/">
-                  <Greeting name={localStorage.netsuite_name} />
+                  <Greeting
+                    name={JSON.parse(localStorage.getItem("netsuite")).name}
+                  />
                 </Route>
                 {props.children}
-                <Wall name={localStorage.netsuite_name} />
+                <Wall
+                  name={JSON.parse(localStorage.getItem("netsuite")).name}
+                />
               </Column>
             </Row>
           </Column>

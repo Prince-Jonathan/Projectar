@@ -53,7 +53,7 @@ const Toolbar = (props) => {
           }
         >
           <Link
-            onClick={() => localStorage.removeItem("netsuite_id")}
+            onClick={() => localStorage.removeItem("netsuite")}
             to="/login"
             style={{ color: "black", textDecoration: "none" }}
           >

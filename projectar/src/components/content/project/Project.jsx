@@ -27,6 +27,7 @@ import Attendance from "../attendance/Attendance";
 import Bay from "../../bay/Bay";
 import Button from "../uiElements/Button";
 import TaskDetailsStatus from "./task/TaskDetailsStatus";
+import Can from "../../Can";
 
 const Styles = styled.div`
   .project {
@@ -232,31 +233,50 @@ const Project = (props) => {
         <Styles>
           <div className="project">
             <div className="left">
-              <Button
-                onClick={() => {
-                  // props.onShowTask(row.original.id);
-                  history.push(`${url}`, {
-                    taskID: row.original.id,
-                    projectID: id,
-                  });
+              <Can
+                role={JSON.parse(localStorage.getItem("netsuite")).role.toLowerCase()}
+                perform="tasks:edit"
+                yes={() => (
+                  <div>
+                    <Button
+                      onClick={() => {
+                        // props.onShowTask(row.original.id);
+                        history.push(`${url}`, {
+                          taskID: row.original.id,
+                          projectID: id,
+                        });
+                      }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        history.push(`${url}`, {
+                          taskID: row.original.id,
+                          projectID: id,
+                          reAssign: { entry_type: 3 },
+                        });
+                      }}
+                    >
+                      Re-assign
+                    </Button>
+                  </div>
+                )}
+                no={() => {
+                  // props.onAlert("info", "Unauthorised Attempt", {
+                  //   timeout: 5000,
+                  //   position: "center",
+                  // });
+                  return null;
                 }}
-              >
-                Edit
-              </Button>
-              <Button
-                onClick={() => {
-                  history.push(`${url}`, {
-                    taskID: row.original.id,
-                    projectID: id,
-                    reAssign: { entry_type: 3 },
-                  });
+                data={{
+                  userID: JSON.parse(localStorage.getItem("netsuite")).id,
+                  taskCreatorID: row.original.creator,
                 }}
-              >
-                Re-assign
-              </Button>
+              />
 
               <Button onClick={() => deleteTask(row.original.id)}>
-                Delete  
+                Delete
               </Button>
             </div>
             <Description

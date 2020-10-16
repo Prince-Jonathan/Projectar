@@ -101,7 +101,7 @@ const AddTask = (props) => {
       entry_type: location.state.entry_type,
       comment: null,
       achieved: null,
-      creator: localStorage.netsuite_id,
+      creator: JSON.parse(localStorage.getItem("netsuite")).id,
       url:
         window.location.protocol +
         "//" +

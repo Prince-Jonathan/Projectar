@@ -1,3 +1,4 @@
+import React from "react";
 import rules from "../auth_rules";
 
 const check = (rules, role, action, data) => {
@@ -33,7 +34,7 @@ const Can = (props) =>
     ? props.yes()
     : props.no();
 
-Can.defaultProps = {    
+Can.defaultProps = {
   yes: () => null,
   no: () => null,
 };

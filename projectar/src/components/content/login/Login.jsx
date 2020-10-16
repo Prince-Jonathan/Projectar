@@ -35,8 +35,11 @@ const Login = (props) => {
           if (data.success) {
             //expecting obj
             // login(data.message[0]);
-            localStorage.setItem("netsuite_id", data.data.user_id);
-            localStorage.setItem("netsuite_name", data.data.name);
+            localStorage.setItem("netsuite", JSON.stringify({
+              id: data.data.user_id,
+              name: data.data.name,
+              role: data.data.role,
+            }));
             login(data.data);
           } else {
             throw "Incorrect credentials";

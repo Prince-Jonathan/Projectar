@@ -9,6 +9,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Slate from "../../slate/Slate";
 import { isMobile } from "../../../Responsive";
 import Caption from "../../Caption";
+import Can from "../../../Can";
 
 const Row = styled.div`
   display: flex;
@@ -156,15 +157,37 @@ const ExecuteTask = (props) => {
               justifyContent: "center",
             }}
           >
-            <Button
-              // disabled={
-              //   location.state.taskStatus === "completed" && !isUpdatable
-              // }
-              type="submit"
-              className="btn"
-            >
-              Save
-            </Button>
+            <Can
+              role={JSON.parse(
+                localStorage.getItem("netsuite")
+              ).role.toLowerCase()}
+              perform="tasks:execute"
+              yes={() => (
+                <Button
+                  // disabled={
+                  //   location.state.taskStatus === "completed" && !isUpdatable
+                  // }
+                  type="submit"
+                  className="btn"
+                >
+                  Save
+                </Button>
+              )}
+              no={() => {
+                // props.onAlert("info", "Unauthorised Attempt", {
+                //   timeout: 5000,
+                //   position: "center",
+                // });
+                return null;
+              }}
+              data={{
+                userID: JSON.parse(localStorage.getItem("netsuite")).id,
+                assignedPersonnel: props.assignedPersonnel.map(
+                  (personnel) => personnel.value
+                ),
+              }}
+            />
+
             <Button
               type="button"
               className="btn cancel"
@@ -291,15 +314,37 @@ const ExecuteTask = (props) => {
                   justifyContent: "center",
                 }}
               >
-                <Button
-                  // disabled={
-                  //   location.state.taskStatus === "completed" && !isUpdatable
-                  // }
-                  type="submit"
-                  className="btn"
-                >
-                  Save
-                </Button>
+                <Can
+                  role={JSON.parse(
+                    localStorage.getItem("netsuite")
+                  ).role.toLowerCase()}
+                  perform="tasks:execute"
+                  yes={() => (
+                    <Button
+                      // disabled={
+                      //   location.state.taskStatus === "completed" && !isUpdatable
+                      // }
+                      type="submit"
+                      className="btn"
+                    >
+                      Save
+                    </Button>
+                  )}
+                  no={() => {
+                    // props.onAlert("info", "Unauthorised Attempt", {
+                    //   timeout: 5000,
+                    //   position: "center",
+                    // });
+                    return null;
+                  }}
+                  data={{
+                    userID: JSON.parse(localStorage.getItem("netsuite")).id,
+                    assignedPersonnel: props.assignedPersonnel.map(
+                      (personnel) => personnel.value
+                    ),
+                  }}
+                />
+
                 <Button
                   type="button"
                   className="btn cancel"

@@ -3,23 +3,32 @@ const rules = {
   super_admin: { static: [], dynamic: {} },
 
   // project_admin can manage all projects and tasks
-  project_admin: { static: ["tasks:list", "tasks:add","tasks:edit","tasks:delete",], dynamic: {} },
+  project_admin: {
+    static: ["tasks:list", "tasks:add", "tasks:edit", "tasks:delete"],
+    dynamic: {},
+  },
 
   // viewer can view all projects and tasks (Read only)
   viewer: { static: [], dynamic: {} },
 
   // user can only access projects where he is a manager ,consultant or team member
-  user: { static: ["tasks:add"], dynamic: {
-    "tasks:edit": ({ userId, taskCreatorId }) => {
-      if (!userId || !taskCreatorId) return false;
-      return userId === taskCreatorId;
+  user: {
+    static: ["tasks:add"],
+    dynamic: {
+      "tasks:edit": ({ userID, taskCreatorID }) => {
+        if (!userID || !taskCreatorID) return false;
+        return parseInt(userID) === parseInt(taskCreatorID);
+      },
+      "tasks:execute": ({ userID, assignedPersonnel }) => {
+        if (!userID || !assignedPersonnel.length) return false;
+        return assignedPersonnel.includes(parseInt(userID));
+      },
     },
-    "tasks:execute": ({ userId, assignedPersonnel }) => {
-      if (!userId || !assignedPersonnel.length) return false;
-      return taskOwnerId.includes(userId);
-    },},
-
-
+    "tasks:re-assign": ({ userID, taskCreatorID }) => {
+      if (!userID || !taskCreatorID) return false;
+      return parseInt(userID) === parseInt(taskCreatorID);
+    },
+  },
 
   visitor: {
     static: ["posts:list", "home-page:visit"],
@@ -33,9 +42,9 @@ const rules = {
       "dashboard-page:visit",
     ],
     dynamic: {
-      "posts:edit": ({ userId, postOwnerId }) => {
-        if (!userId || !postOwnerId) return false;
-        return userId === postOwnerId;
+      "posts:edit": ({ userID, postOwnerId }) => {
+        if (!userID || !postOwnerId) return false;
+        return parseInt(userID) === parseInt(postOwnerId);
       },
     },
   },
