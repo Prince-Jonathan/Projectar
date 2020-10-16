@@ -234,10 +234,12 @@ const Project = (props) => {
           <div className="project">
             <div className="left">
               <Can
-                role={JSON.parse(localStorage.getItem("netsuite")).role.toLowerCase()}
+                role={JSON.parse(
+                  localStorage.getItem("netsuite")
+                ).role.toLowerCase()}
                 perform="tasks:edit"
                 yes={() => (
-                  <div>
+                  <>
                     <Button
                       onClick={() => {
                         // props.onShowTask(row.original.id);
@@ -260,24 +262,16 @@ const Project = (props) => {
                     >
                       Re-assign
                     </Button>
-                  </div>
+                    <Button onClick={() => deleteTask(row.original.id)}>
+                      Delete
+                    </Button>
+                  </>
                 )}
-                no={() => {
-                  // props.onAlert("info", "Unauthorised Attempt", {
-                  //   timeout: 5000,
-                  //   position: "center",
-                  // });
-                  return null;
-                }}
                 data={{
                   userID: JSON.parse(localStorage.getItem("netsuite")).id,
                   taskCreatorID: row.original.creator,
                 }}
               />
-
-              <Button onClick={() => deleteTask(row.original.id)}>
-                Delete
-              </Button>
             </div>
             <Description
               onFetchData={props.onFetchData}

@@ -19,6 +19,7 @@ import Export from "../Export";
 import Button from "../uiElements/Button";
 import pdfLogo from "../../../logos/pdfLogo.svg.png";
 import spreadSheet from "../../../logos/spreadSheet.png";
+import Can from "../../Can";
 
 import "./Projects.css";
 
@@ -145,19 +146,26 @@ const Projects = (props) => {
       <Styles>
         <div className="project">
           <div className="left">
-            <Button
-              onClick={() => {
-                setRowID(row.original.id);
-                // props.onShowTask();
-                history.push(`${url}/bay`, {
-                  projectID: row.original.id,
-                  entry_type: 1,
-                });
-              }}
-            >
-              Add Task
-            </Button>
-
+            <Can
+              role={JSON.parse(
+                localStorage.getItem("netsuite")
+              ).role.toLowerCase()}
+              perform="tasks:add"
+              yes={() => (
+                <Button
+                  onClick={() => {
+                    setRowID(row.original.id);
+                    // props.onShowTask();
+                    history.push(`${url}/bay`, {
+                      projectID: row.original.id,
+                      entry_type: 1,
+                    });
+                  }}
+                >
+                  Add Task
+                </Button>
+              )}
+            />
             <Export
               projectID={row.original.id}
               onFetchData={props.onFetchData}
@@ -167,13 +175,23 @@ const Projects = (props) => {
               pdfLogo={pdfLogo}
               spreadSheet={spreadSheet}
             />
-            <Button
-              onClick={() =>
-                history.push(`/project/${row.original.id}/attendance`)
-              }
-            >
-              Attendance
-            </Button>
+            <Can
+              role={JSON.parse(
+                localStorage.getItem("netsuite")
+              ).role.toLowerCase()}
+              perform="attendance:view"
+              yes={() => (
+                <>
+                  <Button
+                    onClick={() =>
+                      history.push(`/project/${row.original.id}/attendance`)
+                    }
+                  >
+                    Attendance
+                  </Button>
+                </>
+              )}
+            />
           </div>
           <TasksStatus
             projectID={row.original.id}

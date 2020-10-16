@@ -173,13 +173,6 @@ const ExecuteTask = (props) => {
                   Save
                 </Button>
               )}
-              no={() => {
-                // props.onAlert("info", "Unauthorised Attempt", {
-                //   timeout: 5000,
-                //   position: "center",
-                // });
-                return null;
-              }}
               data={{
                 userID: JSON.parse(localStorage.getItem("netsuite")).id,
                 assignedPersonnel: props.assignedPersonnel.map(
@@ -330,13 +323,6 @@ const ExecuteTask = (props) => {
                       Save
                     </Button>
                   )}
-                  no={() => {
-                    // props.onAlert("info", "Unauthorised Attempt", {
-                    //   timeout: 5000,
-                    //   position: "center",
-                    // });
-                    return null;
-                  }}
                   data={{
                     userID: JSON.parse(localStorage.getItem("netsuite")).id,
                     assignedPersonnel: props.assignedPersonnel.map(

@@ -1,10 +1,25 @@
 const rules = {
   // super_admin can manage all aspects of the application
-  super_admin: { static: [], dynamic: {} },
+  super_admin: {
+    static: [
+      "tasks:list",
+      "tasks:add",
+      "tasks:edit",
+      "tasks:delete",
+      "attendance:view",
+    ],
+    dynamic: {},
+  },
 
   // project_admin can manage all projects and tasks
   project_admin: {
-    static: ["tasks:list", "tasks:add", "tasks:edit", "tasks:delete"],
+    static: [
+      "tasks:list",
+      "tasks:add",
+      "tasks:edit",
+      "tasks:delete",
+      "attendance:view",
+    ],
     dynamic: {},
   },
 
@@ -13,7 +28,7 @@ const rules = {
 
   // user can only access projects where he is a manager ,consultant or team member
   user: {
-    static: ["tasks:add"],
+    static: ["tasks:add", "attendance:view"],
     dynamic: {
       "tasks:edit": ({ userID, taskCreatorID }) => {
         if (!userID || !taskCreatorID) return false;
@@ -25,6 +40,10 @@ const rules = {
       },
     },
     "tasks:re-assign": ({ userID, taskCreatorID }) => {
+      if (!userID || !taskCreatorID) return false;
+      return parseInt(userID) === parseInt(taskCreatorID);
+    },
+    "tasks:delete": ({ userID, taskCreatorID }) => {
       if (!userID || !taskCreatorID) return false;
       return parseInt(userID) === parseInt(taskCreatorID);
     },
