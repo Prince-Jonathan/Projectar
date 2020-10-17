@@ -378,7 +378,7 @@ const Register = (props) => {
         },
         {
           id: "T & T",
-          Header: "T & T (GH\u20B5)",
+          Header: "T & T (GHS)",
 
           Cell: ({ row }) => {
             const [tandt, setTandt] = useState(() => {
@@ -537,7 +537,7 @@ const Register = (props) => {
           Header: () => (
             <div>
               Lunch/
-              <br />T & T {"(GH\u20B5)"}
+              <br />T & T (GHS)
             </div>
           ),
 
@@ -572,7 +572,7 @@ const Register = (props) => {
                 <input
                   type="checkbox"
                   name="hadLunch"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", margin: 10 }}
                   defaultChecked={hadLunch}
                   onChange={() => {
                     handleHadLunch([

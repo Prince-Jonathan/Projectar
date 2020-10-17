@@ -289,7 +289,7 @@ const TaskDetails = (props) => {
       },
       { Header: "Achieved", accessor: "achieved", Filter: () => null },
       {
-        Header: "Date",
+        Header: "Scheduled Date",
         accessor: "target_date",
         Filter: isMobile ? () => null : ColumnFilter,
       },

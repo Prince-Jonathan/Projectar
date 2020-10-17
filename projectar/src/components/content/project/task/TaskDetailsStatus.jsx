@@ -60,7 +60,7 @@ const TaskDetailsStatus = (props) => {
         }
         style={{ cursor: "pointer" }}
       >
-        Task Branches:{" "}
+        Task History:{" "}
         <div style={{ color: "#ffee00", fontWeight: 700 }}>
           {props.task ? props.task.details.length || "-" : null}
         </div>{" "}

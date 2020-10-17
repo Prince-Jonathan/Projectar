@@ -179,7 +179,7 @@ const Attendance = (props) => {
         },
 
         {
-          Header: "T & T (GH\u20B5)",
+          Header: "T & T (GHS)",
           accessor: "t_and_t",
         },
         {
@@ -217,7 +217,7 @@ const Attendance = (props) => {
         },
 
         {
-          Header: "T & T (GH\u20B5)",
+          Header: "T & T (GHS)",
           accessor: "t_and_t",
           Filter: () => null,
         },

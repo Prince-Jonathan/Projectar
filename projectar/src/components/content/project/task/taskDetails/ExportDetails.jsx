@@ -99,7 +99,8 @@ const Export = (props) => {
 
     //the filtered tasks table
     doc.autoTable({
-      body: props.taskDetails,
+      // exclude rescheduled detail
+      body: props.taskDetails.filter((taskDetail)=>taskDetail.entry_type!==3),
       columns: [
         { header: "LAST UPDATE", dataKey: "date_updated" },
         { header: "STATUS", dataKey: "entry_type" },

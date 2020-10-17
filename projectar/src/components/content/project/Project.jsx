@@ -202,7 +202,7 @@ const Project = (props) => {
           filter: filterGreaterThan,
         },
         {
-          Header: "Date Scheduled",
+          Header: "Scheduled Date",
           accessor: "details[0].target_date",
           Filter: () => null,
         },
