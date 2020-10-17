@@ -19,6 +19,7 @@ const rules = {
       "tasks:edit",
       "tasks:delete",
       "attendance:view",
+      "tasks:list",
     ],
     dynamic: {},
   },

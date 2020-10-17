@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Row, Column } from "../../Grid";
 import Element from "./Element";
 import Announcements from "./Announcements";
+import Can from "../../Can";
 
 import "./Workspace.css";
 
@@ -49,12 +50,23 @@ const Workspace = (props) => {
               slabel="Task"
               icon="fa fa-tasks fa-lg"
             />
-            <Element
-              onClick={() => history.push("/project/all/tasks")}
-              flabel="View"
-              slabel="Tasks"
-              icon="fa fa-file-text-o  fa-lg"
+            <Can
+              role={JSON.parse(
+                localStorage.getItem("netsuite")
+              ).role.toLowerCase()}
+              perform="tasks:list"
+              yes={() => (
+                <>
+                  <Element
+                    onClick={() => history.push("/project/all/tasks")}
+                    flabel="View"
+                    slabel="Tasks"
+                    icon="fa fa-file-text-o  fa-lg"
+                  />
+                </>
+              )}
             />
+
             <Element
               onClick={() => history.push("/personnel")}
               flabel="View"
