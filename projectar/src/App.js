@@ -162,7 +162,7 @@ const App = (props) => {
     push(`/${value}`, {
       taskType:
         types[JSON.parse(localStorage.getItem("netsuite")).role.toLowerCase()],
-      taskStatus: "",
+      taskStatus: extras,
     });
   };
   const handleAlert = (method, msg, options) => {

@@ -325,12 +325,14 @@ const ExecuteTask = (props) => {
                   )}
                   data={{
                     userID: JSON.parse(localStorage.getItem("netsuite")).id,
-                    assignedPersonnel: props.assignedPersonnel.map(
-                      (personnel) => personnel.value
-                    ),
+                    pmcID: props.projects
+                      .filter(
+                        (project) =>
+                          project.id === parseInt(location.state.projectID)
+                      )
+                      .map((p) => [p.consultant_id, p.manager_id])[0],
                   }}
                 />
-
                 <Button
                   type="button"
                   className="btn cancel"

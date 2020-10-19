@@ -10,19 +10,22 @@ const items = [
     label: "Projects",
     value: "all-projects",
     icon: "fa-suitcase",
-    children: [
-      { label: "Assigned", value: "assigned-projects" },
-      { label: "Managed", value: "managed-projects" },
-      { label: "All", value: "all-projects" },
-    ],
   },
   {
     label: "Tasks",
     value: "all-tasks",
     icon: "fa-suitcase",
     children: [
-      { label: "Outstanding", value: "project/all/outstanding-tasks" },
-      { label: "Completed", value: "project/all/completed-tasks" },
+      {
+        label: "Outstanding",
+        value: "project/all/outstanding-tasks",
+        extras: "allOutstanding",
+      },
+      {
+        label: "Completed",
+        value: "project/all/completed-tasks",
+        extras: "allCompleted",
+      },
       { label: "All", value: "project/all/tasks" },
     ],
   },

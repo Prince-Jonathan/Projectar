@@ -165,6 +165,10 @@ const Projects = (props) => {
                   Add Task
                 </Button>
               )}
+              data={{
+                userID: JSON.parse(localStorage.getItem("netsuite")).id,
+                pmcID: [row.original.manager_id, row.original.consultant_id],
+              }}
             />
             <Export
               projectID={row.original.id}

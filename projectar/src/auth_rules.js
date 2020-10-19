@@ -30,13 +30,17 @@ const rules = {
   user: {
     static: ["tasks:add", "tasks:list", "attendance:view"],
     dynamic: {
+      "tasks:add": ({ userID, pmcID }) => {
+        if (!userID || !pmcID.length) return false;
+        return pmcID.includes(parseInt(userID));
+      },
       "tasks:edit": ({ userID, taskCreatorID }) => {
         if (!userID || !taskCreatorID) return false;
         return parseInt(userID) === parseInt(taskCreatorID);
       },
-      "tasks:execute": ({ userID, assignedPersonnel }) => {
-        if (!userID || !assignedPersonnel.length) return false;
-        return assignedPersonnel.includes(parseInt(userID));
+      "tasks:execute": ({ userID, pmcID }) => {
+        if (!userID || !pmcID.length) return false;
+        return pmcID.includes(parseInt(userID));
       },
     },
     "tasks:re-assign": ({ userID, taskCreatorID }) => {

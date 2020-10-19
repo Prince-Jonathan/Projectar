@@ -57,10 +57,8 @@ const Wrapper = styled.div`
 
 const Project = (props) => {
   const { path, url } = useRouteMatch();
-  const { status } = useParams();
   const location = useLocation();
   const history = useHistory();
-  const [selectedTaskID, setSelectedTaskID] = useState(undefined);
   const { id } = useParams();
 
   const tasks = React.useMemo(() => props.tasks, [props.tasks]);
@@ -76,15 +74,13 @@ const Project = (props) => {
       ? tasks.filter((task) => task.project_id === parseInt(id))
       : [];
   const projects = React.useMemo(() => props.projects, [props.projects]);
-  const project = projects
-    ? projects.filter((project) => project.id === parseInt(id))
-    : null;
+  const project =
+    projects && projects.filter((project) => project.id === parseInt(id));
   const [toggleFetchAttendance, setToggleFetchAttendance] = useState(false);
   const [attendance, setAttendance] = useState([]);
   const [attendanceDate, setAttendanceDate] = useState(new Date());
 
   const [projectPersonnel, setProjectPersonnel] = useState([]);
-  const [taskPersonnel, setTaskPersonnel] = useState([]);
   const [tasksPersonnel, setTasksPersonnel] = useState([]);
 
   const fetchProjectPersonnel = async () => {
@@ -346,7 +342,6 @@ const Project = (props) => {
     data && data.filter((task) => parseInt(task.details[0].achieved) === 100);
 
   const handleOClick = ({ row }) => {
-    setSelectedTaskID(row.original.id);
     history.push(`${url}/outstanding-tasks/${row.original.id}/execute`, {
       taskID: row.original.id,
       projectID: row.original.project_id,
@@ -356,7 +351,6 @@ const Project = (props) => {
   };
 
   const handleCClick = ({ row }) => {
-    setSelectedTaskID(row.original.id);
     history.push(`${url}/completed-tasks/${row.original.id}/execute`, {
       taskID: row.original.id,
       projectID: row.original.project_id,
@@ -365,7 +359,6 @@ const Project = (props) => {
     });
   };
   const handleAllClick = ({ row }) => {
-    setSelectedTaskID(row.original.id);
     history.push(`${url}/tasks/${row.original.id}/execute`, {
       ...location.state,
       taskID: row.original.id,
@@ -384,8 +377,8 @@ const Project = (props) => {
     default: "",
     outstanding: "-Outstanding",
     completed: "-Completed",
-    allOutstanding:"-All Outstanding",
-    allCompleted:"-All Completed"
+    allOutstanding: "-All Outstanding",
+    allCompleted: "-All Completed",
   };
   return (
     <div>
@@ -545,6 +538,7 @@ const Project = (props) => {
               onAlert={props.onAlert}
               postData={props.postData}
               project={project}
+              projects={projects}
             />
           </Route>
           <Route path={`${path}/*`}>

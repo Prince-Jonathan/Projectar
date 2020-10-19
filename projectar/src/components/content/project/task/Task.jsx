@@ -49,9 +49,10 @@ const Task = (props) => {
   let task = useMemo(
     () => {
       return location.state
-        ? props.data.filter(
-            (task) => parseInt(task.id) === location.state.taskID
-          )[0]
+        ? props.data &&
+            props.data.filter(
+              (task) => parseInt(task.id) === location.state.taskID
+            )[0]
         : [];
     },
     [location.state, props.data]
@@ -229,6 +230,7 @@ const Task = (props) => {
               selectedOption={selectedOption}
               handleClose={handleClose}
               handleEditorChange={handleEditorChange}
+              projects={props.projects}
             />
           </Wrapper>
         </Route>
