@@ -712,7 +712,7 @@ def task_users(task_id):
 
 @app.route('/api/user/tasks/<int:user_id>')
 def user_tasks(user_id):
-	'''Get all users that have been enrolled to a task'''
+	'''Get all tasks that user has been enrolled to'''
 	data = []
 	try:
 		user = User.query.get(user_id)
@@ -725,7 +725,15 @@ def user_tasks(user_id):
 				# 	"success":True,
 				# 	"data":data
 				# }
-				return jsonify(Task.serialize_list(tasks))
+				tasks_obj = Task.serialize_list(tasks)
+				# append task details
+				for task in tasks:
+					details = Task_Detail.serialize_list(db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all())
+					if len(details) !=0:
+						obj = [x for x in tasks_obj if x["id"] == details[0]["task_id"]][0]
+
+					tasks_obj[tasks_obj.index(obj)]["details"] = details
+				return jsonify(tasks_obj)
 			msg = "has not yet got enrolled tasks"
 		return {
 			"success":False,
@@ -801,7 +809,7 @@ def project_verbose(proj_id):
 
 @app.route('/api/task/verbose/<int:proj_id>')
 def task_verbose(proj_id):
-	'''Details of task tasks of specified id'''
+	'''Details of task of specified id'''
 	try:
 		# plist = []
 		# pnames = ""

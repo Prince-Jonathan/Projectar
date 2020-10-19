@@ -64,9 +64,17 @@ const Project = (props) => {
   const { id } = useParams();
 
   const tasks = React.useMemo(() => props.tasks, [props.tasks]);
-  let data = tasks
-    ? tasks.filter((task) => task.project_id === parseInt(id))
-    : null;
+  const personnelTasks = React.useMemo(() => props.personnelTasks, [
+    props.personnelTasks,
+  ]);
+  // component serves view of all tasks(admin, and user) and project specific tasks
+  const taskType = { personnel: personnelTasks, projects: tasks };
+  let data =
+    id === "all"
+      ? taskType[location.state && location.state.taskType]
+      : tasks
+      ? tasks.filter((task) => task.project_id === parseInt(id))
+      : [];
   const projects = React.useMemo(() => props.projects, [props.projects]);
   const project = projects
     ? projects.filter((project) => project.id === parseInt(id))
@@ -99,28 +107,30 @@ const Project = (props) => {
     () => {
       let assignedPersonnel = [];
       const fetchTasksPersonnel = async () => {
-        data.forEach((task) =>
-          trackPromise(
-            props
-              .onFetchData(`/api/task/enrolments/${task.id}`)
-              .then((data) => {
-                return data;
-              })
-              .then(({ data }) => {
-                try {
-                  let personnel = data.map((personnel) => {
-                    return {
-                      label: personnel.name,
-                      value: personnel.id,
-                      id: task.id,
-                    };
-                  });
-                  assignedPersonnel = assignedPersonnel.concat(personnel);
-                  setTasksPersonnel(assignedPersonnel);
-                } catch (err) {}
-              })
-          )
-        );
+        try {
+          data.forEach((task) =>
+            trackPromise(
+              props
+                .onFetchData(`/api/task/enrolments/${task.id}`)
+                .then((data) => {
+                  return data;
+                })
+                .then(({ data }) => {
+                  try {
+                    let personnel = data.map((personnel) => {
+                      return {
+                        label: personnel.name,
+                        value: personnel.id,
+                        id: task.id,
+                      };
+                    });
+                    assignedPersonnel = assignedPersonnel.concat(personnel);
+                    setTasksPersonnel(assignedPersonnel);
+                  } catch (err) {}
+                })
+            )
+          );
+        } catch (err) {}
       };
       fetchTasksPersonnel();
     },
@@ -130,13 +140,15 @@ const Project = (props) => {
   const fetchAttendance = async () => {
     trackPromise(
       props.onFetchData(`/api/attendance/${id}/all`).then(({ data }) => {
-        const filtered = data.filter((register) => {
-          return (
-            +new Date(register.date) ===
-              +new Date(new Date(attendanceDate).toDateString()) &&
-            register.is_present === true
-          );
-        });
+        const filtered =
+          data &&
+          data.filter((register) => {
+            return (
+              +new Date(register.date) ===
+                +new Date(new Date(attendanceDate).toDateString()) &&
+              register.is_present === true
+            );
+          });
         setAttendance(filtered);
       })
     );
@@ -149,11 +161,13 @@ const Project = (props) => {
     [attendanceDate, toggleFetchAttendance]
   );
 
-  data = data.sort((a, b) => {
-    let dateA = new Date(a.details[0].target_date);
-    let dateB = new Date(b.details[0].target_date);
-    return dateB - dateA;
-  });
+  data =
+    data &&
+    data.sort((a, b) => {
+      let dateA = new Date(a.details[0].target_date);
+      let dateB = new Date(b.details[0].target_date);
+      return dateB - dateA;
+    });
 
   const columns = React.useMemo(
     () => {
@@ -185,20 +199,20 @@ const Project = (props) => {
           Header: "Target (%)",
           accessor: "details[0].target",
           Filter: location.state
-            ? location.state.taskStatus === "outstanding"
+            ? location.state.taskStatus !== "completed"
               ? SliderFilter
               : () => null
-            : () => null,
+            : SliderFilter,
           filter: filterGreaterThan,
         },
         {
           Header: "Achieved (%)",
           accessor: "details[0].achieved",
           Filter: location.state
-            ? location.state.taskStatus === "outstanding"
+            ? location.state.taskStatus !== "completed"
               ? SliderFilter
               : () => null
-            : () => null,
+            : SliderFilter,
           filter: filterGreaterThan,
         },
         {
@@ -244,8 +258,9 @@ const Project = (props) => {
                       onClick={() => {
                         // props.onShowTask(row.original.id);
                         history.push(`${url}`, {
+                          ...{taskType:location.state && location.state.taskType},
                           taskID: row.original.id,
-                          projectID: id,
+                          projectID: row.original.project_id,
                         });
                       }}
                     >
@@ -254,6 +269,7 @@ const Project = (props) => {
                     <Button
                       onClick={() => {
                         history.push(`${url}`, {
+                          ...{taskType:location.state && location.state.taskType},
                           taskID: row.original.id,
                           projectID: id,
                           reAssign: { entry_type: 3 },
@@ -320,18 +336,17 @@ const Project = (props) => {
     ),
     [tasksPersonnel, data, project]
   );
-  const outstandingTasks = data.filter(
-    (task) => parseInt(task.details[0].achieved) !== 100
-  );
-  const completedTasks = data.filter(
-    (task) => parseInt(task.details[0].achieved) === 100
-  );
+  const outstandingTasks =
+    data && data.filter((task) => parseInt(task.details[0].achieved) !== 100);
+  console.log("must check it", outstandingTasks);
+  const completedTasks =
+    data && data.filter((task) => parseInt(task.details[0].achieved) === 100);
 
   const handleOClick = ({ row }) => {
     setSelectedTaskID(row.original.id);
     history.push(`${url}/outstanding-tasks/${row.original.id}/execute`, {
       taskID: row.original.id,
-      projectID: id,
+      projectID: row.original.project_id,
       entry_type: 2,
       taskStatus: "outstanding",
     });
@@ -341,17 +356,31 @@ const Project = (props) => {
     setSelectedTaskID(row.original.id);
     history.push(`${url}/completed-tasks/${row.original.id}/execute`, {
       taskID: row.original.id,
-      projectID: id,
+      projectID: row.original.project_id,
       entry_type: 2,
       taskStatus: "completed",
     });
   };
-
+  const handleAllClick = ({ row }) => {
+    setSelectedTaskID(row.original.id);
+    history.push(`${url}/tasks/${row.original.id}/execute`, {
+      ...location.state,
+      taskID: row.original.id,
+      projectID: row.original.project_id,
+      entry_type: 2,
+      taskStatus: "all",
+    });
+  };
   const handleSetAttendanceDate = (date) => {
     setAttendanceDate(date);
   };
   const handleToggleFetchAttendance = () => {
     setToggleFetchAttendance((prevState) => !prevState);
+  };
+  const caption = {
+    default: "",
+    outstanding: "-Outstanding",
+    completed: "-Completed",
   };
   return (
     <div>
@@ -399,7 +428,25 @@ const Project = (props) => {
           </Route>
           <Route path={`${path}/outstanding-tasks`}>
             <Task
-              outstanding={true}
+              // outstanding={true}
+              captions={
+                <>
+                  <Caption
+                    flabel="Tasks"
+                    slabel={
+                      caption[
+                        location.state ? location.state.taskStatus : "default"
+                      ]
+                    }
+                  />
+                  <Caption
+                    flabel={
+                      project ? (project[0] ? project[0].name : null) : null
+                    }
+                    style={{ fontSize: 15, color: "white" }}
+                  />
+                </>
+              }
               columns={columns}
               data={outstandingTasks}
               renderRowSubComponent={renderRowSubComponent}
@@ -433,6 +480,24 @@ const Project = (props) => {
             <Task
               columns={columns}
               data={completedTasks}
+              captions={
+                <>
+                  <Caption
+                    flabel="Tasks"
+                    slabel={
+                      caption[
+                        location.state ? location.state.taskStatus : "default"
+                      ]
+                    }
+                  />
+                  <Caption
+                    flabel={
+                      project ? (project[0] ? project[0].name : null) : null
+                    }
+                    style={{ fontSize: 15, color: "white" }}
+                  />
+                </>
+              }
               renderRowSubComponent={renderRowSubComponent}
               clickable={handleCClick}
               onTaskUpdate={props.onTaskUpdate}
@@ -445,12 +510,37 @@ const Project = (props) => {
             />
           </Route>
           <Route path={`${path}/tasks`}>
-            <AllTasks
+            {/* <AllTasks
               tasks={props.tasks}
+              tasksPersonnel={tasksPersonnel}
               selectedTaskID={props.selectedTaskID}
               onFetchData={props.onFetchData}
               onAlert={props.onAlert}
               toggler={props.toggler}
+            /> */}
+            {console.log("data in all", data)}
+            <Task
+              // outstanding={true}
+              captions={
+                <>
+                  <Caption flabel="Tasks" slabel="List" />
+                  {/* <Caption
+                    flabel=""
+                    style={{ fontSize: 15, color: "white" }}
+                  /> */}
+                </>
+              }
+              columns={columns}
+              data={data}
+              renderRowSubComponent={renderRowSubComponent}
+              clickable={handleAllClick}
+              // selectedTaskID={selectedTaskID}
+              onTaskUpdate={props.onTaskUpdate}
+              projectPersonnel={projectPersonnel}
+              tasksPersonnel={tasksPersonnel}
+              onAlert={props.onAlert}
+              postData={props.postData}
+              project={project}
             />
           </Route>
           <Route path={`${path}/*`}>

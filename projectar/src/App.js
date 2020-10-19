@@ -35,6 +35,7 @@ const App = (props) => {
   const [user, setUser] = useState({});
   const [projects, setProjects] = useState([]);
   const [projectsTasks, setProjectsTasks] = useState([]);
+  const [personnelTasks, setPersonnelTasks] = useState([]);
   const [personnel, setPersonnel] = useState();
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showTask, setShowTask] = useState(false);
@@ -120,6 +121,10 @@ const App = (props) => {
   // );
   const fetchProjectTasks = () =>
     fetchData("/api/task/all").then(({ data }) => setProjectsTasks(data));
+  const fetchPersonnelTasks = (userID) =>
+    fetchData(`/api/user/tasks/${userID}`).then(({ data }) =>
+      setPersonnelTasks(data)
+    );
   const fetchPersonnel = () =>
     fetchData("/api/user/all").then(({ data }) => setPersonnel(data));
 
@@ -127,6 +132,7 @@ const App = (props) => {
     // syncEvents();
     // fetchProjects();
     fetchProjectTasks();
+    fetchPersonnelTasks(JSON.parse(localStorage.getItem("netsuite")).id)
     fetchPersonnel();
   }, []);
 
@@ -182,6 +188,7 @@ const App = (props) => {
               onAlert={handleAlert}
               authenticate={handleAuthenticate}
               fetchProjects={fetchProjects}
+              fetchPersonnelTasks={fetchPersonnelTasks}
               logo={Logo}
             />
           </Row>
@@ -234,6 +241,7 @@ const App = (props) => {
                 setSeletedTaskID(id);
               }}
               tasks={projectsTasks}
+              personnelTasks={personnelTasks}
               selectedTaskID={selectedTaskID}
               onFetchData={fetchData}
               onAlert={handleAlert}

@@ -125,7 +125,7 @@ const Task = (props) => {
         ...state,
         ...startDate,
         project_id: location.state.projectID,
-        comment: comment,
+        comment: comment || state.details[0].comment,
         targets: targets,
         personnel: personnel,
         entry_type: location.state.entry_type,
@@ -175,23 +175,21 @@ const Task = (props) => {
     history.goBack();
   };
 
-  const caption = {
-    default: "",
-    outstanding: "-Outstanding",
-    completed: "-Completed",
-  };
+  // const caption = {
+  //   default: "",
+  //   outstanding: "-Outstanding",
+  //   completed: "-Completed",
+  // };
   return (
     <div>
       <Switch>
         <Route exact path={path}>
-          {
-            <Caption
-              flabel="Tasks"
-              slabel={
-                caption[location.state ? location.state.taskStatus : "default"]
-              }
-            />
-          }
+          {/* <Caption
+            flabel="Tasks"
+            slabel={
+              caption[location.state ? location.state.taskStatus : "default"]
+            }
+          />
           <Caption
             flabel={
               props.project
@@ -201,7 +199,8 @@ const Task = (props) => {
                 : null
             }
             style={{ fontSize: 15, color: "white" }}
-          />
+          /> */}
+          {props.captions}
           <Wrapper isMobile>
             <Slate>
               <Table

@@ -45,7 +45,6 @@ const AddTask = (props) => {
   useEffect(
     () => {
       fetchProjectPersonnel();
-      console.log("inside useeffect");
     },
     [location.state.projectID]
   );

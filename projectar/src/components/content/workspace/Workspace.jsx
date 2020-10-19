@@ -50,6 +50,7 @@ const Workspace = (props) => {
               slabel="Task"
               icon="fa fa-tasks fa-lg"
             />
+            {/* view single personnel tasks */}
             <Can
               role={JSON.parse(
                 localStorage.getItem("netsuite")
@@ -58,7 +59,32 @@ const Workspace = (props) => {
               yes={() => (
                 <>
                   <Element
-                    onClick={() => history.push("/project/all/tasks")}
+                    onClick={() =>
+                      history.push("/project/all/tasks", {
+                        taskType: "personnel",
+                      })
+                    }
+                    flabel="View"
+                    slabel="Tasks"
+                    icon="fa fa-tasks fa-lg"
+                  />
+                </>
+              )}
+            />
+            {/* view all tasks (administrative privilege) */}
+            <Can
+              role={JSON.parse(
+                localStorage.getItem("netsuite")
+              ).role.toLowerCase()}
+              perform="tasks:lists"
+              yes={() => (
+                <>
+                  <Element
+                    onClick={() =>
+                      history.push("/project/all/tasks", {
+                        taskType: "projects",
+                      })
+                    }
                     flabel="View"
                     slabel="Tasks"
                     icon="fa fa-file-text-o  fa-lg"

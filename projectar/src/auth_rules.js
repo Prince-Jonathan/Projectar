@@ -14,12 +14,11 @@ const rules = {
   // project_admin can manage all projects and tasks
   project_admin: {
     static: [
-      "tasks:list",
+      "tasks:lists",
       "tasks:add",
       "tasks:edit",
       "tasks:delete",
       "attendance:view",
-      "tasks:list",
     ],
     dynamic: {},
   },
@@ -29,7 +28,7 @@ const rules = {
 
   // user can only access projects where he is a manager ,consultant or team member
   user: {
-    static: ["tasks:add", "attendance:view"],
+    static: ["tasks:add", "tasks:list", "attendance:view"],
     dynamic: {
       "tasks:edit": ({ userID, taskCreatorID }) => {
         if (!userID || !taskCreatorID) return false;

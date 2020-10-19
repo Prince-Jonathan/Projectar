@@ -13,6 +13,7 @@ const Login = (props) => {
   let login = (user) => {
     props.authenticate(user);
     props.fetchProjects(user.user_id);
+    props.fetchPersonnelTasks(user.user_id)
     history.replace(from);
   };
   const formStyle = {

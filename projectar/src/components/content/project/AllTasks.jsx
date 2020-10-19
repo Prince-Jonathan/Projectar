@@ -59,10 +59,10 @@ const Styles = styled.div`
 
 const AllTasks = (props) => {
   const { path, url } = useRouteMatch();
-  const { status } = useParams();
-  const history = useHistory();
+  // const { status } = useParams();
+  // const history = useHistory();
   const [selectedTaskID, setSelectedTaskID] = useState(undefined);
-  const { id } = useParams();
+  // const { id } = useParams();
 
   const data = React.useMemo(() => props.tasks, [props.tasks]);
 
@@ -155,6 +155,7 @@ const AllTasks = (props) => {
             onFetchData={props.onFetchData}
             description={row.original.description}
             taskID={row.original.id}
+            tasksPersonnel={props.tasksPersonnel}
           />
         </div>
       </Styles>
@@ -167,7 +168,7 @@ const AllTasks = (props) => {
   const completedTasks = data.filter((task) => parseInt(task.achieved) === 100);
 
   return (
-    <divateaaaeetaa>
+    <div>
       <Styles>
         <Switch>
           <Route exact path={path}>
@@ -201,7 +202,7 @@ const AllTasks = (props) => {
           </Route>
         </Switch>
       </Styles>
-    </divateaaaeetaa>
+    </div>
   );
 };
 
