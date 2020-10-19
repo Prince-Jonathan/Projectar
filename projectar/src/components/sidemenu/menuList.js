@@ -21,9 +21,9 @@ const items = [
     value: "all-tasks",
     icon: "fa-suitcase",
     children: [
-      { label: "Outstanding", value: "outstanding-tasks" },
-      { label: "Completed", value: "completed-tasks" },
-      { label: "All", value: "all-tasks" },
+      { label: "Outstanding", value: "project/all/outstanding-tasks" },
+      { label: "Completed", value: "project/all/completed-tasks" },
+      { label: "All", value: "project/all/tasks" },
     ],
   },
   { label: "Reports", value: "reports", icon: "fa-book" },

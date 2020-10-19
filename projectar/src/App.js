@@ -132,7 +132,7 @@ const App = (props) => {
     // syncEvents();
     // fetchProjects();
     fetchProjectTasks();
-    fetchPersonnelTasks(JSON.parse(localStorage.getItem("netsuite")).id)
+    fetchPersonnelTasks(JSON.parse(localStorage.getItem("netsuite")).id);
     fetchPersonnel();
   }, []);
 
@@ -158,7 +158,12 @@ const App = (props) => {
       history: { push },
     } = props;
     handleCloseSideMenu();
-    push(`/${value}`);
+    let types = { user: "personnel", project_admin: "projects" };
+    push(`/${value}`, {
+      taskType:
+        types[JSON.parse(localStorage.getItem("netsuite")).role.toLowerCase()],
+      taskStatus: "",
+    });
   };
   const handleAlert = (method, msg, options) => {
     alert[method](msg, { ...options });

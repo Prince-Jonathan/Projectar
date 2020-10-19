@@ -258,7 +258,9 @@ const Project = (props) => {
                       onClick={() => {
                         // props.onShowTask(row.original.id);
                         history.push(`${url}`, {
-                          ...{taskType:location.state && location.state.taskType},
+                          ...{
+                            taskType: location.state && location.state.taskType,
+                          },
                           taskID: row.original.id,
                           projectID: row.original.project_id,
                         });
@@ -269,7 +271,9 @@ const Project = (props) => {
                     <Button
                       onClick={() => {
                         history.push(`${url}`, {
-                          ...{taskType:location.state && location.state.taskType},
+                          ...{
+                            taskType: location.state && location.state.taskType,
+                          },
                           taskID: row.original.id,
                           projectID: id,
                           reAssign: { entry_type: 3 },
@@ -338,7 +342,6 @@ const Project = (props) => {
   );
   const outstandingTasks =
     data && data.filter((task) => parseInt(task.details[0].achieved) !== 100);
-  console.log("must check it", outstandingTasks);
   const completedTasks =
     data && data.filter((task) => parseInt(task.details[0].achieved) === 100);
 
@@ -381,6 +384,8 @@ const Project = (props) => {
     default: "",
     outstanding: "-Outstanding",
     completed: "-Completed",
+    allOutstanding:"-All Outstanding",
+    allCompleted:"-All Completed"
   };
   return (
     <div>
@@ -518,7 +523,6 @@ const Project = (props) => {
               onAlert={props.onAlert}
               toggler={props.toggler}
             /> */}
-            {console.log("data in all", data)}
             <Task
               // outstanding={true}
               captions={

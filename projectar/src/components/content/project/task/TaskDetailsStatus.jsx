@@ -15,7 +15,6 @@ const TaskDetailsStatus = (props) => {
   const location = useLocation();
   const { id } = useParams();
 
-  useEffect(() => console.log("the imported task", [props.task]));
   const fetchTasks = (projectId) =>
     // props
     //   .onFetchData(`/api/project/task/${projectId}`)
