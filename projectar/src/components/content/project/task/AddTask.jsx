@@ -37,7 +37,6 @@ const AddTask = (props) => {
         .onFetchData(`/api/project/enrolments/${location.state.projectID}`)
         .then(({ data: { data } }) => {
           setProjectPersonnel(data);
-          console.log(data);
         });
     } catch (err) {}
   };

@@ -8,10 +8,11 @@ const PrivateRoute = ({
   ...rest
 }) => {
   useEffect(() => {
-    fetchProjects(
-      JSON.parse(localStorage.getItem("netsuite")) &&
-        JSON.parse(localStorage.getItem("netsuite")).id
-    );
+    fetchProjects &&
+      fetchProjects(
+        JSON.parse(localStorage.getItem("netsuite")) &&
+          JSON.parse(localStorage.getItem("netsuite")).id
+      );
   }, []);
   return (
     <Route
