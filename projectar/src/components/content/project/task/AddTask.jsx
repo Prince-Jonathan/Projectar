@@ -213,25 +213,25 @@ const AddTask = (props) => {
           menuPlacement={selectedOption.portalPlacement}
         />
 
-        <div
-          style={{
-            display: "flex",
-            alignContent: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Button type="submit" className="btn">
-            Save
-          </Button>
-          <Button
-            type="button"
-            className="btn cancel"
-            onClick={() => {
-              history.goBack();
+          <div
+            style={{
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "center",
             }}
           >
-            Close
-          </Button>
+            <Button type="submit" className="btn">
+              Save
+            </Button>
+            <Button
+              type="button"
+              className="btn cancel"
+              onClick={() => {
+                history.goBack();
+              }}
+            >
+              Close
+            </Button>
         </div>
       </form>
     </div>

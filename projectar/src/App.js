@@ -137,6 +137,7 @@ const App = (props) => {
                   temp = temp.concat([
                     {
                       projectID: project.id,
+                      projectName: project.name,
                       personnel: data,
                     },
                   ]);
@@ -253,6 +254,7 @@ const App = (props) => {
               onShowTask={handleShowTask}
               onSelect={(id) => setSelectedID(id)}
               projects={projectsTasks}
+              projectsPersonnel={projectsPersonnel}
               selectedID={selectedID}
               onFetchData={fetchData}
               toggler={isTaskCreated}
