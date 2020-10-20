@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
 import { isMobile } from "../../Responsive";
 
@@ -22,15 +23,14 @@ const Button = styled.button`
 `;
 
 const Announcements = (props) => {
+  const history = useHistory();
+  const { url } = useRouteMatch();
   const [announcement, setAnnouncement] = useState(
     <div style={{ marginTop: "5%", color: "#b2beb5" }}>
-      <i
-        className="fa fa-bullhorn fa-3x"
-        aria-hidden="true"
-      />
+      <i className="fa fa-bullhorn fa-3x" aria-hidden="true" />
       <div>
-        Project status of project, make announcement to appreciate teams, share important information or
-        wish on birthdays
+        Project status of project, make announcement to appreciate teams, share
+        important information or wish on birthdays
       </div>
     </div>
   );
@@ -40,7 +40,7 @@ const Announcements = (props) => {
       <div className="slate" style={fixWidth}>
         <div className="header">
           <strong>Announcements</strong>
-          <Button>
+          <Button onClick={() => history.push("/send-announcement")}>
             {" "}
             <i
               style={{ color: "#ffee00" }}

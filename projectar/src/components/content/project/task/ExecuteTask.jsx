@@ -326,11 +326,16 @@ const ExecuteTask = (props) => {
                   data={{
                     userID: JSON.parse(localStorage.getItem("netsuite")).id,
                     pmcID: props.projects
-                      .filter(
-                        (project) =>
-                          project.id === parseInt(location.state.projectID)
-                      )
-                      .map((p) => [p.consultant_id, p.manager_id])[0],
+                      ? props.projects
+                          .filter(
+                            (project) =>
+                              project.id === parseInt(location.state.projectID)
+                          )
+                          .map((p) => [p.consultant_id, p.manager_id])[0]
+                      : props.project.map((p) => [
+                          p.consultant_id,
+                          p.manager_id,
+                        ])[0],
                   }}
                 />
                 <Button

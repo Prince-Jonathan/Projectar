@@ -230,6 +230,7 @@ const Task = (props) => {
               selectedOption={selectedOption}
               handleClose={handleClose}
               handleEditorChange={handleEditorChange}
+              project={props.project}
               projects={props.projects}
             />
           </Wrapper>

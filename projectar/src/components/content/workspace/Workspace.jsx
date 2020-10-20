@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  Link,
+  useHistory,
+  useRouteMatch,
+} from "react-router-dom";
 import styled from "styled-components";
 
 import { Row, Column } from "../../Grid";
 import Element from "./Element";
 import Announcements from "./Announcements";
 import Can from "../../Can";
+import Bay from "../../bay/Bay";
 
 import "./Workspace.css";
 
@@ -39,6 +46,7 @@ const Style = styled.div`
 
 const Workspace = (props) => {
   const history = useHistory();
+  const { path } = useRouteMatch();
   return (
     <div>
       <Row>
@@ -106,8 +114,12 @@ const Workspace = (props) => {
               icon="fa fa-folder-open-o fa-lg"
             />
           </Style>
-
           <Announcements />
+          {location.state && location.state.send - announcement ? (
+            <Bay>
+              <div style={{ color: "white" }}>this</div>
+            </Bay>
+          ) : null}
         </Column>
       </Row>
     </div>

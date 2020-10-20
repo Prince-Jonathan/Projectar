@@ -172,6 +172,9 @@ const App = (props) => {
   const handleTaskCreated = () => {
     setIsTaskCreated((prevState) => !prevState);
     fetchProjectTasks();
+    JSON.parse(localStorage.getItem("netsuite")) &&
+      fetchPersonnelTasks(JSON.parse(localStorage.getItem("netsuite")).id);
+    fetchPersonnel();
   };
   const handleTaskUpdate = () => {
     setIsTaskUpdated((prevState) => !prevState);
