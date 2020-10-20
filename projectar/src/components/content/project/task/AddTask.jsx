@@ -58,17 +58,6 @@ const AddTask = (props) => {
     personnel: null,
   });
 
-  // useEffect(() => {
-  //   return () => {
-  //     setProjectPersonnel([]);
-  //   };
-  // }, []);
-
-  // const options = data.map((personnel) => {
-  //   const { first_name: firstName, last_name: lastName, id: value } = personnel;
-  //   return { label: `${firstName} ${lastName}`, value: value };
-  // });
-
   const options = useMemo(
     () =>
       projectPersonnel

@@ -127,7 +127,7 @@ const Project = (props) => {
             )
           );
         } catch (err) {}
-      };
+      }; 
       fetchTasksPersonnel();
     },
     [tasks]

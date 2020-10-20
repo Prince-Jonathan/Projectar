@@ -40,7 +40,7 @@ const Announcements = (props) => {
       <div className="slate" style={fixWidth}>
         <div className="header">
           <strong>Announcements</strong>
-          <Button onClick={() => history.push("/send-announcement")}>
+          <Button onClick={() => history.push("/", {sendAnnouncement:true})}>
             {" "}
             <i
               style={{ color: "#ffee00" }}
