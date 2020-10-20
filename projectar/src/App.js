@@ -132,7 +132,8 @@ const App = (props) => {
     // syncEvents();
     // fetchProjects();
     fetchProjectTasks();
-    fetchPersonnelTasks(JSON.parse(localStorage.getItem("netsuite")).id);
+    JSON.parse(localStorage.getItem("netsuite")) &&
+      fetchPersonnelTasks(JSON.parse(localStorage.getItem("netsuite")).id);
     fetchPersonnel();
   }, []);
 
