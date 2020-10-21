@@ -64,18 +64,10 @@ const Workspace = (props) => {
   const history = useHistory();
   const location = useLocation();
   const { path } = useRouteMatch();
+  const [state, setState] = useState({ title: "", description: "" });
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [projectsPersonnel, setProjectsPersonnel] = useState([]);
   const [personnelOptions, setPersonnelOptions] = useState([]);
-  // const options = React.useMemo(
-  //   () =>
-  //     props.projectsPersonnel
-  //       ? props.projectsPersonnel.map((project) => {
-  //           return { label: project.project_name, value: project.personnel };
-  //         })
-  //       : null,
-  //   [props.projectsPersonnel]
-  // );
   const options = React.useMemo(
     () =>
       props.projects
@@ -91,13 +83,6 @@ const Workspace = (props) => {
     value: "fetching projects list...",
     portalPlacement: "top",
   });
-  // const difference = (setA, setB) => {
-  //   var diff = new Set(setA);
-  //   for (var elem of setB) {
-  //     diff.delete(elem);
-  //   }
-  //   return diff;
-  // };
   const handleProjectSelection = (selectedOption) => {
     if (selectedOption) {
       let projects = selectedOption.map((project) => project.value);
@@ -132,24 +117,41 @@ const Workspace = (props) => {
       setSelectedProjects([]);
       setProjectsPersonnel([]);
     }
-    // let temp = [];
-    // projects.forEach((id) =>
-    //   props
-    //     .onFetchData(`/api/project/enrolments/${id}`)
-    //     .then((data) => {
-    //       console.log(data);
-    //       return data;
-    //     })
-    //     .then(({ data: { data } }) => {
-    //       try {
-    //         temp = temp.concat(data);
-    //         setProjectsPersonnel((prevState) => prevState.concat(temp));
-    //       } catch (err) {}
-    //     })
-    // );
   };
   const handlePersonnelSelection = (selectedOption) => {
-    console.log(selectedOption);
+    setPersonnelOptions(selectedOption);
+  };
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.value });
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let targets = personnelOptions.map((personnel) => personnel.value);
+    let announcement = {
+      title: state.title,
+      description: state.description,
+      targets,
+    };
+    props.onAlert("info", "Sending Note...", {
+      timeout: 3000,
+      position: "bottom center",
+    });
+    props
+      .postData("/api/notify/announce", announcement)
+      .then(() => {
+    //     props.onTaskUpdate();
+        props.onAlert("success", "Note Sent", {
+          timeout: 5000,
+          position: "bottom center",
+        });
+      })
+      .then(() => history.goBack())
+      .catch(() =>
+        props.onAlert("error", "Failed to Send Note", {
+          timeout: 3000,
+          position: "bottom center",
+        })
+      );
   };
   return (
     <div>
@@ -223,16 +225,33 @@ const Workspace = (props) => {
             <Bay>
               <div>
                 <form
+                  onSubmit={handleSubmit}
                   className="form-container column"
                   style={{ color: "white", minWidth: "80vw" }}
                 >
+                  <input
+                    // autoFocus
+                    type="text"
+                    style={{ flex: "1" }}
+                    placeholder="Enter Title"
+                    name="title"
+                    value={state.title}
+                    onChange={handleChange}
+                    required
+                  />
+
                   <textarea
                     type="text"
-                    style={{ flex: "1", margin: "5px 0px" }}
+                    style={{
+                      flex: "1",
+                      margin: "5px 0px",
+                      backgroundColor: "white",
+                      padding: 10,
+                    }}
                     placeholder="What will you want to put across?"
                     name="description"
-                    // value={state.description}
-                    // onChange={handleChange}
+                    value={state.description}
+                    onChange={handleChange}
                     required
                     rows="5"
                     cols="37"
@@ -260,8 +279,15 @@ const Workspace = (props) => {
                     isMulti
                     placeholder="Target personnel"
                     onChange={handlePersonnelSelection}
-                    options={projectsPersonnel}
-                    defaultValue={projectsPersonnel}
+                    options={projectsPersonnel.filter(
+                      (personnel, index, self) =>
+                        index ===
+                        self.findIndex(
+                          (p) =>
+                            p.label === personnel.label &&
+                            p.value === personnel.value
+                        )
+                    )}
                     isClearable
                     styles={{
                       menuPortal: (base) => ({

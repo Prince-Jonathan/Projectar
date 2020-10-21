@@ -47,9 +47,9 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
 
-  const baseUrl = "https://projectar.devcodes.co";
+  // const baseUrl = "https://projectar.devcodes.co";
   // const baseUrl = "https://b9ce9d07aee4.ngrok.io";
-  // const baseUrl = "http://localhost:8050";
+  const baseUrl = "http://localhost:8050";
 
   const OneSignal = window.OneSignal;
   try {
@@ -119,11 +119,9 @@ const App = (props) => {
       setProjects(concat);
     });
   const fetchProjectsPersonnel = (userID) =>
-    fetchData(`/api/user/projects_personnel/${userID}`).then(
-      ({data}) => {
-        setProjectsPersonnel(data);
-      }
-    );
+    fetchData(`/api/user/projects_personnel/${userID}`).then(({ data }) => {
+      setProjectsPersonnel(data);
+    });
 
   // useEffect(
   //   () => {
@@ -260,9 +258,11 @@ const App = (props) => {
             <Workspace
               onShowTask={handleShowTask}
               onSelect={(id) => setSelectedID(id)}
+              onAlert={handleAlert}
               projects={projects}
               projectsPersonnel={projectsPersonnel}
               selectedID={selectedID}
+              postData={postData}
               onFetchData={fetchData}
               toggler={isTaskCreated}
             />

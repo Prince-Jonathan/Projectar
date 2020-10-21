@@ -53,23 +53,28 @@ def api():
 
 @app.route('/api/notify/edited-task', methods=['POST'])
 def notify_edit():
-	note=request.get_json()
+	note = request.get_json()
 	return loop.run_until_complete(create_note(note,"Updated Task"))
 
 @app.route('/api/notify/reassigned-task', methods=['POST'])
 def notify_reassign():
-	note=request.get_json()
+	note = request.get_json()
 	return loop.run_until_complete(create_note(note,"Reassigned Task"))
 
 @app.route('/api/notify/completed-task', methods=['POST'])
 def notify_complete():
-	note=request.get_json()
+	note = request.get_json()
 	return loop.run_until_complete(create_note(note,"Completed Task"))
 
 @app.route('/api/notify/new_task', methods=['POST'])
 def notify_new():
-	note=request.get_json()
+	note = request.get_json()
 	return loop.run_until_complete(create_note(note,"New Task"))
+
+@app.route('/api/notify/announce', methods=['POST'])
+def notify_announcement():
+	note = request.get_json()
+	return loop.run_until_complete(create_note(note,"Announcement"))
 
 @app.route('/api/user/add', methods=['POST'])
 def add_user():
