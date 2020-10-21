@@ -760,6 +760,20 @@ def del_task(task_id):
 		return{
 			"success":False
 		}
+@app.route('/api/user/projects_personnel/<int:user_id>')
+def user_projects_personnel(user_id):
+	'''receives user id and returns all personnel enrolled to user's Projects'''
+	
+	projects = netsuite_req({"request": "user-projects", "id": user_id})["data"]
+	projs=[]
+	for project in projects:
+		proj = {}
+		data = netsuite_req({"request": "personnel", "project_id": project["id"]})
+		proj["project_id"] = project["id"]
+		proj["project_name"] = str(project["number"])+" - "+project["name"]
+		proj["personnel"] = data["data"]
+		projs.append(proj)
+	return (jsonify(projs))
 
 @app.route('/api/project/verbose/<int:proj_id>')
 def project_verbose(proj_id):

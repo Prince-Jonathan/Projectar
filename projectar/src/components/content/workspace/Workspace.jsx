@@ -64,26 +64,93 @@ const Workspace = (props) => {
   const history = useHistory();
   const location = useLocation();
   const { path } = useRouteMatch();
+  const [selectedProjects, setSelectedProjects] = useState([]);
+  const [projectsPersonnel, setProjectsPersonnel] = useState([]);
+  const [personnelOptions, setPersonnelOptions] = useState([]);
+  // const options = React.useMemo(
+  //   () =>
+  //     props.projectsPersonnel
+  //       ? props.projectsPersonnel.map((project) => {
+  //           return { label: project.project_name, value: project.personnel };
+  //         })
+  //       : null,
+  //   [props.projectsPersonnel]
+  // );
   const options = React.useMemo(
     () =>
-      props.projectsPersonnel
-        ? props.projectsPersonnel.map((project) => {
-            return { label: project.projectName, value: project.personnel };
+      props.projects
+        ? props.projects.map((project) => {
+            return { label: project.name, value: project.id };
           })
         : null,
-    [props.projectsPersonnel]
+    [props.projects]
   );
   const [selectedOption, setSelectedOption] = useState({
     isOpen: false,
     isFixed: false,
+    value: "fetching projects list...",
     portalPlacement: "top",
   });
-  // const handleSelection = (selectedOption) => {
-  //   const personnel = selectedOption.map((option) => {
-  //     return { name: option.label, id: option.value };
-  //   });
-  //   setState({ ...state, personnel });
+  // const difference = (setA, setB) => {
+  //   var diff = new Set(setA);
+  //   for (var elem of setB) {
+  //     diff.delete(elem);
+  //   }
+  //   return diff;
   // };
+  const handleProjectSelection = (selectedOption) => {
+    if (selectedOption) {
+      let projects = selectedOption.map((project) => project.value);
+      projects.forEach(
+        (id) =>
+          !selectedProjects.includes(id) &&
+          props
+            .onFetchData(`/api/project/enrolments/${id}`)
+            .then(({ data: { data } }) => {
+              setProjectsPersonnel((prevState) =>
+                prevState.concat(
+                  data.map((personnel) => {
+                    return {
+                      projectID: id,
+                      label: personnel.name,
+                      value: personnel.id,
+                    };
+                  })
+                )
+              );
+            })
+      );
+      selectedProjects.forEach(
+        (id) =>
+          !projects.includes(id) &&
+          setProjectsPersonnel((prevState) =>
+            prevState.filter((data) => data.projectID !== id)
+          )
+      );
+      setSelectedProjects(projects);
+    } else {
+      setSelectedProjects([]);
+      setProjectsPersonnel([]);
+    }
+    // let temp = [];
+    // projects.forEach((id) =>
+    //   props
+    //     .onFetchData(`/api/project/enrolments/${id}`)
+    //     .then((data) => {
+    //       console.log(data);
+    //       return data;
+    //     })
+    //     .then(({ data: { data } }) => {
+    //       try {
+    //         temp = temp.concat(data);
+    //         setProjectsPersonnel((prevState) => prevState.concat(temp));
+    //       } catch (err) {}
+    //     })
+    // );
+  };
+  const handlePersonnelSelection = (selectedOption) => {
+    console.log(selectedOption);
+  };
   return (
     <div>
       <Row>
@@ -161,7 +228,7 @@ const Workspace = (props) => {
                 >
                   <textarea
                     type="text"
-                    style={{ flex: "1" }}
+                    style={{ flex: "1", margin: "5px 0px" }}
                     placeholder="What will you want to put across?"
                     name="description"
                     // value={state.description}
@@ -172,10 +239,10 @@ const Workspace = (props) => {
                   />
                   <Select
                     isMulti
-                    placeholder="Include:"
-                    // onChange={handleSelection}
+                    placeholder="Include from project list:"
+                    onChange={handleProjectSelection}
                     options={options}
-                    // defaultValue={selectedOption.value}
+                    defaultValue={selectedOption.value}
                     isClearable
                     styles={{
                       menuPortal: (base) => ({
@@ -185,29 +252,54 @@ const Workspace = (props) => {
                     }}
                     menuPortalTarget={document.body}
                     isSearchable
-                    name="color"
+                    name="projectsList"
+                    menuPosition={selectedOption.isFixed ? "fixed" : "absolute"}
+                    menuPlacement={selectedOption.portalPlacement}
+                  />
+                  <Select
+                    isMulti
+                    placeholder="Target personnel"
+                    onChange={handlePersonnelSelection}
+                    options={projectsPersonnel}
+                    defaultValue={projectsPersonnel}
+                    isClearable
+                    styles={{
+                      menuPortal: (base) => ({
+                        ...base,
+                        zIndex: 200,
+                      }),
+                    }}
+                    menuPortalTarget={document.body}
+                    isSearchable
+                    name="projectsList"
                     menuPosition={selectedOption.isFixed ? "fixed" : "absolute"}
                     menuPlacement={selectedOption.portalPlacement}
                   />
                   <div
                     style={{
                       display: "flex",
-                      alignContent: "center",
-                      justifyContent: "center",
+                      width: "20vw",
                     }}
                   >
-                    <Button type="submit" className="btn">
-                      Send
-                    </Button>
-                    <Button
-                      type="button"
-                      className="btn cancel"
-                      onClick={() => {
-                        history.goBack();
+                    <div
+                      style={{
+                        display: "flex",
+                        alignContent: "center",
                       }}
                     >
-                      Close
-                    </Button>
+                      <Button type="submit" className="btn">
+                        Send
+                      </Button>
+                      <Button
+                        type="button"
+                        className="btn cancel"
+                        onClick={() => {
+                          history.goBack();
+                        }}
+                      >
+                        Close
+                      </Button>
+                    </div>
                   </div>
                 </form>
               </div>

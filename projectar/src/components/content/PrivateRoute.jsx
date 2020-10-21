@@ -4,15 +4,23 @@ import { Route, Redirect } from "react-router-dom";
 const PrivateRoute = ({
   children,
   fetchProjects,
+  fetchProjectsPersonnel,
   isAuthenticated,
   ...rest
 }) => {
   useEffect(() => {
-    fetchProjects &&
-      fetchProjects(
-        JSON.parse(localStorage.getItem("netsuite")) &&
-          JSON.parse(localStorage.getItem("netsuite")).id
-      );
+    if (localStorage.getItem("netsuite")) {
+      fetchProjects &&
+        fetchProjects(
+          JSON.parse(localStorage.getItem("netsuite")) &&
+            JSON.parse(localStorage.getItem("netsuite")).id
+        );
+      fetchProjectsPersonnel &&
+        fetchProjectsPersonnel(
+          JSON.parse(localStorage.getItem("netsuite")) &&
+            JSON.parse(localStorage.getItem("netsuite")).id
+        );
+    }
   }, []);
   return (
     <Route

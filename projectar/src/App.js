@@ -106,7 +106,6 @@ const App = (props) => {
         );
   };
   const fetchProjects = (userID) =>
-    // trackPromise(
     fetchData(`/api/project/all/${userID}`).then(({ data: { data } }) => {
       // fetchData(`/api/project/all`).then(({ data: { data } }) => {
       const concat = data
@@ -117,43 +116,49 @@ const App = (props) => {
             };
           })
         : null;
-      console.log("called fetch projects");
       setProjects(concat);
     });
+  const fetchProjectsPersonnel = (userID) =>
+    fetchData(`/api/user/projects_personnel/${userID}`).then(
+      ({data}) => {
+        setProjectsPersonnel(data);
+      }
+    );
+
+  // useEffect(
+  //   () => {
+  //     let temp = [];
+  //     const fetchProjectPersonnel = async () => {
+  //       try {
+  //         projects.forEach((project) =>
+  //           fetchData(`/api/project/enrolments/${project.id}`)
+  //             .then((data) => {
+  //               console.log(data);
+  //               return data;
+  //             })
+  //             .then(({ data: { data } }) => {
+  //               try {
+  //                 temp = temp.concat([
+  //                   {
+  //                     projectID: project.id,
+  //                     projectName: project.name,
+  //                     personnel: data,
+  //                   },
+  //                 ]);
+  //                 setProjectsPersonnel(temp);
+  //               } catch (err) {}
+  //             })
+  //         );
+  //       } catch (err) {}
+  //     };
+  //     fetchProjectPersonnel();
+  //   },
+  //   [projects]
   // );
 
-  useEffect(
-    () => {
-      let temp = [];
-      const fetchProjectPersonnel = async () => {
-        try {
-          projects.forEach((project) =>
-            fetchData(`/api/project/enrolments/${project.id}`)
-              .then((data) => {
-                return data;
-              })
-              .then(({ data: { data } }) => {
-                try {
-                  temp = temp.concat([
-                    {
-                      projectID: project.id,
-                      projectName: project.name,
-                      personnel: data,
-                    },
-                  ]);
-                  setProjectsPersonnel(temp);
-                } catch (err) {}
-              })
-          );
-        } catch (err) {}
-      };
-      fetchProjectPersonnel();
-    },
-    [projects]
-  );
-
-  const fetchProjectTasks = () =>
+  const fetchProjectTasks = () => {
     fetchData("/api/task/all").then(({ data }) => setProjectsTasks(data));
+  };
   const fetchPersonnelTasks = (userID) =>
     fetchData(`/api/user/tasks/${userID}`).then(({ data }) =>
       setPersonnelTasks(data)
@@ -230,6 +235,7 @@ const App = (props) => {
               onAlert={handleAlert}
               authenticate={handleAuthenticate}
               fetchProjects={fetchProjects}
+              fetchProjectsPersonnel={fetchProjectsPersonnel}
               fetchPersonnelTasks={fetchPersonnelTasks}
               logo={Logo}
             />
@@ -246,6 +252,7 @@ const App = (props) => {
         >
           <PrivateRoute
             fetchProjects={fetchProjects}
+            fetchProjectsPersonnel={fetchProjectsPersonnel}
             exact
             isAuthenticated={isAuthenticated}
             path="/"
@@ -253,7 +260,7 @@ const App = (props) => {
             <Workspace
               onShowTask={handleShowTask}
               onSelect={(id) => setSelectedID(id)}
-              projects={projectsTasks}
+              projects={projects}
               projectsPersonnel={projectsPersonnel}
               selectedID={selectedID}
               onFetchData={fetchData}
