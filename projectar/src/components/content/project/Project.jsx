@@ -73,6 +73,7 @@ const Project = (props) => {
       : tasks
       ? tasks.filter((task) => task.project_id === parseInt(id))
       : [];
+  console.log("id:", id);
   const projects = React.useMemo(() => props.projects, [props.projects]);
   const project =
     projects && projects.filter((project) => project.id === parseInt(id));
@@ -340,9 +341,10 @@ const Project = (props) => {
     data && data.filter((task) => parseInt(task.details[0].achieved) !== 100);
   const completedTasks =
     data && data.filter((task) => parseInt(task.details[0].achieved) === 100);
-
+  console.log("data", data);
   const handleOClick = ({ row }) => {
     history.push(`${url}/outstanding-tasks/${row.original.id}/execute`, {
+      ...location.state,
       taskID: row.original.id,
       projectID: row.original.project_id,
       entry_type: 2,
@@ -352,6 +354,7 @@ const Project = (props) => {
 
   const handleCClick = ({ row }) => {
     history.push(`${url}/completed-tasks/${row.original.id}/execute`, {
+      ...location.state,
       taskID: row.original.id,
       projectID: row.original.project_id,
       entry_type: 2,
