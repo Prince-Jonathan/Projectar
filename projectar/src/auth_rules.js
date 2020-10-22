@@ -38,7 +38,8 @@ const rules = {
         if (!userID || !taskCreatorID) return false;
         return parseInt(userID) === parseInt(taskCreatorID);
       },
-      "tasks:execute": ({ userID, pmcID }) => {
+      "tasks:execute": ({ userID, pmcID = [] }) => {
+        console.log("task:execute pmcid", pmcID);
         if (!userID || !pmcID.length) return false;
         return pmcID.includes(parseInt(userID));
       },

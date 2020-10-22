@@ -119,13 +119,17 @@ const ExecuteTask = (props) => {
                 readOnly
               />
             </label>
+            {console.log("the acheievd", props.state.achieved)}
             <label>
               Achieved(%):
               <input
-                style={{ flexBasis: "auto", backgroundColor: "white" }}
+                style={{
+                  flexBasis: "auto",
+                  backgroundColor: "white",
+                }}
                 type="text"
                 name="achieved"
-                value={props.state.achieved}
+                value={props.state.achieved || ""}
                 onChange={props.handleChange}
                 required
               />
@@ -143,7 +147,9 @@ const ExecuteTask = (props) => {
             options={props.options}
             defaultValue={props.assignedPersonnel}
             isClearable
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 200 }) }}
+            styles={{
+              menuPortal: (base) => ({ ...base, zIndex: 200 }),
+            }}
             menuPortalTarget={document.body}
             isSearchable
             name="color"
@@ -175,9 +181,16 @@ const ExecuteTask = (props) => {
               )}
               data={{
                 userID: JSON.parse(localStorage.getItem("netsuite")).id,
-                assignedPersonnel: props.assignedPersonnel.map(
-                  (personnel) => personnel.value
-                ),
+                pmcID: props.projects
+                  ? props.projects
+                      .filter(
+                        (project) =>
+                          project.id === parseInt(location.state.projectID)
+                      )
+                      .map((p) => [p.consultant_id, p.manager_id])[0]
+                  : props.project
+                  ? props.project.map((p) => [p.consultant_id, p.manager_id])[0]
+                  : [],
               }}
             />
 
@@ -226,7 +239,10 @@ const ExecuteTask = (props) => {
             <div style={{ flex: 1, padding: 10 }}>
               <input
                 type="text"
-                style={{ flex: "1", backgroundColor: "#B2BEB5" }}
+                style={{
+                  flex: "1",
+                  backgroundColor: "#B2BEB5",
+                }}
                 name="title"
                 placeholder={props.state.title}
                 value={props.state.title}
@@ -234,7 +250,10 @@ const ExecuteTask = (props) => {
               />
               <textarea
                 type="text"
-                style={{ flex: "1", backgroundColor: "#B2BEB5" }}
+                style={{
+                  flex: "1",
+                  backgroundColor: "#B2BEB5",
+                }}
                 name="description"
                 placeholder={props.state.description}
                 value={props.state.description}
@@ -256,7 +275,9 @@ const ExecuteTask = (props) => {
                   <label>
                     Target(%):
                     <input
-                      style={{ backgroundColor: "#B2BEB5" }}
+                      style={{
+                        backgroundColor: "#B2BEB5",
+                      }}
                       type="text"
                       name="target"
                       placeholder={props.state.target}
@@ -269,10 +290,13 @@ const ExecuteTask = (props) => {
                   <label>
                     Achieved(%):
                     <input
-                      style={{ flexBasis: "auto", backgroundColor: "white" }}
+                      style={{
+                        flexBasis: "auto",
+                        backgroundColor: "white",
+                      }}
                       type="text"
                       name="achieved"
-                      value={props.state.achieved}
+                      value={props.state.achieved || ""}
                       onChange={props.handleChange}
                       required
                     />
@@ -291,7 +315,12 @@ const ExecuteTask = (props) => {
                 options={props.options}
                 defaultValue={props.assignedPersonnel}
                 isClearable
-                styles={{ menuPortal: (base) => ({ ...base, zIndex: 200 }) }}
+                styles={{
+                  menuPortal: (base) => ({
+                    ...base,
+                    zIndex: 200,
+                  }),
+                }}
                 menuPortalTarget={document.body}
                 isSearchable
                 name="color"
@@ -332,10 +361,12 @@ const ExecuteTask = (props) => {
                               project.id === parseInt(location.state.projectID)
                           )
                           .map((p) => [p.consultant_id, p.manager_id])[0]
-                      : props.project.map((p) => [
+                      : props.project
+                      ? props.project.map((p) => [
                           p.consultant_id,
                           p.manager_id,
-                        ])[0],
+                        ])[0]
+                      : [],
                   }}
                 />
                 <Button

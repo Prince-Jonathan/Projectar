@@ -127,7 +127,7 @@ const Project = (props) => {
             )
           );
         } catch (err) {}
-      }; 
+      };
       fetchTasksPersonnel();
     },
     [tasks]
@@ -456,6 +456,7 @@ const Project = (props) => {
               onAlert={props.onAlert}
               postData={props.postData}
               project={project}
+              projects={projects}
             />
           </Route>
           <Route path={`${path}/completed-tasks`}>
@@ -505,6 +506,7 @@ const Project = (props) => {
               onAlert={props.onAlert}
               postData={props.postData}
               project={project}
+              projects={projects}
             />
           </Route>
           <Route path={`${path}/tasks`}>

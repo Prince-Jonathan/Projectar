@@ -6,6 +6,8 @@ Android App Project Write-up.docx
 /cra-flask
 /useAuth
 backend/__pycache__/
+backend/venv/
+backend/psycopg2-2.8.6-cp39-cp39-win_amd64.whl
 backend/__pycache__/app.cpython-37.pyc
 backend/__pycache__/app.cpython-37.pyc
 backend/__pycache__/app.cpython-37.pyc

@@ -227,7 +227,7 @@ const Workspace = (props) => {
                 <form
                   onSubmit={handleSubmit}
                   className="form-container column"
-                  style={{ color: "white", minWidth: "80vw" }}
+                  style={{ color: "white", minWidth: "50vw" }}
                 >
                   <input
                     // autoFocus
