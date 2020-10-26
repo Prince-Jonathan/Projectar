@@ -132,6 +132,7 @@ const Workspace = (props) => {
       title: state.title,
       description: state.description,
       targets,
+      sender: JSON.parse(localStorage.getItem("netsuite")).name,
     };
     props.onAlert("info", "Sending Note...", {
       timeout: 3000,
@@ -221,7 +222,7 @@ const Workspace = (props) => {
               icon="fa fa-folder-open-o fa-lg"
             />
           </Style>
-          <Announcements />
+          <Announcements onFetchData={props.onFetchData} />
           {location.state && location.state.sendAnnouncement ? (
             <Bay>
               <div>

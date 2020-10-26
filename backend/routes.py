@@ -8,7 +8,7 @@ from sqlalchemy import text
 from onesignal_sdk.error import OneSignalHTTPError
 import requests
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client, session
-from models import Project, User, Task, Task_Detail, Register
+from models import Project, User, Task, Task_Detail, Register, Announcement
 from modules import fetch, log, netsuite_req
 from datetime import datetime
 
@@ -74,7 +74,28 @@ def notify_new():
 @app.route('/api/notify/announce', methods=['POST'])
 def notify_announcement():
 	note = request.get_json()
-	return loop.run_until_complete(create_note(note,"Announcement"))
+	announcement = Announcement(
+		sender=note["sender"],
+		title=note["title"],
+		description=note["description"]
+		)
+	try: 
+		db.session.add(announcement)
+		db.session.commit()
+		for target in note["targets"]:
+			recipient = User.query.get(target)
+			if recipient is not None:
+				announcement.personnel.append(recipient)
+			
+	except SQLAlchemyError as err:
+		print(err)
+		db.session.rollback()
+		return {
+			"success":False,
+			"msg":"could not send announcement"
+		}
+	db.session.commit()
+	return loop.run_until_complete(create_note(note,"Announcement"+" from "+note["sender"]))
 
 @app.route('/api/user/add', methods=['POST'])
 def add_user():
@@ -387,6 +408,24 @@ def all_tasks():
 			"success":False	
 		}
 
+@app.route('/api/announcements/<int:user_id>')
+def user_announcements(user_id):
+	'''pass user id to return all announcements to specified personnel'''
+	try:
+		personnel = User.query.get(user_id)
+		if personnel is not None:
+			announcements = personnel.announcements
+			return jsonify({
+				"success":True,
+				"data":Announcement.serialize_list(announcements)
+			})
+		return { "success":False}
+	except SQLAlchemyError as err:
+		print(err)
+		db.session.rollback()
+		return {
+			"success":False
+		}	
 @app.route('/api/enrol/user/proj/<int:personnel_id>/<int:project_id>')
 def enrol_user_proj(personnel_id, project_id):
 	'''Passes two id arguments to  enrol a user to a project respectively.'''

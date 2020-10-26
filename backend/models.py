@@ -11,6 +11,7 @@ enrolment = db.Table('enrolment',
 			db.Column('personnel_id', db.Integer, db.ForeignKey('user.id')),
 			db.Column('project_id', db.Integer, db.ForeignKey('project.id')),
 			db.Column('task_id', db.Integer, db.ForeignKey('task.id')),
+			db.Column('announcement_id', db.Integer, db.ForeignKey('announcement.id')),
 			db.Column('date', db.DateTime, default=datetime.utcnow)
 		)
 
@@ -24,6 +25,7 @@ class User(db.Model, Serializer):
 
 	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 	tasks = db.relationship('Task', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
+	announcements = db.relationship('Announcement', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 
 	#date_created =  db.Column(db.DateTime, default=datetime.utcnow)	
 
@@ -101,10 +103,20 @@ class Register(db.Model, Serializer):
 	personnel_id = db.Column(db.Integer)
 	personnel_name=db.Column(db.String(100))
 	
-	project_id=db.Column(db.Integer, db.ForeignKey('project.id'),nullable=False)
+	project_id=db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
 
 	def __repr__(self): 
 		return '<Register %r>' % self.id
+
+class Announcement(db.Model, Serializer):
+	id = db.Column(db.Integer, primary_key=True)
+	date =  db.Column(db.DateTime, default=datetime.utcnow)
+	sender = db.Column(db.String(100), nullable=False)
+	title = db.Column(db.String(100), nullable=False)
+	description = db.Column(db.String(1000), nullable=False)
+
+	def __repr__(self): 
+		return '<Announcement %r>' % self.id
 
 # #Model Reassigned_Task Table
 # class Reassigned_Task(db.Model, Serializer):
