@@ -66,6 +66,7 @@ const Workspace = (props) => {
   const location = useLocation();
   const { path } = useRouteMatch();
   const [state, setState] = useState({ title: "", description: "" });
+  const [selectedProject, setSelectedProject] = useState(null);
   const [selectedProjects, setSelectedProjects] = useState([]);
   const [projectsPersonnel, setProjectsPersonnel] = useState([]);
   const [personnelOptions, setPersonnelOptions] = useState([]);
@@ -161,7 +162,7 @@ const Workspace = (props) => {
         <Column>
           <Style>
             <Element
-              onClick={() => history.push("/")}
+              onClick={() => history.push("/", { addTask: true })}
               flabel="Add"
               slabel="Task"
               icon="fa fa-tasks fa-lg"
@@ -264,7 +265,7 @@ const Workspace = (props) => {
                   />
                   <Select
                     isMulti
-                    placeholder="Include from project list:"
+                    placeholder="Include from projects list:"
                     onChange={handleProjectSelection}
                     options={options}
                     defaultValue={selectedOption.value}
@@ -332,6 +333,62 @@ const Workspace = (props) => {
                         Close
                       </Button>
                     </div>
+                  </div>
+                </form>
+              </div>
+            </Bay>
+          ) : null}
+          {location.state && location.state.addTask ? (
+            <Bay>
+              <div>
+                <form
+                  onSubmit={() =>
+                    history.push(`all-projects/bay`, {
+                      projectID: selectedProject,
+                      entry_type: 1,
+                    })
+                  }
+                  className="form-container column"
+                  style={{
+                    color: "white",
+                    minWidth: isMobile ? "90vw" : "40vw",
+                  }}
+                >
+                  <Select
+                    placeholder="Select from projects list:"
+                    onChange={(selectedOption) =>
+                      setSelectedProject(selectedOption.value)
+                    }
+                    options={options}
+                    isClearable
+                    styles={{
+                      menuPortal: (base) => ({
+                        ...base,
+                        zIndex: 200,
+                      }),
+                    }}
+                    menuPortalTarget={document.body}
+                    isSearchable
+                    name="projectsList"
+                    menuPosition={selectedOption.isFixed ? "fixed" : "absolute"}
+                    menuPlacement={selectedOption.portalPlacement}
+                  />
+                  <div
+                    style={{
+                      display: "flex",
+                      alignContent: "center",
+                    }}
+                  >
+                    <Button className="btn">Progress</Button>
+                    <Button
+                      type="button"
+                      className="btn cancel"
+                      onClick={() => {
+                        history.goBack();
+                      }}
+                    >
+                      Revert
+                    </Button>
                   </div>
                 </form>
               </div>
