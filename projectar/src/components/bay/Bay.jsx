@@ -12,7 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const Bay = (props) => {
   const { path } = useRouteMatch();
-  // const history = useHistory();
+  const history = useHistory();
   // const [projectID, setProjectID] = useState(history.location.state.projectID);
   // const [projectPersonnel, setProjectPersonnel] = useState([]);
 
@@ -44,7 +44,7 @@ const Bay = (props) => {
       <Switch>
         <Route path={path}>
           {backdrop}
-          <div className="bay">
+          <div onClick={() => history.goBack()} className="bay">
             {/* <AddTask
               showTask={props.showTask}
               onShowTask={props.onShowTask}

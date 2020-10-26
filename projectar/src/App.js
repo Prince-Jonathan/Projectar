@@ -218,7 +218,8 @@ const App = (props) => {
     setIsTaskUpdated((prevState) => !prevState);
   };
   const handleTaskDelete = () => {
-    // setIsTaskDeleted((prevState) => !prevState);
+    JSON.parse(localStorage.getItem("netsuite")) &&
+      fetchPersonnelTasks(JSON.parse(localStorage.getItem("netsuite")).id);
     fetchProjectTasks();
   };
   return (

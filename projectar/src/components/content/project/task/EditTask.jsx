@@ -116,7 +116,6 @@ const EditTask = (props) => {
         position: "bottom center",
       }
     );
-    console.log("the outgoing task:", task);
     props
       .postData(
         location.state.reAssign
