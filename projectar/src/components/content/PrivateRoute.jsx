@@ -4,7 +4,6 @@ import { Route, Redirect } from "react-router-dom";
 const PrivateRoute = ({
   children,
   fetchProjects,
-  fetchProjectsPersonnel,
   isAuthenticated,
   ...rest
 }) => {
@@ -15,31 +14,24 @@ const PrivateRoute = ({
           JSON.parse(localStorage.getItem("netsuite")) &&
             JSON.parse(localStorage.getItem("netsuite")).id
         );
-      fetchProjectsPersonnel &&
-        fetchProjectsPersonnel(
-          JSON.parse(localStorage.getItem("netsuite")) &&
-            JSON.parse(localStorage.getItem("netsuite")).id
-        );
     }
   }, []);
   return (
     <Route
       {...rest}
-      render={
-        ({ location }) =>
-          isAuthenticated ||
-          (JSON.parse(localStorage.getItem("netsuite")) &&
-            JSON.parse(localStorage.getItem("netsuite")).id) ? (
-            children
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: { from: location.pathname },
-              }}
-            />
-          )
-        // )
+      render={({ location }) =>
+        isAuthenticated ||
+        (JSON.parse(localStorage.getItem("netsuite")) &&
+          JSON.parse(localStorage.getItem("netsuite")).id) ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location.pathname },
+            }}
+          />
+        )
       }
     />
   );

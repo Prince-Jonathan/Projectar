@@ -121,10 +121,10 @@ const App = (props) => {
         : null;
       setProjects(concat);
     });
-  const fetchProjectsPersonnel = (userID) =>
-    fetchData(`/api/user/projects_personnel/${userID}`).then(({ data }) => {
-      setProjectsPersonnel(data);
-    });
+  // const fetchProjectsPersonnel = (userID) =>
+  //   fetchData(`/api/user/projects_personnel/${userID}`).then(({ data }) => {
+  //     setProjectsPersonnel(data);
+  //   });
 
   // useEffect(
   //   () => {
@@ -246,7 +246,6 @@ const App = (props) => {
               onAlert={handleAlert}
               authenticate={handleAuthenticate}
               fetchProjects={fetchProjects}
-              fetchProjectsPersonnel={fetchProjectsPersonnel}
               fetchPersonnelTasks={fetchPersonnelTasks}
               logo={Logo}
             />
@@ -263,7 +262,6 @@ const App = (props) => {
         >
           <PrivateRoute
             fetchProjects={fetchProjects}
-            fetchProjectsPersonnel={fetchProjectsPersonnel}
             exact
             isAuthenticated={isAuthenticated}
             path="/"
