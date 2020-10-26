@@ -15,6 +15,7 @@ import Element from "./Element";
 import Announcements from "./Announcements";
 import Can from "../../Can";
 import Bay from "../../bay/Bay";
+import { isMobile } from "../../Responsive";
 
 import "./Workspace.css";
 
@@ -139,7 +140,7 @@ const Workspace = (props) => {
     props
       .postData("/api/notify/announce", announcement)
       .then(() => {
-    //     props.onTaskUpdate();
+        //     props.onTaskUpdate();
         props.onAlert("success", "Note Sent", {
           timeout: 5000,
           position: "bottom center",
@@ -227,24 +228,28 @@ const Workspace = (props) => {
                 <form
                   onSubmit={handleSubmit}
                   className="form-container column"
-                  style={{ color: "white", minWidth: "50vw" }}
+                  style={{
+                    color: "white",
+                    minWidth: isMobile ? "50vw" : "40vw",
+                  }}
                 >
+                  <strong style={{ color: "#10292e" }}>
+                    Send Announcement
+                  </strong>
                   <input
                     // autoFocus
                     type="text"
-                    style={{ flex: "1" }}
+                    style={{ marginBottom: 20 }}
                     placeholder="Enter Title"
                     name="title"
                     value={state.title}
                     onChange={handleChange}
                     required
                   />
-
                   <textarea
                     type="text"
                     style={{
-                      flex: "1",
-                      margin: "5px 0px",
+                      marginBottom: 20,
                       backgroundColor: "white",
                       padding: 10,
                     }}
