@@ -59,8 +59,6 @@ const Style = styled.div`
   justify-content: space-around;
   flex-wrap: wrap;
 `;
-// tempStyle=
-
 const Workspace = (props) => {
   const history = useHistory();
   const location = useLocation();
@@ -223,7 +221,10 @@ const Workspace = (props) => {
               icon="fa fa-folder-open-o fa-lg"
             />
           </Style>
-          <Announcements onFetchData={props.onFetchData} />
+          <Announcements
+            announcement={props.announcement}
+            onFetchData={props.onFetchData}
+          />
           {location.state && location.state.sendAnnouncement ? (
             <Bay>
               <div>
@@ -383,9 +384,7 @@ const Workspace = (props) => {
                     <Button
                       type="button"
                       className="btn cancel"
-                      onClick={() => {
-                        history.goBack();
-                      }}
+                      onClick={() => history.goBack()}
                     >
                       Revert
                     </Button>

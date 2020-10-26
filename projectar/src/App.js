@@ -46,6 +46,7 @@ const App = (props) => {
   const [isTaskUpdated, setIsTaskUpdated] = useState(false);
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
+  const [announcement, setAnnouncement] = useState(null);
 
   const baseUrl = "https://projectar.devcodes.co";
   // const baseUrl = "https://6be0ddc2367e.ngrok.io";
@@ -156,6 +157,15 @@ const App = (props) => {
   //   [projects]
   // );
 
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      fetchData(
+        `/api/announcements/${JSON.parse(localStorage.getItem("netsuite")).id}`
+      ).then(({ data }) => data.success && setAnnouncement(data.data));
+    };
+    fetchAnnouncements();
+  }, []);
+
   const fetchProjectTasks = () => {
     fetchData("/api/task/all").then(({ data }) => setProjectsTasks(data));
   };
@@ -263,6 +273,7 @@ const App = (props) => {
               onSelect={(id) => setSelectedID(id)}
               onAlert={handleAlert}
               projects={projects}
+              announcement={announcement}
               projectsPersonnel={projectsPersonnel}
               selectedID={selectedID}
               postData={postData}

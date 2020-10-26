@@ -26,20 +26,20 @@ const Button = styled.button`
 
 const Announcements = (props) => {
   const history = useHistory();
-  const [announcement, setAnnouncement] = useState(null);
-  useEffect(() => {
-    const fetchAnnouncements = async () => {
-      props
-        .onFetchData(
-          `/api/announcements/${
-            JSON.parse(localStorage.getItem("netsuite")).id
-          }`
-        )
-        .then(({ data }) => data.success && setAnnouncement(data.data));
-    };
-    fetchAnnouncements();
-  }, []);
-  let data = announcement;
+  // const [announcement, setAnnouncement] = useState(null);
+  // useEffect(() => {
+  //   const fetchAnnouncements = async () => {
+  //     props
+  //       .onFetchData(
+  //         `/api/announcements/${
+  //           JSON.parse(localStorage.getItem("netsuite")).id
+  //         }`
+  //       )
+  //       .then(({ data }) => data.success && setAnnouncement(data.data));
+  //   };
+  //   fetchAnnouncements();
+  // }, []);
+  let data = props.announcement;
   const columns = React.useMemo(
     () => [
       {

@@ -44,36 +44,7 @@ const Bay = (props) => {
       <Switch>
         <Route path={path}>
           {backdrop}
-          <div onClick={() => history.goBack()} className="bay">
-            {/* <AddTask
-              showTask={props.showTask}
-              onShowTask={props.onShowTask}
-              onCloseTasks={props.onCloseTasks}
-              postData={props.postData}
-              projectPersonnel={projectPersonnel}
-              onAlert={props.onAlert}
-              onFetchTasks={props.onFetchTasks}
-              onTaskUpdate={props.onTaskUpdate}
-              personnel={props.personnel}
-              onFetchData={props.onFetchData}
-              resetSelectedID={props.resetSelectedID}
-            /> */}
-            {props.children}
-            {/* <EditTask
-            showTask={props.showTask}
-            onShowTask={props.onShowTask}
-            onCloseTasks={props.onCloseTasks}
-            postData={props.postData}
-            selectedTaskID={props.selectedTaskID}
-            onAlert={props.onAlert}
-            onFetchTasks={props.onFetchTasks}
-            onTaskUpdate={props.onTaskUpdate}
-            personnel={props.personnel}
-            tasks={props.tasks}
-            resetSelectedTaskID={props.resetSelectedTaskID}
-            onFetchData={props.onFetchData}
-          />  */}
-          </div>
+          <div className="bay">{props.children}</div>
         </Route>
       </Switch>
     </div>
