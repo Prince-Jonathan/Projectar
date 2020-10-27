@@ -26,7 +26,7 @@ const rules = {
   },
 
   // viewer can view all projects and tasks (Read only)
-  viewer: { static: [], dynamic: {} },
+  viewer: { static: ["tasks:lists"], dynamic: {} },
 
   // user can only access projects where he is a manager ,consultant or team member
   user: {

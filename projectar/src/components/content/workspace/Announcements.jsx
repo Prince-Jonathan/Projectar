@@ -26,27 +26,55 @@ const Button = styled.button`
 const Announcements = (props) => {
   const history = useHistory();
 
+  // // verify if task is updatable: against 24hrs
+  // const isUpdatable = props.state.details
+  //   ? new Date().getTime() -
+  //       new Date(props.state.details[0].date_updated).getTime() <
+  //     1000 * 60 * 60 * 24
+  //   : true;
+
   let data = props.announcement;
   const columns = React.useMemo(
-    () => [
-      {
-        Header: "Title",
-        accessor: "title",
-      },
-      {
-        Header: "Description",
-        accessor: "description",
-      },
-      {
-        Header: "Sender",
-        accessor: "sender",
-      },
-      {
-        Header: "Date Sent",
-        accessor: "date",
-      },
-    ],
-    []
+    () => {
+      let forDesktop = [
+        {
+          Header: "Title",
+          accessor: "title",
+        },
+        {
+          Header: "Description",
+          accessor: "description",
+        },
+        {
+          Header: "Sender",
+          accessor: "sender",
+        },
+        {
+          Header: "Date Sent",
+          accessor: "date",
+        },
+      ];
+      let forMobile = [
+        {
+          id: "title/description/sender",
+          Header: "[Title] Description, Sender",
+          Cell: ({ row }) => (
+            <>
+              <span>
+                {"[" +
+                  row.original.title +
+                  "] " +
+                  row.original.description +
+                  ", " +
+                  row.original.sender}
+              </span>
+            </>
+          ),
+        },
+      ];
+      return isMobile ? forMobile : forDesktop;
+    },
+    [isMobile]
   );
 
   data &&
