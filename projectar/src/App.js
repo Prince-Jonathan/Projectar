@@ -163,7 +163,7 @@ const App = (props) => {
         `/api/announcements/${JSON.parse(localStorage.getItem("netsuite")).id}`
       ).then(({ data }) => data.success && setAnnouncement(data.data));
     };
-    fetchAnnouncements();
+    JSON.parse(localStorage.getItem("netsuite")) && fetchAnnouncements();
   }, []);
 
   const fetchProjectTasks = () => {

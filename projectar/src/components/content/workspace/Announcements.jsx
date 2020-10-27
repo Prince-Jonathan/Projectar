@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 
 import { isMobile } from "../../Responsive";
 import Table from "../../table/Table";
-import Slate from "../slate/Slate";
 
 import "./Workspace.css";
 
@@ -26,19 +25,7 @@ const Button = styled.button`
 
 const Announcements = (props) => {
   const history = useHistory();
-  // const [announcement, setAnnouncement] = useState(null);
-  // useEffect(() => {
-  //   const fetchAnnouncements = async () => {
-  //     props
-  //       .onFetchData(
-  //         `/api/announcements/${
-  //           JSON.parse(localStorage.getItem("netsuite")).id
-  //         }`
-  //       )
-  //       .then(({ data }) => data.success && setAnnouncement(data.data));
-  //   };
-  //   fetchAnnouncements();
-  // }, []);
+
   let data = props.announcement;
   const columns = React.useMemo(
     () => [
@@ -71,10 +58,44 @@ const Announcements = (props) => {
   const fixWidth = isMobile ? null : { width: "800px" };
   return (
     <div>
-      <div>
-        {data ? (
-          <>
-            {/* <div className="slate" style={fixWidth}> */}
+      {data ? (
+        <>
+          <div
+            style={{
+              padding: 5,
+              color: "#10292e",
+              borderRadius: 5,
+              backgroundColor: "#adb7a9c2",
+              minWidth: "min-content",
+              marginTop: "2vh",
+            }}
+          >
+            <div className="header">
+              <strong>Announcements</strong>
+              <Button
+                onClick={() => history.push("/", { sendAnnouncement: true })}
+              >
+                <i
+                  style={{ color: "#ffee00" }}
+                  className="fa fa-plus"
+                  aria-hidden="true"
+                />
+                Add
+              </Button>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Table data={data} columns={columns} />
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="slate" style={fixWidth}>
+          <div className="header">
             <strong>Announcements</strong>
             <Button
               onClick={() => history.push("/", { sendAnnouncement: true })}
@@ -86,48 +107,16 @@ const Announcements = (props) => {
               />{" "}
               Add
             </Button>
-            <div
-              className="slate"
-              style={{
-                // ...fixWidth,
-                display: "flex",
-                justifyContent: "center",
-                padding: 5,
-                margin: "15px 0px",
-                color: "#10292e",
-                borderRadius: 5,
-                backgroundColor: "#adb7a9c2",
-                minWidth: "min-content",
-              }}
-            >
-              <Table data={data} columns={columns} />
-            </div>
-          </>
-        ) : (
-          <div className="slate" style={fixWidth}>
-            <div className="header">
-              <strong>Announcements</strong>
-              <Button
-                onClick={() => history.push("/", { sendAnnouncement: true })}
-              >
-                <i
-                  style={{ color: "#ffee00" }}
-                  className="fa fa-plus"
-                  aria-hidden="true"
-                />{" "}
-                Add
-              </Button>
-            </div>
-            <div style={{ marginTop: "5%", color: "#b2beb5" }}>
-              <i className="fa fa-bullhorn fa-3x" aria-hidden="true" />
-              <div>
-                Project status of project, make announcement to appreciate
-                teams, share important information or wish on birthdays
-              </div>
+          </div>
+          <div style={{ marginTop: "5%", color: "#b2beb5" }}>
+            <i className="fa fa-bullhorn fa-3x" aria-hidden="true" />
+            <div>
+              Project status of project, make announcement to appreciate teams,
+              share important information or wish on birthdays
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
