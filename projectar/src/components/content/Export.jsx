@@ -231,7 +231,6 @@ const Export = (props) => {
               style={{ cursor: "pointer" }}
             />
             <img
-              onClick={() => console.log("exportPDF()")}
               src={props.spreadSheet}
               alt="spreadSheet Logo"
               width="50"

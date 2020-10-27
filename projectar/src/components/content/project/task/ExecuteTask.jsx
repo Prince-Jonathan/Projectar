@@ -119,7 +119,6 @@ const ExecuteTask = (props) => {
                 readOnly
               />
             </label>
-            {console.log("the acheievd", props.state.achieved)}
             <label>
               Achieved(%):
               <input

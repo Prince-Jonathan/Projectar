@@ -9,7 +9,6 @@ const App = (props) => {
   const [value, setValue] = useState("");
   const handleOnChange = (event, editor) => {
     setValue(editor.getData());
-    // console.log({ event, editor, data });
   };
   return (
     <div>
@@ -27,14 +26,12 @@ const App = (props) => {
             placeholder: "What report will you want drafted?",
           }}
           // onBlur={(event, editor) => {
-          //   console.log("Blur.", editor);
           // }}
           // onFocus={(event, editor) => {
-          //   console.log("Focus.", editor);
           // }}
         />
       </div>
-      <button onClick={() => console.log(value)}>Log</button>
+      <button>Log</button>
     </div>
   );
 };

@@ -104,7 +104,6 @@ const AddTask = (props) => {
     });
     props
       .postData("/api/task/add", task)
-      .then((data) => console.log(data))
       .then(() => {
         props.onTaskUpdate();
         props.onAlert("success", "Task Saved", {

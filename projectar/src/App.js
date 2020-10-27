@@ -134,7 +134,6 @@ const App = (props) => {
   //         projects.forEach((project) =>
   //           fetchData(`/api/project/enrolments/${project.id}`)
   //             .then((data) => {
-  //               console.log(data);
   //               return data;
   //             })
   //             .then(({ data: { data } }) => {

@@ -119,7 +119,6 @@ const AllTasks = (props) => {
     [isMobile]
   );
   const deleteTask = useCallback((taskID) => {
-    console.log("its the component");
     props.onAlert("info", "Deleting...", {
       timeout: 3000,
       position: "bottom center",

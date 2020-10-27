@@ -123,7 +123,6 @@ const EditTask = (props) => {
           : `/api/task/edit/${location.state.taskID}`,
         task
       )
-      .then((data) => console.log("returned from post", data))
       .then(() =>
         props.onAlert(
           "success",

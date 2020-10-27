@@ -52,7 +52,6 @@ app.get("/*", function(req, res) {
 // });
 
 app.post("/upload", MultipartyMiddleWare, (req, res) => {
-  console.log(req.files);
   const tempFile = req.files.upload;
   const tempFilePath = tempFile.path;
   const targetPath = path.join(__dirname, "./uploads/" + tempFile.name);
@@ -68,21 +67,16 @@ app.post("/upload", MultipartyMiddleWare, (req, res) => {
         url: `/${tempFile.originalFilename}`,
         // url: `./${tempFile.originalFilename}`,
       });
-
-      if (err) return console.log(err);
     });
   }
 });
 
 app.post("/delete_file", function(req, res, next) {
   let url_del = "public" + req.body.url_del;
-  console.log(url_del);
   if (fs.existsSync(url_del)) {
     fs.unlinkSync(url_del);
   }
   res.redirect("back");
 });
 
-app.listen(PORT, function() {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, function() {});

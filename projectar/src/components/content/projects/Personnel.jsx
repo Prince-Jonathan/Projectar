@@ -109,7 +109,6 @@ const Personnel = (props) => {
           <Slate>
             <Table columns={columns} data={data} clickable={handleClick} />
           </Slate>
-          {console.log("this is the path:", path)}
         </Route>
         <Route path={`${path}/:id/tasks`}>
           <PersonnelTasks tasks={tasks} personnelName={personnelName} />

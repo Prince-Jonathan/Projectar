@@ -55,7 +55,6 @@ const Login = (props) => {
             // let z = CryptoJS.AES.decrypt(y, "Secret Passphrase").toString(
             //   CryptoJS.enc.Utf8
             // );
-            // console.log(x, y, z);
             login(data.data);
           } else {
             throw "Incorrect credentials";

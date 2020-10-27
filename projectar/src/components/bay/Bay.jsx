@@ -24,7 +24,6 @@ const Bay = (props) => {
   //       )
   //       .then(({ data: { data } }) => {
   //         setProjectPersonnel(data);
-  //         console.log(data);
   //       });
   //   } catch (err) {}
   // };
@@ -32,7 +31,6 @@ const Bay = (props) => {
   // useEffect(
   //   () => {
   //     fetchProjectPersonnel();
-  //     console.log("inside useeffect");
   //   },
   //   [history.location.state.projectID]
   // );

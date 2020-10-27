@@ -100,7 +100,6 @@ const PersonnelTasks = (props) => {
     <div>
       <Caption flabel="Tasks" slabel={`-${props.personnelName}`} />
       <Slate>
-        {console.log(data)}
         <Table columns={columns} data={data} />
       </Slate>
     </div>

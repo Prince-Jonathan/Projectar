@@ -221,7 +221,6 @@ const Task = (props) => {
                 <Route path={`${path}/:id/execute`}>
                     <Caption flabel="Execute" slabel="Task" />
                     <Wrapper isMobile>
-                        {console.log(props.projects, props.project)}
                         <ExecuteTask
                             handleSubmit={handleSubmit}
                             state={state}
