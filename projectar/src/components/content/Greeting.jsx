@@ -34,7 +34,7 @@ const Greeting = (props) => {
     <div style={wrapper}>
       <span style={text}>{greet}, </span>
       {name}
-      <span style={text}>!</span>
+      <span style={text}>..</span>
     </div>
   );
 };
