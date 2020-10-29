@@ -209,7 +209,8 @@ const Workspace = (props) => {
             />
 
             <Element
-              onClick={() => history.push("/personnel")}
+              onClick={() => history.push("/")}
+              // onClick={() => history.push("/personnel")}
               flabel="View"
               slabel="Personnel"
               icon="fa fa-users fa-lg"
@@ -386,7 +387,7 @@ const Workspace = (props) => {
                       className="btn cancel"
                       onClick={() => history.goBack()}
                     >
-                      Revert
+                      Close
                     </Button>
                   </div>
                 </form>

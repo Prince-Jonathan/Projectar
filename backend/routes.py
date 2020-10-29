@@ -777,7 +777,10 @@ def user_tasks(user_id):
 						obj = [x for x in tasks_obj if x["id"] == details[0]["task_id"]][0]
 
 					tasks_obj[tasks_obj.index(obj)]["details"] = details
-				return jsonify(tasks_obj)
+				return jsonify({
+					"data":tasks_obj, 
+					"success": True
+				})
 			msg = "has not yet got enrolled tasks"
 		return {
 			"success":False,
@@ -919,6 +922,7 @@ def attendance(proj_id):
 	try:
 		#check if the register for day already exists
 		project = Project.query.get_or_404(proj_id)
+		print("date", data["date"])
 		register = Register.query.filter_by(date=data["date"], project=project).all()
 		if len(register) != 0:
 			for personnel in register[:]:
@@ -926,6 +930,7 @@ def attendance(proj_id):
 			db.session.commit()
 
 		for personnel in data["body"]:
+			print("time in", personnel["signIn"], "time out", personnel["signOut"])
 			time_in = None if personnel["signIn"]==None else datetime.strptime(personnel["signIn"], "%H:%M").time()
 			time_out =  None if personnel["signOut"]==None else datetime.strptime(personnel["signOut"], "%H:%M").time()
 

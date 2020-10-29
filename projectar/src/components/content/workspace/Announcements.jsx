@@ -86,7 +86,7 @@ const Announcements = (props) => {
   const fixWidth = isMobile ? null : { width: "800px" };
   return (
     <div>
-      {data ? (
+      {data && data.length ? (
         <>
           <div
             style={{

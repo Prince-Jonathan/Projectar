@@ -700,7 +700,9 @@ const Register = (props) => {
       };
     });
     const register = {
-      date: new Date(props.date).toLocaleDateString(),
+      date: `${new Date(props.date).getMonth() + 1}/${new Date(
+        props.date
+      ).getDate()}/${new Date(props.date).getFullYear()}`,
       body: body,
     };
     props.onAlert("info", "Saving...", {

@@ -170,7 +170,7 @@ const App = (props) => {
   };
   const fetchPersonnelTasks = (userID) =>
     fetchData(`/api/user/tasks/${userID}`).then(({ data }) =>
-      setPersonnelTasks(data)
+      data.success ? setPersonnelTasks(data.data) : setPersonnelTasks([])
     );
   const fetchPersonnel = () =>
     fetchData("/api/user/all").then(({ data }) => setPersonnel(data));
