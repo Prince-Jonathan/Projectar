@@ -190,7 +190,7 @@ const Export = (props) => {
           } else if (data.column.dataKey === "date") {
             data.cell.text = new Date(data.row.raw.date).toLocaleDateString();
           } else if (data.column.dataKey === "lunch") {
-            data.cell.text = data.cell.text ? "Yes" : "No";
+            data.cell.text = data.cell.text[0] === "true" ? "Yes" : "No";
           }
         }
       },
