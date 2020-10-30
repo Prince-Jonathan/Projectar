@@ -69,27 +69,23 @@ const Personnel = (props) => {
   const [personnelName, setPersonnelName] = useState("");
 
   const data = React.useMemo(() => props.personnel, [props.personnel]);
-
+  console.log("prop", props.personnel);
   const fetchTasks = (personnelID) =>
     props
       .onFetchData(`/api/user/tasks/${personnelID}`)
       //check if messsage exists: msg only exist on error
-      .then(({ data }) => (data.msg ? null : setTasks(data)));
+      .then(({ data }) => (data.success ? setTasks(data.data) : null));
 
   const columns = React.useMemo(
     () => {
       const column = [
         {
-          Header: "First Name",
-          accessor: "first_name",
+          Header: "Name",
+          accessor: "name",
         },
         {
-          Header: "Last Name",
-          accessor: "last_name",
-        },
-        {
-          Header: "Role",
-          accessor: "role",
+          Header: "Email",
+          accessor: "email",
         },
       ];
       return isMobile ? column.splice(0, 1) : column;
@@ -98,7 +94,7 @@ const Personnel = (props) => {
   );
   const handleClick = ({ row }) => {
     fetchTasks(row.original.id);
-    setPersonnelName(row.original.first_name + " " + row.original.last_name);
+    setPersonnelName(row.original.name);
     history.push(`${path}/${row.original.id}/tasks`);
   };
   return (
@@ -107,11 +103,20 @@ const Personnel = (props) => {
         <Route exact path={path}>
           <Caption flabel="Personnel" slabel="List" />
           <Slate>
-            <Table columns={columns} data={data} clickable={handleClick} />
+            <Table
+              columns={columns}
+              data={data || []}
+              clickable={handleClick}
+            />
           </Slate>
         </Route>
         <Route path={`${path}/:id/tasks`}>
-          <PersonnelTasks tasks={tasks} personnelName={personnelName} />
+          <PersonnelTasks
+            tasks={tasks}
+            personnelName={personnelName}
+            onFetchData={props.onFetchData}
+            onAlert={props.onAlert}
+          />
           {/* <div>this is it</div> */}
         </Route>
       </Switch>

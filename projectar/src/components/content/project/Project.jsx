@@ -28,6 +28,7 @@ import Bay from "../../bay/Bay";
 import Button from "../uiElements/Button";
 import TaskDetailsStatus from "./task/TaskDetailsStatus";
 import Can from "../../Can";
+import fetchTasksPersonnel from "./task/fetchTasksPersonnel";
 
 const Styles = styled.div`
   .project {
@@ -102,33 +103,12 @@ const Project = (props) => {
   useEffect(
     () => {
       let assignedPersonnel = [];
-      const fetchTasksPersonnel = async () => {
-        try {
-          data.forEach((task) =>
-            trackPromise(
-              props
-                .onFetchData(`/api/task/enrolments/${task.id}`)
-                .then((data) => {
-                  return data;
-                })
-                .then(({ data }) => {
-                  try {
-                    let personnel = data.map((personnel) => {
-                      return {
-                        label: personnel.name,
-                        value: personnel.id,
-                        id: task.id,
-                      };
-                    });
-                    assignedPersonnel = assignedPersonnel.concat(personnel);
-                    setTasksPersonnel(assignedPersonnel);
-                  } catch (err) {}
-                })
-            )
-          );
-        } catch (err) {}
-      };
-      fetchTasksPersonnel();
+      fetchTasksPersonnel(
+        data,
+        props.onFetchData,
+        setTasksPersonnel,
+        assignedPersonnel
+      );
     },
     [tasks]
   ); //the location.state changes after editing success: this should refresh assigned personnel list

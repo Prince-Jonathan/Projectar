@@ -181,7 +181,7 @@ const App = (props) => {
     fetchProjectTasks();
     JSON.parse(localStorage.getItem("netsuite")) &&
       fetchPersonnelTasks(JSON.parse(localStorage.getItem("netsuite")).id);
-    // fetchPersonnel();
+    fetchPersonnel();
   }, []);
 
   const handleAuthenticate = (user) => {
@@ -284,6 +284,7 @@ const App = (props) => {
               personnel={personnel}
               selectedID={selectedID}
               onFetchData={fetchData}
+              onAlert={handleAlert}
               toggler={isTaskCreated}
             />
           </PrivateRoute>

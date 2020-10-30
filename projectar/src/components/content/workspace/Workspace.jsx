@@ -209,8 +209,7 @@ const Workspace = (props) => {
             />
 
             <Element
-              onClick={() => history.push("/")}
-              // onClick={() => history.push("/personnel")}
+              onClick={() => history.push("/personnel")}
               flabel="View"
               slabel="Personnel"
               icon="fa fa-users fa-lg"

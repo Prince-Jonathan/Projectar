@@ -259,24 +259,41 @@ def get_user(user_id):
 			"msg":"An error occured while trying to fetch user with ID: %d" % user_id
 		}
 
+# @app.route('/api/user/all')
+# def all_users():
+# 	'''Get all users'''
+# 	data = []
+# 	try:
+# 		users = User.query.order_by(User.id).all()
+# 		# fetch(users, data)
+# 		# return {
+# 		# 	"success":True,
+# 		# 	"data":data
+# 		# }
+# 		return jsonify(Task.serialize_list(users))
+# 	except SQLAlchemyError as err:
+# 		print(err)
+# 		return {
+# 			"success":False	
+# 		}
+
 @app.route('/api/user/all')
 def all_users():
 	'''Get all users'''
 	data = []
 	try:
-		users = User.query.order_by(User.id).all()
+		users = netsuite_req({"request": "resources"})["data"]
 		# fetch(users, data)
 		# return {
 		# 	"success":True,
 		# 	"data":data
 		# }
-		return jsonify(Task.serialize_list(users))
+		return jsonify(users)
 	except SQLAlchemyError as err:
 		print(err)
 		return {
 			"success":False	
 		}
-
 # @app.route('/api/project/all')
 # def all_projects():
 # 	'''Get all Projects'''
