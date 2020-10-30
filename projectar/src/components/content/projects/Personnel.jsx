@@ -66,14 +66,11 @@ const Personnel = (props) => {
   const { url, path } = useRouteMatch();
   const [tasks, setTasks] = useState([]);
 
-  const [personnelName, setPersonnelName] = useState("");
-
   const data = React.useMemo(() => props.personnel, [props.personnel]);
-  console.log("prop", props.personnel);
   const fetchTasks = (personnelID) =>
     props
       .onFetchData(`/api/user/tasks/${personnelID}`)
-      .then(({ data }) => (data.success ? setTasks(data.data) : null));
+      .then(({ data }) => (data.success ? setTasks(data.data) : setTasks([])));
   const handleTaskDelete = (personnelID) => {
     fetchTasks(personnelID);
   };
@@ -95,8 +92,9 @@ const Personnel = (props) => {
   );
   const handleClick = ({ row }) => {
     fetchTasks(row.original.id);
-    setPersonnelName(row.original.name);
-    history.push(`${path}/${row.original.id}/tasks`);
+    history.push(`${path}/${row.original.id}/tasks`, {
+      personnelName: row.original.name,
+    });
   };
   return (
     <div>
@@ -114,9 +112,9 @@ const Personnel = (props) => {
         <Route path={`${path}/:id/tasks`}>
           <PersonnelTasks
             tasks={tasks}
-            personnelName={personnelName}
             projects={props.projects}
             toggler={handleTaskDelete}
+            fetchTasks={fetchTasks}
             onFetchData={props.onFetchData}
             onAlert={props.onAlert}
           />

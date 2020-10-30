@@ -58,9 +58,9 @@ const EditTask = (props) => {
   let task;
   useEffect(
     () => {
-      task = props.tasks && props.tasks.filter(
-        (t) => parseInt(t.id) === location.state.taskID
-      )[0];
+      task =
+        props.tasks &&
+        props.tasks.filter((t) => parseInt(t.id) === location.state.taskID)[0];
       setState({
         ...task,
         target: task ? task.details[0].target : null,
@@ -157,9 +157,11 @@ const EditTask = (props) => {
   };
 
   const handleSelection = (selectedOption) => {
-    const personnel = selectedOption.map((option) => {
-      return { name: option.label, id: option.value };
-    });
+    const personnel =
+      selectedOption &&
+      selectedOption.map((option) => {
+        return { name: option.label, id: option.value };
+      });
     setState({ ...state, personnel });
   };
 

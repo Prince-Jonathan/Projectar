@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory, useRouteMatch, useParams } from "react-router-dom";
+import {
+  Link,
+  useHistory,
+  useRouteMatch,
+  useParams,
+  useLocation,
+} from "react-router-dom";
 import styled from "styled-components";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import CKEditor from "@ckeditor/ckeditor5-react";
@@ -66,10 +72,16 @@ const Styles = styled.div`
 const PersonnelTasks = (props) => {
   const history = useHistory();
   const { url } = useRouteMatch();
-  const id = useParams();
+  const location = useLocation();
+  const { id } = useParams();
+  const [project, setProject] = useState();
   const [tasksPersonnel, setTasksPersonnel] = useState([]);
 
   let data = React.useMemo(() => props.tasks, [props.tasks]);
+  // code below sustains tasks list on refresh. however issue remains: personnel name label and on clicking expand button
+  useEffect(() => {
+    props.fetchTasks(id);
+  }, []);
   useEffect(
     () => {
       let assignedPersonnel = [];
@@ -82,11 +94,12 @@ const PersonnelTasks = (props) => {
     },
     [data]
   );
-  data.sort((a, b) => {
-    let dateA = new Date(a.date),
-      dateB = new Date(b.date);
-    return dateB - dateA;
-  });
+  data &&
+    data.sort((a, b) => {
+      let dateA = new Date(a.date),
+        dateB = new Date(b.date);
+      return dateB - dateA;
+    });
 
   const columns = React.useMemo(
     () => {
@@ -137,7 +150,6 @@ const PersonnelTasks = (props) => {
       timeout: 3000,
       position: "bottom center",
     });
-    console.log("this is id", id);
     props
       .onFetchData(`/api/task/delete/${taskID}`)
       .then(() => props.toggler(id))
@@ -165,10 +177,7 @@ const PersonnelTasks = (props) => {
                     <Button
                       onClick={() => {
                         // props.onShowTask(row.original.id);
-                        history.push(`${url}`, {
-                          // ...{
-                          //   taskType: location.state && location.state.taskType,
-                          // },
+                        history.push("/project/" + row.original.project_id, {
                           taskID: row.original.id,
                           projectID: row.original.project_id,
                         });
@@ -178,7 +187,7 @@ const PersonnelTasks = (props) => {
                     </Button>
                     <Button
                       onClick={() => {
-                        history.push(`${url}`, {
+                        history.push("/project/" + row.original.project_id, {
                           ...{
                             // taskType: location.state && location.state.taskType,
                           },
@@ -251,7 +260,7 @@ const PersonnelTasks = (props) => {
       </div>
     ),
     // [tasksPersonnel, data, project]
-    [tasksPersonnel, data]
+    [tasksPersonnel, props.projects, data]
   );
   const handleOClick = ({ row }) => {
     history.push(`${url}/${row.original.id}/execute`, {
@@ -283,7 +292,10 @@ const PersonnelTasks = (props) => {
         // outstanding={true}
         captions={
           <>
-            <Caption flabel="Tasks" slabel={`-${props.personnelName}`} />
+            <Caption
+              flabel="Tasks"
+              slabel={`-${location.state && location.state.personnelName}`}
+            />
             <Caption
               flabel=""
               // flabel={project ? (project[0] ? project[0].name : null) : null}

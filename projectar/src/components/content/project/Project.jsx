@@ -232,7 +232,7 @@ const Project = (props) => {
                     <Button
                       onClick={() => {
                         // props.onShowTask(row.original.id);
-                        history.push(`${url}`, {
+                        history.push("/project/" + row.original.project_id, {
                           ...{
                             taskType: location.state && location.state.taskType,
                           },
@@ -245,7 +245,7 @@ const Project = (props) => {
                     </Button>
                     <Button
                       onClick={() => {
-                        history.push(`${url}`, {
+                        history.push("/project/" + row.original.project_id, {
                           ...{
                             taskType: location.state && location.state.taskType,
                           },
@@ -377,7 +377,7 @@ const Project = (props) => {
               <Slate>
                 <Table
                   columns={columns}
-                  data={data}
+                  data={data || []}
                   renderRowSubComponent={renderRowSubComponent}
                 />
               </Slate>
@@ -389,9 +389,9 @@ const Project = (props) => {
                   onAlert={props.onAlert}
                   onFetchTasks={props.onFetchTasks}
                   onTaskUpdate={props.onTaskUpdate}
-                  projectPersonnel={projectPersonnel}
-                  tasksPersonnel={tasksPersonnel}
-                  tasks={props.tasks}
+                  projectPersonnel={projectPersonnel || []}
+                  tasksPersonnel={tasksPersonnel || []}
+                  tasks={props.tasks || []}
                   resetSelectedTaskID={props.resetSelectedTaskID}
                   onFetchData={props.onFetchData}
                 />{" "}
