@@ -210,7 +210,7 @@ const App = (props) => {
     push(`/${value}`, {
       taskType:
         types[JSON.parse(localStorage.getItem("netsuite")).role.toLowerCase()],
-      taskStatus: extras,
+      ...extras,
     });
   };
   const handleAlert = (method, msg, options) => {
@@ -285,7 +285,6 @@ const App = (props) => {
               selectedID={selectedID}
               onFetchData={fetchData}
               onAlert={handleAlert}
-              toggler={handleTaskDelete}
               projects={projects}
             />
           </PrivateRoute>

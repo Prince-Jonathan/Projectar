@@ -73,9 +73,10 @@ const Personnel = (props) => {
   const fetchTasks = (personnelID) =>
     props
       .onFetchData(`/api/user/tasks/${personnelID}`)
-      //check if messsage exists: msg only exist on error
       .then(({ data }) => (data.success ? setTasks(data.data) : null));
-
+  const handleTaskDelete = (personnelID) => {
+    fetchTasks(personnelID);
+  };
   const columns = React.useMemo(
     () => {
       const column = [
@@ -115,7 +116,7 @@ const Personnel = (props) => {
             tasks={tasks}
             personnelName={personnelName}
             projects={props.projects}
-            toggler={props.toggler}
+            toggler={handleTaskDelete}
             onFetchData={props.onFetchData}
             onAlert={props.onAlert}
           />

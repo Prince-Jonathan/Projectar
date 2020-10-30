@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, useHistory, useRouteMatch, useParams } from "react-router-dom";
 import styled from "styled-components";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import CKEditor from "@ckeditor/ckeditor5-react";
@@ -66,6 +66,7 @@ const Styles = styled.div`
 const PersonnelTasks = (props) => {
   const history = useHistory();
   const { url } = useRouteMatch();
+  const id = useParams();
   const [tasksPersonnel, setTasksPersonnel] = useState([]);
 
   let data = React.useMemo(() => props.tasks, [props.tasks]);
@@ -136,9 +137,10 @@ const PersonnelTasks = (props) => {
       timeout: 3000,
       position: "bottom center",
     });
+    console.log("this is id", id);
     props
       .onFetchData(`/api/task/delete/${taskID}`)
-      .then(() => props.toggler())
+      .then(() => props.toggler(id))
       .then(() =>
         props.onAlert("success", "Task Deleted", {
           timeout: 5000,

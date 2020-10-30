@@ -163,7 +163,7 @@ const Workspace = (props) => {
               onClick={() => history.push("/", { addTask: true })}
               flabel="Add"
               slabel="Task"
-              icon="fa fa-tasks fa-lg"
+              icon="fa fa-plus fa-lg"
             />
             {/* view single personnel tasks */}
             <Can
@@ -358,7 +358,7 @@ const Workspace = (props) => {
                   <Select
                     placeholder="Select from projects list:"
                     onChange={(selectedOption) =>
-                      setSelectedProject(selectedOption.value)
+                      selectedOption && setSelectedProject(selectedOption.value)
                     }
                     options={options}
                     isClearable
@@ -380,7 +380,9 @@ const Workspace = (props) => {
                       alignContent: "center",
                     }}
                   >
-                    <Button className="btn">Progress</Button>
+                    <Button disabled={!selectedProject} className="btn">
+                      Progress
+                    </Button>
                     <Button
                       type="button"
                       className="btn cancel"

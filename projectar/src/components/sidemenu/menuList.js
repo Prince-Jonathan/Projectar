@@ -1,5 +1,10 @@
 const items = [
-  { label: "Quick Add", value: "add", icon: "fa-plus-circle " },
+  {
+    label: "Add Task",
+    value: "",
+    icon: "fa-plus-circle ",
+    extras: { addTask: true },
+  },
   { divider: true, label: "Main navigation", value: "main-nav" },
   {
     label: "Workspace",
@@ -19,12 +24,12 @@ const items = [
       {
         label: "Outstanding",
         value: "project/all/outstanding-tasks",
-        extras: "allOutstanding",
+        extras: { taskStatus: "allOutstanding" },
       },
       {
         label: "Completed",
         value: "project/all/completed-tasks",
-        extras: "allCompleted",
+        extras: { taskStatus: "allCompleted" },
       },
       { label: "All", value: "project/all/tasks" },
     ],
