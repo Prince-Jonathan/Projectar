@@ -114,6 +114,8 @@ const Personnel = (props) => {
           <PersonnelTasks
             tasks={tasks}
             personnelName={personnelName}
+            projects={props.projects}
+            toggler={props.toggler}
             onFetchData={props.onFetchData}
             onAlert={props.onAlert}
           />

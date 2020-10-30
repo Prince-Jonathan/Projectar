@@ -275,9 +275,16 @@ const Project = (props) => {
               taskID={row.original.id}
               tasksPersonnel={tasksPersonnel}
             />
+            {console.log(row.original)}
             <TaskDetailsStatus
               task={data.find((task) => task.id === row.original.id)}
-              projectName={project[0] && project[0].name}
+              projectName={
+                project[0]
+                  ? project[0].name
+                  : props.projects.filter(
+                      (project) => project.id === row.original.project_id
+                    )[0].name
+              }
             />
           </div>
         </Styles>

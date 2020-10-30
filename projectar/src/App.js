@@ -285,7 +285,8 @@ const App = (props) => {
               selectedID={selectedID}
               onFetchData={fetchData}
               onAlert={handleAlert}
-              toggler={isTaskCreated}
+              toggler={handleTaskDelete}
+              projects={projects}
             />
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/project/:id">

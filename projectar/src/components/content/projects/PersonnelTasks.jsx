@@ -208,7 +208,11 @@ const PersonnelTasks = (props) => {
             />
             <TaskDetailsStatus
               task={data.find((task) => task.id === row.original.id)}
-              // projectName={project[0] && project[0].name}
+              projectName={
+                props.projects.filter(
+                  (project) => project.id === row.original.project_id
+                )[0].name
+              }
             />
           </div>
         </Styles>
@@ -248,12 +252,17 @@ const PersonnelTasks = (props) => {
     [tasksPersonnel, data]
   );
   const handleOClick = ({ row }) => {
-    history.push(`${url}/outstanding-tasks/${row.original.id}/execute`, {
+    history.push(`${url}/${row.original.id}/execute`, {
       // ...location.state,
       taskID: row.original.id,
       projectID: row.original.project_id,
       entry_type: 2,
-      taskStatus: "outstanding",
+      taskStatus:
+        parseInt(row.original.details[0].target) === 100 &&
+        parseInt(row.original.details[0].target) ===
+          parseInt(row.original.details[0].achieved)
+          ? "completed"
+          : "outstanding",
     });
   };
 
@@ -272,10 +281,7 @@ const PersonnelTasks = (props) => {
         // outstanding={true}
         captions={
           <>
-            <Caption
-              flabel="Tasks"
-              slabel={`-${props.personnelName}`}
-            />
+            <Caption flabel="Tasks" slabel={`-${props.personnelName}`} />
             <Caption
               flabel=""
               // flabel={project ? (project[0] ? project[0].name : null) : null}
@@ -291,8 +297,7 @@ const PersonnelTasks = (props) => {
         onTaskUpdate={props.onTaskUpdate}
         projectPersonnel={[]}
         // projectPersonnel={projectPersonnel}
-        tasksPersonnel={[]}
-        // tasksPersonnel={tasksPersonnel}
+        tasksPersonnel={tasksPersonnel}
         onAlert={props.onAlert}
         postData={props.postData}
         // project={project}
