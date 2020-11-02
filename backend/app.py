@@ -15,7 +15,8 @@ APP = Flask(__name__)
 cors=CORS(APP, resources={r"/api/*": {"origins": "*"}})
 APP.config['CORS_HEADERS'] = ["Content-Type"]
 
-APP.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jona:jona132435@35.202.128.59:5432/projectar'
+# APP.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jona:jona132435@35.202.128.59:5432/projectar'
+APP.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:admin@localhost:5432/projectar'
 # consumes lot of memory: set to false
 APP.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
