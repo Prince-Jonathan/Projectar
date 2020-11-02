@@ -85,6 +85,7 @@ const Project = (props) => {
   const [tasksPersonnel, setTasksPersonnel] = useState([]);
 
   const fetchProjectPersonnel = async () => {
+    // setProjectPersonnel([]);
     try {
       trackPromise(
         props
@@ -96,9 +97,12 @@ const Project = (props) => {
     } catch (err) {}
   };
 
-  useEffect(() => {
-    fetchProjectPersonnel();
-  }, []);
+  useEffect(
+    () => {
+      fetchProjectPersonnel();
+    },
+    [id]
+  );
 
   useEffect(
     () => {
