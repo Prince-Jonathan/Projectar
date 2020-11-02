@@ -203,13 +203,11 @@ const PersonnelTasks = (props) => {
             />
             <TaskDetailsStatus
               task={data.find((task) => task.id === row.original.id)}
-              projectName={() => {
-                try {
-                  return props.projects.filter(
-                    (project) => project.id === row.original.project_id
-                  )[0].name;
-                } catch (err) {}
-              }}
+              projectName={
+                props.projects.filter(
+                  (project) => project.id === row.original.project_id
+                )[0].name
+              }
             />
           </div>
         </Styles>
