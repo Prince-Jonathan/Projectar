@@ -360,6 +360,13 @@ const Project = (props) => {
   const handleToggleFetchAttendance = () => {
     setToggleFetchAttendance((prevState) => !prevState);
   };
+  let assignedPersonnel = location.state
+    ? tasksPersonnel.filter(
+        (personnel) =>
+          parseInt(personnel.id) === parseInt(location.state.taskID)
+      )
+    : null;
+
   const caption = {
     default: "",
     outstanding: "-Outstanding",
@@ -382,7 +389,7 @@ const Project = (props) => {
                 />
               </Slate>
             </Wrapper>
-            {location.state ? (
+            {location.state && assignedPersonnel.length ? (
               <Bay>
                 <EditTask
                   postData={props.postData}
@@ -390,7 +397,8 @@ const Project = (props) => {
                   onFetchTasks={props.onFetchTasks}
                   onTaskUpdate={props.onTaskUpdate}
                   projectPersonnel={projectPersonnel || []}
-                  tasksPersonnel={tasksPersonnel || []}
+                  assignedPersonnel={assignedPersonnel}
+                  tasksPersonnel={tasksPersonnel}
                   tasks={props.tasks || []}
                   resetSelectedTaskID={props.resetSelectedTaskID}
                   onFetchData={props.onFetchData}

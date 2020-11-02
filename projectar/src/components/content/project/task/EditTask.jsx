@@ -29,7 +29,9 @@ const Button = styled.button`
 const EditTask = (props) => {
   const location = useLocation();
   const history = useHistory();
+
   const [startDate, setStartDate] = useState({ date: new Date() });
+
   const [state, setState] = useState({
     title: "",
     description: "",
@@ -38,7 +40,6 @@ const EditTask = (props) => {
     personnel: null,
     entry_type: null,
   });
-  const [assignedPersonnel, setAssignedPersonnel] = useState([]);
 
   const options = useMemo(
     () =>
@@ -50,17 +51,9 @@ const EditTask = (props) => {
     [props.projectPersonnel]
   );
 
-  useEffect(
-    () => {
-      setAssignedPersonnel(
-        props.tasksPersonnel.filter(
-          (personnel) =>
-            parseInt(personnel.id) === parseInt(location.state.taskID)
-        )
-      );
-    },
-    [props.tasksPersonnel]
-  );
+  // const assignedPersonnel = props.tasksPersonnel.filter(
+  //   (personnel) => parseInt(personnel.id) === parseInt(location.state.taskID)
+  // );
 
   let task;
   useEffect(
@@ -101,12 +94,12 @@ const EditTask = (props) => {
 
     let personnel =
       state.personnel ||
-      assignedPersonnel.map((personnel) => {
+      props.assignedPersonnel.map((personnel) => {
         return { name: personnel.label, id: personnel.value };
       });
     let targets = state.personnel
       ? state.personnel.map((personnel) => personnel.id)
-      : assignedPersonnel.map((personnel) => personnel.value);
+      : props.assignedPersonnel.map((personnel) => personnel.value);
 
     let task = {
       ...state,
@@ -242,12 +235,11 @@ const EditTask = (props) => {
             showTimeInput
           />
         </div>
-
         <Select
           isMulti
           placeholder="Assign to:"
           onChange={handleSelection}
-          defaultValue={assignedPersonnel}
+          defaultValue={props.assignedPersonnel}
           options={options}
           isClearable
           styles={{ menuPortal: (base) => ({ ...base, zIndex: 200 }) }}
