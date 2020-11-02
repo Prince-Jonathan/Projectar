@@ -282,10 +282,13 @@ const App = (props) => {
             <Personnel
               onSelect={(id) => setSelectedID(id)}
               personnel={personnel}
+              projectsTasks={projectsTasks}
               selectedID={selectedID}
               onFetchData={fetchData}
               onAlert={handleAlert}
               projects={projects}
+              postData={postData}
+              onTaskUpdate={handleTaskCreated}
             />
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/project/:id">

@@ -29,9 +29,7 @@ const Button = styled.button`
 const EditTask = (props) => {
   const location = useLocation();
   const history = useHistory();
-
   const [startDate, setStartDate] = useState({ date: new Date() });
-
   const [state, setState] = useState({
     title: "",
     description: "",
@@ -40,6 +38,7 @@ const EditTask = (props) => {
     personnel: null,
     entry_type: null,
   });
+  const [assignedPersonnel, setAssignedPersonnel] = useState([]);
 
   const options = useMemo(
     () =>
@@ -51,8 +50,16 @@ const EditTask = (props) => {
     [props.projectPersonnel]
   );
 
-  const assignedPersonnel = props.tasksPersonnel.filter(
-    (personnel) => parseInt(personnel.id) === parseInt(location.state.taskID)
+  useEffect(
+    () => {
+      setAssignedPersonnel(
+        props.tasksPersonnel.filter(
+          (personnel) =>
+            parseInt(personnel.id) === parseInt(location.state.taskID)
+        )
+      );
+    },
+    [props.tasksPersonnel]
   );
 
   let task;

@@ -117,6 +117,9 @@ const Personnel = (props) => {
             fetchTasks={fetchTasks}
             onFetchData={props.onFetchData}
             onAlert={props.onAlert}
+            postData={props.postData}
+            onTaskUpdate={props.onTaskUpdate}
+            projectsTasks={props.projectsTasks}
           />
           {/* <div>this is it</div> */}
         </Route>

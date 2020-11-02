@@ -186,6 +186,7 @@ const AllTasks = (props) => {
               data={data}
               renderRowSubComponent={renderRowSubComponent}
               selectedTaskID={selectedTaskID}
+              postData={props.postData}
             />
           </Route>
           <Route path={`${path}/completed-tasks`}>

@@ -60,9 +60,12 @@ const PersonnelTasks = (props) => {
 
   let data = React.useMemo(() => props.tasks, [props.tasks]);
   // code below sustains tasks list on refresh. however issue remains: personnel name label and on clicking expand button
-  useEffect(() => {
-    props.fetchTasks(id);
-  }, []);
+  useEffect(
+    () => {
+      props.fetchTasks(id);
+    },
+    [props.projectsTasks]
+  );
   useEffect(
     () => {
       let assignedPersonnel = [];
@@ -200,11 +203,13 @@ const PersonnelTasks = (props) => {
             />
             <TaskDetailsStatus
               task={data.find((task) => task.id === row.original.id)}
-              projectName={
-                props.projects.filter(
-                  (project) => project.id === row.original.project_id
-                )[0].name
-              }
+              projectName={() => {
+                try {
+                  return props.projects.filter(
+                    (project) => project.id === row.original.project_id
+                  )[0].name;
+                } catch (err) {}
+              }}
             />
           </div>
         </Styles>
