@@ -84,12 +84,12 @@ const Project = (props) => {
   const [projectPersonnel, setProjectPersonnel] = useState([]);
   const [tasksPersonnel, setTasksPersonnel] = useState([]);
 
-  const fetchProjectPersonnel = async () => {
+  const fetchProjectPersonnel = async (projectID) => {
     // setProjectPersonnel([]);
     try {
       trackPromise(
         props
-          .onFetchData(`/api/project/enrolments/${id}`)
+          .onFetchData(`/api/project/enrolments/${projectID}`)
           .then(({ data: { data } }) => {
             setProjectPersonnel(data);
           })
@@ -99,9 +99,9 @@ const Project = (props) => {
 
   useEffect(
     () => {
-      fetchProjectPersonnel();
+      fetchProjectPersonnel(location.state.projectID);
     },
-    [id]
+    [id, location.state.projectID]
   );
 
   useEffect(
@@ -450,7 +450,7 @@ const Project = (props) => {
               clickable={handleOClick}
               // selectedTaskID={selectedTaskID}
               onTaskUpdate={props.onTaskUpdate}
-              projectPersonnel={projectPersonnel}
+              projectPersonnel={projectPersonnel || []}
               tasksPersonnel={tasksPersonnel}
               onAlert={props.onAlert}
               postData={props.postData}

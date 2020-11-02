@@ -9,6 +9,7 @@ import {
 import styled from "styled-components";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import CKEditor from "@ckeditor/ckeditor5-react";
+import { trackPromise } from "react-promise-tracker";
 
 import Table from "../../table/Table";
 import Slate from "../slate/Slate";
@@ -57,9 +58,27 @@ const PersonnelTasks = (props) => {
   const { id } = useParams();
   const [project, setProject] = useState();
   const [tasksPersonnel, setTasksPersonnel] = useState([]);
+  const [projectPersonnel, setProjectPersonnel] = useState([]);
 
   let data = React.useMemo(() => props.tasks, [props.tasks]);
-  // code below sustains tasks list on refresh. however issue remains: personnel name label and on clicking expand button
+  const fetchProjectPersonnel = async (projectID) => {
+    // setProjectPersonnel([]);
+    try {
+      trackPromise(
+        props
+          .onFetchData(`/api/project/enrolments/${projectID}`)
+          .then(({ data: { data } }) => {
+            setProjectPersonnel(data);
+          })
+      );
+    } catch (err) {}
+  };
+  useEffect(
+    () => {
+      fetchProjectPersonnel(location.state.projectID);
+    },
+    [location.state.projectID]
+  );
   useEffect(
     () => {
       props.fetchTasks(id);
@@ -293,8 +312,7 @@ const PersonnelTasks = (props) => {
         clickable={handleOClick}
         // selectedTaskID={selectedTaskID}
         onTaskUpdate={props.onTaskUpdate}
-        projectPersonnel={[]}
-        // projectPersonnel={projectPersonnel}
+        projectPersonnel={projectPersonnel || []}
         tasksPersonnel={tasksPersonnel}
         onAlert={props.onAlert}
         postData={props.postData}
