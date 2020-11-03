@@ -26,14 +26,17 @@ const Button = styled.button`
 const Announcements = (props) => {
   const history = useHistory();
 
-  // // verify if task is updatable: against 24hrs
-  // const isUpdatable = props.state.details
-  //   ? new Date().getTime() -
-  //       new Date(props.state.details[0].date_updated).getTime() <
-  //     1000 * 60 * 60 * 24
-  //   : true;
-
   let data = props.announcement;
+  console.log("data", data);
+  // verify if announcement is exceeds 30 days
+  data =
+    data &&
+    data.filter(
+      (announcement) =>
+        new Date().getTime() - new Date(announcement.date).getTime() <
+        1000 * 60 * 60 * 24 * 30
+    );
+
   const columns = React.useMemo(
     () => {
       let forDesktop = [

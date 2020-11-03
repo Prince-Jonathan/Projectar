@@ -52,7 +52,7 @@ const TaskDetailsStatus = (props) => {
             taskDetails: props.task && props.task.details,
             taskInfo: props.task && props.task.title.toUpperCase(),
             taskID: props.task && props.task.id,
-            projectID: id,
+            projectID: props.task.project_id,
             projectName: props.projectName,
           })
         }

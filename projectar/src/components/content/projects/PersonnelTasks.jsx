@@ -58,10 +58,10 @@ const PersonnelTasks = (props) => {
   const { id } = useParams();
   const [project, setProject] = useState();
   const [tasksPersonnel, setTasksPersonnel] = useState([]);
-  // const [projectPersonnel, setProjectPersonnel] = useState([]);
+  const [projectPersonnel, setProjectPersonnel] = useState([]);
 
   let data = React.useMemo(() => props.tasks, [props.tasks]);
-  let projectPersonnel = [];
+  // let projectPersonnel = [];
   const fetchProjectPersonnel = async (projectID) => {
     // setProjectPersonnel([]);
     try {
@@ -69,7 +69,9 @@ const PersonnelTasks = (props) => {
         props
           .onFetchData(`/api/project/enrolments/${projectID}`)
           .then(({ data: { data } }) => {
-            projectPersonnel = data;
+            // projectPersonnel = data;
+            setProjectPersonnel(data);
+            console.log(projectPersonnel);
           })
       );
     } catch (err) {}
@@ -78,7 +80,7 @@ const PersonnelTasks = (props) => {
     () => {
       fetchProjectPersonnel(location.state.projectID);
     },
-    [location.state.projectID]
+    [location.state.projectID, location.state.entry_type]
   );
   useEffect(
     () => {

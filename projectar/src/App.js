@@ -51,6 +51,7 @@ const App = (props) => {
   // const baseUrl = "https://projectar.devcodes.co";
   // const baseUrl = "https://6be0ddc2367e.ngrok.io";
   const baseUrl = "http://localhost:8050";
+  // const baseUrl = "http://10.20.100.27:8050";
 
   const OneSignal = window.OneSignal;
   try {

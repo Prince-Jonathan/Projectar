@@ -84,6 +84,7 @@ const Project = (props) => {
   const [projectPersonnel, setProjectPersonnel] = useState([]);
   const [tasksPersonnel, setTasksPersonnel] = useState([]);
 
+  // let projectPersonnel =[];
   const fetchProjectPersonnel = async (projectID) => {
     // setProjectPersonnel([]);
     try {

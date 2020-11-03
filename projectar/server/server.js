@@ -7,21 +7,35 @@ let path = require("path");
 var cors = require("cors");
 // const fileParser = require("express-multipart-file-parser");
 const multiparty = require("connect-multiparty");
+const { spawn } = require('child_process');
+
+const python = spawn('py', ['../../backend/run.py']);
+
+python.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`);
+});
+python.stderr.on('data', (data) => {
+  console.error(`stderr: ${data}`);
+  process.kill(process.pid);
+});
+python.on('data', (data) => {
+  console.log("python backend down!");
+});
+
 
 const MultipartyMiddleWare = multiparty({ uploadDir: "./images" });
 
 const app = express();
 
 app.use(cors({ credentials: false }));
-app.use(express.static(path.join("..", "build")));
+app.use(express.static(path.join('..', 'build')));
 app.use(express.static(__dirname + "/uploads"));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const PORT = process.env.PORT || 9000;
 
-app.get("/*", function(req, res) {
-  cl;
-  res.sendFile(path.join(__dirname, "../build/index.html"));
+app.get('/*', function(req, res) {
+res.sendFile(path.join(__dirname,  '../build/index.html'));
 });
 // app.listen(PORT)
 
@@ -52,6 +66,7 @@ app.get("/*", function(req, res) {
 // });
 
 app.post("/upload", MultipartyMiddleWare, (req, res) => {
+  console.log(req.files);
   const tempFile = req.files.upload;
   const tempFilePath = tempFile.path;
   const targetPath = path.join(__dirname, "./uploads/" + tempFile.name);
@@ -63,20 +78,24 @@ app.post("/upload", MultipartyMiddleWare, (req, res) => {
     fs.rename(tempFilePath, targetPath, (err) => {
       res.status(200).json({
         uploaded: true,
-        // url: `https://a1f4767f01bb.ngrok.io/${tempFile.originalFilename}`,
-        url: `/${tempFile.originalFilename}`,
-        // url: `./${tempFile.originalFilename}`,
+        // url: `http://localhost:3001/${tempFile.originalFilename}`,
+        url: `https://projectar.devcodes.co/${tempFile.originalFilename}`,
       });
+
+      if (err) return console.log(err);
     });
   }
 });
 
 app.post("/delete_file", function(req, res, next) {
   let url_del = "public" + req.body.url_del;
+  console.log(url_del);
   if (fs.existsSync(url_del)) {
     fs.unlinkSync(url_del);
   }
   res.redirect("back");
 });
 
-app.listen(PORT, function() {});
+app.listen(PORT, function() {
+  console.log(`Server running on port ${PORT}`);
+});

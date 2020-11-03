@@ -36,7 +36,17 @@ const items = [
   },
   { label: "Reports", value: "reports", icon: "fa-book" },
   { divider: true, label: "Others", value: "Others" },
-  { label: "Configuration", value: "configuration", icon: "fa-cogs" },
+  {
+    label: "Configuration",
+    value: "configuration",
+    icon: "fa-cogs",
+    children: [
+      {
+        label: "Announcements",
+        value: "config/announcement",
+      },
+    ],
+  },
 ];
 
 export default items;
