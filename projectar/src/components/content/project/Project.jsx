@@ -288,7 +288,11 @@ const Project = (props) => {
                   ? project[0].name
                   : props.projects.filter(
                       (project) => project.id === row.original.project_id
+                    )[0]
+                  ? props.projects.filter(
+                      (project) => project.id === row.original.project_id
                     )[0].name
+                  : null
               }
             />
           </div>

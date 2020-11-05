@@ -21,6 +21,7 @@ import { Column, Row } from "./components/Grid";
 import Report from "./components/content/reports/Report";
 import Export from "./components/content/Export";
 import LoadingIndicator from "./components/loader/LoadingIndicator";
+import Config from "./components/config/Config";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -47,6 +48,7 @@ const App = (props) => {
   const [isTaskCreated, setIsTaskCreated] = useState(false);
   const [isTaskDeleted, setIsTaskDeleted] = useState(true);
   const [announcement, setAnnouncement] = useState(null);
+  const [announcementSpan, setAnnouncementSpan] = useState();
 
   // const baseUrl = "https://projectar.devcodes.co";
   // const baseUrl = "https://6be0ddc2367e.ngrok.io";
@@ -277,6 +279,7 @@ const App = (props) => {
               postData={postData}
               onFetchData={fetchData}
               toggler={isTaskCreated}
+              announcementSpan={announcementSpan}
             />
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/personnel">
@@ -325,6 +328,11 @@ const App = (props) => {
           </PrivateRoute>
           <PrivateRoute isAuthenticated={isAuthenticated} path="/reports">
             <Report />
+          </PrivateRoute>
+          <PrivateRoute isAuthenticated={isAuthenticated} path="/config">
+            <Bay>
+              <Config />
+            </Bay>
           </PrivateRoute>
           {/* <Route path="*">
             <Redirect to="/" />

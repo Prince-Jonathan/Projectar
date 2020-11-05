@@ -223,6 +223,7 @@ const Workspace = (props) => {
           </Style>
           <Announcements
             announcement={props.announcement}
+            announcementSpan={props.announcementSpan}
             onFetchData={props.onFetchData}
           />
           {location.state && location.state.sendAnnouncement ? (

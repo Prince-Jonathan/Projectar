@@ -1,14 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import Input from "../../content/uiElements/Input";
 
-const Input = styled.input`
-  padding: 0.5em;
-  margin: 0.5em;
-  color: black;
-  background: white;
-  border: none;
-  border-radius: 3px;
-`;
 const ColumnFilter = ({
   column: { filterValue, preFilteredRows, setFilter },
 }) => {

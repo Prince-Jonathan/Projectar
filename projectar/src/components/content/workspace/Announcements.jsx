@@ -34,7 +34,7 @@ const Announcements = (props) => {
     data.filter(
       (announcement) =>
         new Date().getTime() - new Date(announcement.date).getTime() <
-        1000 * 60 * 60 * 24 * 30
+        1000 * 60 * 60 * 24 * props.announcementSpan
     );
 
   const columns = React.useMemo(
