@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 export const useFetch = (url) => {
   const isCurrent = useRef(true);
   const [state, setState] = useState({ data: null, loading: true });
-  const baseUrl = "https://projectar.devcodes.co";
+  const baseUrl = "https://projectar.automationghana.com";
   useEffect(
     () => {
       setState({ data: state.data, loading: true });

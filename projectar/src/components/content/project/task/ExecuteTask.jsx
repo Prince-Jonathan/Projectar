@@ -219,7 +219,7 @@ const ExecuteTask = (props) => {
                 config={{
                   ckfinder: {
                     maxSize: 3000,
-                    uploadUrl: "https://projectar.devcodes.co/upload",
+                    uploadUrl: "https://projectar.automationghana.com/upload",
                   },
                   placeholder: "What is your comment?",
                 }}
@@ -395,7 +395,7 @@ const ExecuteTask = (props) => {
                   config={{
                     ckfinder: {
                       maxSize: 3000,
-                      uploadUrl: "https://projectar.devcodes.co/upload",
+                      uploadUrl: "https://projectar.automationghana.com/upload",
                     },
                     placeholder: "What is your comment?",
                   }}

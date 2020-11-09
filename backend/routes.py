@@ -1,8 +1,9 @@
 '''
 This Script holds all routes to endpoints 
 '''
+import os
 import asyncio
-from flask import request, redirect, url_for,jsonify
+from flask import request, redirect, url_for,jsonify,send_from_directory
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import text
 from onesignal_sdk.error import OneSignalHTTPError
@@ -22,6 +23,34 @@ from datetime import datetime
 #     return response.body
 
 # loop = asyncio.get_event_loop()
+
+'''serve frontend'''
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/files/<path:filename>')
+def uploaded_files(filename):
+    return send_from_directory(app.static_folder, "uploads/"+filename)
+
+@app.route('/upload', methods=['POST'])
+def upload():
+	f = request.files.get('upload')
+	# Add more validations here
+	extension = f.filename.split('.')[-1].lower()
+	if extension not in ['jpg', 'gif', 'png', 'jpeg']:
+	    return upload_fail(message='Image only!')
+	f.save(os.path.join('./build/uploads', f.filename))
+	url = url_for('uploaded_files', filename=f.filename)
+	return jsonify({
+        "uploaded": True,
+        "url": "https://projectar.automationghana.com/files/"+f.filename,
+      })
+
 async def create_note(note,status):
 	if "targets_include" in note:
 		#code below code be optimised with sets; sets function malware, hence code below:

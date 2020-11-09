@@ -320,7 +320,7 @@ const Project = (props) => {
                 config={{
                   // removePlugins: "toolbar",
                   ckfinder: {
-                    uploadUrl: "https://projectar.devcodes.co/upload",
+                    uploadUrl: "https://projectar.automationghana.com/upload",
                   },
                 }}
               />

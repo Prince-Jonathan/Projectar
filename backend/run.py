@@ -5,7 +5,12 @@ In order to run app, point to run.
 '''
 from app import APP
 from routes import *
+from waitress import serve
+import logging
+
+logging.basicConfig()
+logging.getLogger().setLevel(logging.CRITICAL) # Basically silence all logs from the root logger
 
 if __name__ == "__main__":
-    APP.run(host="0.0.0.0", port=8050, debug=True)
-    
+    serve(APP, host='0.0.0.0', port=8050)
+    #APP.run(host="0.0.0.0", port=8050, debug=False)

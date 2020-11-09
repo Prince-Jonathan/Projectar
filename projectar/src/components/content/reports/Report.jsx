@@ -21,8 +21,10 @@ const App = (props) => {
           onInit={(editor) => {}}
           onChange={handleOnChange}
           config={{
-            // ckfinder: { uploadUrl: "http://localhost:9000/upload" },
-            ckfinder: { uploadUrl: "https://projectar.devcodes.co/upload" },
+            // ckfinder: { uploadUrl: "http://localhost:8000/upload" },
+            ckfinder: {
+              uploadUrl: "https://projectar.automationghana.com/upload",
+            },
             placeholder: "What report will you want drafted?",
           }}
           // onBlur={(event, editor) => {

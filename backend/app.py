@@ -10,7 +10,7 @@ from sqlalchemy.inspection import inspect
 from onesignal_sdk.client import AsyncClient
 
 #initialising flask object
-APP = Flask(__name__)
+APP = Flask(__name__, static_folder='build')
 
 cors=CORS(APP, resources={r"/api/*": {"origins": "*"}})
 APP.config['CORS_HEADERS'] = ["Content-Type"]
