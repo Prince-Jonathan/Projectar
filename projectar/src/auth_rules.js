@@ -54,37 +54,6 @@ const rules = {
       return parseInt(userID) === parseInt(taskCreatorID);
     },
   },
-
-  visitor: {
-    static: ["posts:list", "home-page:visit"],
-  },
-  writer: {
-    static: [
-      "posts:list",
-      "posts:create",
-      "users:getSelf",
-      "home-page:visit",
-      "dashboard-page:visit",
-    ],
-    dynamic: {
-      "posts:edit": ({ userID, postOwnerId }) => {
-        if (!userID || !postOwnerId) return false;
-        return parseInt(userID) === parseInt(postOwnerId);
-      },
-    },
-  },
-  admin: {
-    static: [
-      "posts:list",
-      "posts:create",
-      "posts:edit",
-      "posts:delete",
-      "users:get",
-      "users:getSelf",
-      "home-page:visit",
-      "dashboard-page:visit",
-    ],
-  },
 };
 
 export default rules;

@@ -354,7 +354,7 @@ def all_users():
 @app.route('/api/project/all/<int:user_id>')
 def all_projects(user_id):
 	'''Get all Projects'''
-	data = netsuite_req({"request": "user-projects", "id": user_id})["data"]
+	data = netsuite_req({"request": "user-projects", "id": user_id})["data"] if user_id != 0 else netsuite_req({"request": "projects"})["data"]
 	return {
 		"success":True,
 		"data":data
@@ -767,7 +767,7 @@ def user_projs(personnel_id):
 def proj_users(project_id):
 	'''Get all users that have been enrolled to a project'''
 	data = netsuite_req({"request": "personnel", "project_id": project_id})
-	db_proj = Project.query.get(project_id)
+	print(data)
 	return {
 		"success" : True,
 		"data" : data["data"]
@@ -909,9 +909,11 @@ def project_verbose(proj_id):
 			"personnel_list":[]
 		}
 	except SQLAlchemyError as err:
-		print(err)
+		# print(err)
 		return{
-		"success":False
+		"success":False,
+		"tasks_list":[],
+		"personnel_list":[]
 		}
 
 @app.route('/api/task/verbose/<int:proj_id>')

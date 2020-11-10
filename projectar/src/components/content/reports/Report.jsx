@@ -21,7 +21,7 @@ const App = (props) => {
           onInit={(editor) => {}}
           onChange={handleOnChange}
           config={{
-            // ckfinder: { uploadUrl: "http://localhost:8000/upload" },
+            // ckfinder: { uploadUrl: "http://localhost:8050/upload" },
             ckfinder: {
               uploadUrl: "https://projectar.automationghana.com/upload",
             },

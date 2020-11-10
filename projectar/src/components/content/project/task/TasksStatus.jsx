@@ -14,7 +14,7 @@ const TasksStatus = (props) => {
   //could pass the state of the tasks above through route to the Project component: in order to refresh list on rendering TasksStatus
   useEffect(
     () => {
-      fetchTasks(props.projectID);
+      // fetchTasks(props.projectID);
     },
     [props.toggler, props.projectID]
   );

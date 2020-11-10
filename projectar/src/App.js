@@ -111,8 +111,15 @@ const App = (props) => {
           })
         );
   };
+  let userRole = JSON.parse(
+    localStorage.getItem("netsuite")
+  ).role.toLowerCase();
   const fetchProjects = (userID) =>
-    fetchData(`/api/project/all/${userID}`).then(({ data: { data } }) => {
+    fetchData(
+      `/api/project/all/${
+        userRole === "viewer" || userRole === "project_admin" ? 0 : userID
+      }`
+    ).then(({ data: { data } }) => {
       // fetchData(`/api/project/all`).then(({ data: { data } }) => {
       const concat = data
         ? data.map((project) => {
