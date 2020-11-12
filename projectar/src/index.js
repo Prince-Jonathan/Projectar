@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import LoadingIndicator from "./components/loader/LoadingIndicator";
-import ClearCache from "react-clear-cache";
+// import ClearCache from "react-clear-cache";
 
 import App from "./App";
 
@@ -12,7 +12,7 @@ ReactDOM.render(
   // <React.StrictMode>
   <BrowserRouter>
     <AlertProvider template={AlertTemplate}>
-      <ClearCache auto>
+      {/* <ClearCache auto>
         {({ isLatestVersion, emptyCacheStorage }) => (
           <div>
             {!isLatestVersion && (
@@ -30,7 +30,7 @@ ReactDOM.render(
             )}
           </div>
         )}
-      </ClearCache>
+      </ClearCache> */}
       <App />
       <LoadingIndicator />
     </AlertProvider>
