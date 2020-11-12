@@ -10,7 +10,7 @@ enrolment = db.Table('enrolment',
 			db.Column('id', db.Integer, primary_key=True),
 			db.Column('personnel_id', db.Integer, db.ForeignKey('user.id')),
 			db.Column('project_id', db.Integer, db.ForeignKey('project.id')),
-			db.Column('task_id', db.Integer, db.ForeignKey('task.id')),
+			db.Column('task_detail_id', db.Integer, db.ForeignKey('task_detail.id')),
 			db.Column('announcement_id', db.Integer, db.ForeignKey('announcement.id')),
 			db.Column('date', db.DateTime, default=datetime.utcnow)
 		)
@@ -24,7 +24,7 @@ class User(db.Model, Serializer):
 	# role_id=db.Column(db.Integer, nullable=True)
 
 	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
-	tasks = db.relationship('Task', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
+	task_details = db.relationship('task_detail', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 	announcements = db.relationship('Announcement', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 
 	#date_created =  db.Column(db.DateTime, default=datetime.utcnow)	
@@ -65,7 +65,7 @@ class Task(db.Model, Serializer):
 	
 	creator = db.Column(db.Integer, nullable=False)
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
-	details = db.relationship('Task_Detail', backref='task', lazy=True)
+	details = db.relationship('task_detail', backref='task', lazy=True)
 
 	# target=db.Column(db.String(5), nullable=False)
 	# achieved=db.Column(db.String(5), nullable=True)
@@ -78,7 +78,7 @@ class Task(db.Model, Serializer):
 		return '<Task %r>' % self.title
 
 #Model Task Detailes Table
-class Task_Detail(db.Model, Serializer):
+class task_detail(db.Model, Serializer):
 	id = db.Column(db.Integer, primary_key=True)
 	task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
 	date_updated = db.Column(db.DateTime, default=datetime.utcnow)
@@ -89,7 +89,7 @@ class Task_Detail(db.Model, Serializer):
 	comment = db.Column(db.String(2000), nullable=True)
 
 	def __repr__(self): 
-		return '<Task_Detail %r>' % self.id
+		return '<task_detail %r>' % self.id
 
 #Model Register Table
 class Register(db.Model, Serializer):

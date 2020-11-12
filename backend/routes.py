@@ -9,7 +9,7 @@ from sqlalchemy import text
 from onesignal_sdk.error import OneSignalHTTPError
 import requests
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client, session
-from models import Project, User, Task, Task_Detail, Register, Announcement
+from models import Project, User, Task, task_detail as Task_Detail, Register, Announcement
 from modules import fetch, log, netsuite_req
 from datetime import datetime
 
@@ -458,6 +458,7 @@ def all_tasks():
 def user_announcements(user_id):
 	'''pass user id to return all announcements to specified personnel'''
 	try:
+		print("in announcements endpoint")
 		personnel = User.query.get(user_id)
 		if personnel is not None:
 			announcements = personnel.announcements

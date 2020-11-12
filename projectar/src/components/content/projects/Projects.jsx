@@ -149,6 +149,8 @@ const Projects = (props) => {
             <Can
               role={JSON.parse(
                 localStorage.getItem("netsuite")
+              ).role && JSON.parse(
+                localStorage.getItem("netsuite")
               ).role.toLowerCase()}
               perform="tasks:add"
               yes={() => (

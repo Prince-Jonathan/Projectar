@@ -51,17 +51,18 @@ const App = (props) => {
   const [announcementSpan, setAnnouncementSpan] = useState();
 
   const baseUrl = "https://projectar.automationghana.com";
-  // const baseUrl = "https://6be0ddc2367e.ngrok.io";
+  // const baseUrl = "https://6be0ddc2367e.ngrio";
   // const baseUrl = "http://localhost:8050";
   // const baseUrl = "http://10.20.100.27:8050";
 
   const OneSignal = window.OneSignal;
   try {
-    OneSignal.push(function() {
-      OneSignal.setExternalUserId(
-        JSON.parse(localStorage.getItem("netsuite")).id
-      );
-    });
+    localStorage.getItem("netsuite") &&
+      OneSignal.push(function() {
+        OneSignal.setExternalUserId(
+          JSON.parse(localStorage.getItem("netsuite")).id
+        );
+      });
   } catch (err) {}
 
   const axiosWithCookies = axios.create({
@@ -111,9 +112,9 @@ const App = (props) => {
           })
         );
   };
-  let userRole = JSON.parse(
-    localStorage.getItem("netsuite")
-  ).role.toLowerCase();
+  let userRole =
+    localStorage.getItem("netsuite") &&
+    JSON.parse(localStorage.getItem("netsuite")).role.toLowerCase();
   const fetchProjects = (userID) =>
     fetchData(
       `/api/project/all/${
