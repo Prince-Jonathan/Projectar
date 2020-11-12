@@ -27,6 +27,7 @@
     "react-alert": "^7.0.2",
     "react-alert-template-basic": "^1.0.0",
     "react-attendance": "^1.0.4",
+    "react-clear-cache": "^1.3.2",
     "react-datepicker": "^3.1.3",
     "react-dom": "^16.13.1",
     "react-draft-wysiwyg": "^1.14.5",
@@ -58,11 +59,13 @@
     "start": "react-scripts start",
     "dev-start": "concurrently --kill-others \"less-watch-compiler --config less-watch-compiler.config.json\" \"npm start\"",
     "up": "concurrently --kill-others \"node ./server/server.js\" \"npm start\"",
-    "build": "react-scripts build",
+    "build": "react-scripts build && move build ../backend",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "prebuild": "npm run generate-build-meta",
+    "generate-build-meta": "node ./node_modules/react-clear-cache/bin/cli.js"
   },
   "eslintConfig": {
     "extends": "react-app"
