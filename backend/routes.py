@@ -783,7 +783,6 @@ def task_users(task_id):
 		msg = "does not exist"
 		if task is not None:
 			personnel = task.personnel
-			print('the personnel enrolled in task: ', task.id, ": ", personnel)
 			if len(personnel[:]) != 0:
 				# fetch(personnel, data)
 				# return {
