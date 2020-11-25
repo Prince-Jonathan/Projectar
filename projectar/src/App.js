@@ -22,7 +22,7 @@ import Report from "./components/content/reports/Report";
 import Export from "./components/content/Export";
 import LoadingIndicator from "./components/loader/LoadingIndicator";
 import Config from "./components/config/Config";
-import { useClearCache } from "react-clear-cache";
+// import { useClearCache } from "react-clear-cache";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -31,7 +31,7 @@ import Logo2 from "./logos/tagg.png";
 import Logo from "./logos/logo2.png";
 
 const App = (props) => {
-  const { isLatestVersion, emptyCacheStorage } = useClearCache();
+  // const { isLatestVersion, emptyCacheStorage } = useClearCache();
   const alert = useAlert();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -120,7 +120,7 @@ const App = (props) => {
   const fetchProjects = (userID) =>
     fetchData(
       `/api/project/all/${
-        userRole === "viewer" || userRole === "project_admin" ? 0 : userID
+        userRole === "viewer" || userRole === "super_admin" ? 0 : userID
       }`
     ).then(({ data: { data } }) => {
       // fetchData(`/api/project/all`).then(({ data: { data } }) => {
@@ -246,7 +246,7 @@ const App = (props) => {
   };
   return (
     <div>
-      {!isLatestVersion && (
+      {/* {!isLatestVersion && (
         <p style={{ backgroundColor: "10292E" }}>
           <a
             href="#"
@@ -258,7 +258,7 @@ const App = (props) => {
             Update version
           </a>
         </p>
-      )}
+      )} */}
       <Switch>
         <Route exact path="/login">
           <Row

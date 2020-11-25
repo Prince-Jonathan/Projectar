@@ -100,9 +100,11 @@ const Project = (props) => {
 
   useEffect(
     () => {
-      fetchProjectPersonnel(location.state.projectID);
+      location.state
+        ? fetchProjectPersonnel(location.state.projectID)
+        : fetchProjectPersonnel(id);
     },
-    [id, location.state.projectID]
+    [id, location.state]
   );
 
   useEffect(

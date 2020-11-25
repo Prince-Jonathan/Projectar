@@ -42,7 +42,7 @@ const TasksStatus = (props) => {
             taskStatus: "outstanding",
           })
         }
-        style={{ cursor: "pointer" }}
+        style={{ margin: 5 }}
       >
         Outstanding Tasks:{" "}
         <div style={{ color: "#ffee00", fontWeight: 700 }}>
@@ -55,6 +55,7 @@ const TasksStatus = (props) => {
             taskStatus: "completed",
           })
         }
+        style={{ margin: 5 }}
       >
         Completed Tasks:{" "}
         <div style={{ color: "white", fontWeight: 500 }}>
