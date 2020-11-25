@@ -354,7 +354,7 @@ def all_users():
 @app.route('/api/project/all/<int:user_id>')
 def all_projects(user_id):
 	'''Get all Projects'''
-	data = netsuite_req({"request": "user-projects", "id": user_id})["data"] if user_id != 0 else netsuite_req({"request": "projects"})["data"]
+	data = netsuite_req({"request": "user-projects", "id": user_id})["data"]
 	return {
 		"success":True,
 		"data":data
@@ -458,7 +458,6 @@ def all_tasks():
 def user_announcements(user_id):
 	'''pass user id to return all announcements to specified personnel'''
 	try:
-		print("in announcements endpoint")
 		personnel = User.query.get(user_id)
 		if personnel is not None:
 			announcements = personnel.announcements
@@ -768,7 +767,7 @@ def user_projs(personnel_id):
 def proj_users(project_id):
 	'''Get all users that have been enrolled to a project'''
 	data = netsuite_req({"request": "personnel", "project_id": project_id})
-	print(data)
+	db_proj = Project.query.get(project_id)
 	return {
 		"success" : True,
 		"data" : data["data"]
@@ -783,7 +782,6 @@ def task_users(task_id):
 		msg = "does not exist"
 		if task is not None:
 			personnel = task.personnel
-			print('the personnel enrolled in task: ', task.id, ": ", personnel)
 			if len(personnel[:]) != 0:
 				# fetch(personnel, data)
 				# return {
@@ -911,11 +909,9 @@ def project_verbose(proj_id):
 			"personnel_list":[]
 		}
 	except SQLAlchemyError as err:
-		# print(err)
+		print(err)
 		return{
-		"success":False,
-		"tasks_list":[],
-		"personnel_list":[]
+		"success":False
 		}
 
 @app.route('/api/task/verbose/<int:proj_id>')

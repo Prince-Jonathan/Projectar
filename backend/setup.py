@@ -27,7 +27,7 @@ enrolment = db.Table('enrolment',
 			db.Column('id', db.Integer, primary_key=True),
 			db.Column('personnel_id', db.Integer, db.ForeignKey('user.id')),
 			db.Column('project_id', db.Integer, db.ForeignKey('project.id')),
-			db.Column('task_detail_id', db.Integer, db.ForeignKey('task_detail.id')),
+			db.Column('task_id', db.Integer, db.ForeignKey('task.id')),
 			db.Column('announcement_id', db.Integer, db.ForeignKey('announcement.id')),
 			db.Column('date', db.DateTime, default=datetime.utcnow)
 		)
@@ -41,7 +41,7 @@ class User(db.Model):
 	# role_id=db.Column(db.Integer, nullable=True)
 
 	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
-	task_details = db.relationship('task_detail', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
+	tasks = db.relationship('Task', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 	announcements = db.relationship('Announcement', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 
 	#date_created =  db.Column(db.DateTime, default=datetime.utcnow)	
@@ -95,7 +95,7 @@ class Task(db.Model):
 		return '<Task %r>' % self.title
 
 #Model Task Detailes Table
-class task_detail(db.Model):
+class Task_Detail(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
 	date_updated = db.Column(db.DateTime, default=datetime.utcnow)
