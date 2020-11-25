@@ -9,8 +9,8 @@ from sqlalchemy import text
 from onesignal_sdk.error import OneSignalHTTPError
 import requests
 from app import APP as app, DB as db, ONESIGNAL_CLIENT as client, session
-from models import Project, User, Task, task_detail as Task_Detail, Register, Announcement
-from modules import fetch, log, netsuite_req
+from models import Project, User, Task, Detail as Task_Detail, Register, Announcement
+from modules import fetch, log, netsuite_req, get_tasks
 from datetime import datetime
 
 # async def create_note(note):
@@ -238,10 +238,10 @@ def add_task():
 			comment=data["comment"],
 			task=task
 		)
-		db.session.add(task)
+		db.session.add(task_detail)
 		db.session.commit()
 
-		#enrol personnel to task
+		#enrol personnel to task_detail
 		for personnel in data["personnel"]:
 			db_pers = User.query.get(personnel["id"])
 			if db_pers is None:
@@ -252,7 +252,7 @@ def add_task():
 					)
 				db.session.add(db_pers)
 				db.session.commit()
-			enrol_user_task(task.id, personnel["id"])
+			enrol_user_task_detail(task_detail.id, personnel["id"])
 		return {
 			"success":True,
 			"data":data
@@ -508,6 +508,25 @@ def enrol_user_task(task_id, personnel_id):
 		return {
 			"success":False
 		}
+
+@app.route('/api/enrol/user/task/<int:task_detail_id>/<int:personnel_id>')
+def enrol_user_task_detail(task_detail_id, personnel_id):
+	'''Passes task id and personnel id to enrol personnel to a task '''
+	try:
+		personnel=User.query.get_or_404(personnel_id)
+		task_detail	 = Task_Detail.query.get_or_404(task_detail_id)
+		task_detail.personnel.append(personnel)
+		db.session.commit()
+		return {
+			"success":True,
+		} 
+	except SQLAlchemyError as err:
+		print(err)
+		db.session.rollback()
+		return {
+			"success":False
+		}
+
 
 @app.route('/api/task/edit/<int:task_id>', methods=['POST'])
 def edit_task(task_id):
@@ -779,6 +798,7 @@ def task_users(task_id):
 	'''Get all users that have been enrolled to a task'''
 	data = []
 	try:
+		# task = get_tasks(task_detail)
 		task = Task.query.get(task_id)
 		msg = "does not exist"
 		if task is not None:
@@ -798,7 +818,7 @@ def task_users(task_id):
 	except SQLAlchemyError as err:
 		print(err)
 		return{
-			"success":False
+			"success":Falses
 		}
 
 @app.route('/api/user/tasks/<int:user_id>')
@@ -809,13 +829,16 @@ def user_tasks(user_id):
 		user = User.query.get(user_id)
 		msg = "does not exist"
 		if user is not None:
-			tasks = user.tasks
-			if len(tasks[:]) != 0:
-				# fetch(tasks, data)
-				# return {
-				# 	"success":True,
-				# 	"data":data
-				# }
+			task_details = user.task_details
+			if len(task_details[:]) != 0:
+				# for detail in task_details:
+				# 	tasks.append(detail.task)
+				# i=0
+				# for task in tasks:
+				# 		if tasks.index(task)!=i:
+				# 				tasks.remove(task)
+				# 		i+=1
+				tasks = get_tasks(task_details)
 				tasks_obj = Task.serialize_list(tasks)
 				# append task details
 				for task in tasks:
