@@ -800,16 +800,16 @@ def task_users(task_id):
 	try:
 		# task = get_tasks(task_detail)
 		task = Task.query.get(task_id)
+		details = task.details
 		msg = "does not exist"
-		if task is not None:
-			personnel = task.personnel
-			if len(personnel[:]) != 0:
-				# fetch(personnel, data)
-				# return {
-				# 	"success":True,
-				# 	"data":data
-				# }
-				return jsonify(User.serialize_list(personnel))
+		if len(details)!=0:
+			personnel = []
+			for detail in details:
+				personnel.append(detail.personnel)
+				if len(personnel[:]) != 0:
+					print(detail.personnel)
+					# return jsonify(User.serialize_list(personnel))
+					return {"success":True}
 			msg = "has not yet got enrolled personnel"
 		return {
 			"success":False,

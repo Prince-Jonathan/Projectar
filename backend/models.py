@@ -88,7 +88,7 @@ class Detail(db.Model, Serializer):
 	comment = db.Column(db.String(2000), nullable=True)
 
 	def __repr__(self): 
-		return '<Task_Detail %r>' % self.id
+		return '<Detail %r>' % self.id
 
 #Model Register Table
 class Register(db.Model, Serializer):
