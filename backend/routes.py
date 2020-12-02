@@ -967,7 +967,14 @@ def task_verbose(proj_id):
 def attendance(proj_id):
 	'''assess attendance of personnel'''
 	data = request.get_json()
-
+	project = Project.query.get(proj_id)
+	if project is None:
+		#add project
+		project = Project(
+			id=proj_id
+		)
+		db.session.add(project)
+		db.session.commit()
 	try:
 		#check if the register for day already exists
 		project = Project.query.get_or_404(proj_id)
