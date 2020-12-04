@@ -800,16 +800,14 @@ def task_users(task_id):
 	try:
 		# task = get_tasks(task_detail)
 		task = Task.query.get(task_id)
-		details = task.details
+		recent_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all()
+		print(recent_detail)
 		msg = "does not exist"
-		if len(details)!=0:
-			personnel = []
-			for detail in details:
-				personnel.append(detail.personnel)
-				if len(personnel[:]) != 0:
-					print(detail.personnel)
-					# return jsonify(User.serialize_list(personnel))
-					return {"success":True}
+		if recent_detail is not None:
+			personnel_list = []
+			for personnel in recent_detail[0].personnel:
+				personnel_list.append(personnel)
+			return jsonify(User.serialize_list(personnel_list))
 			msg = "has not yet got enrolled personnel"
 		return {
 			"success":False,
