@@ -11,8 +11,8 @@ from datetime import datetime
 
 app=Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI']='postgresql://jona:jona132435@35.202.128.59:5432/projectar'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/projectar'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://app:1234@http://10.20.100.104:5432/r_n_d'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/projectar'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://app:1234@10.20.100.104:5432/projectar'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #consumes lot of memory: set to fals
 
 db=SQLAlchemy(app)
