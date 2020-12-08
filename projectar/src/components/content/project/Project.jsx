@@ -430,7 +430,9 @@ const Project = (props) => {
           </Route>
           <Route path={`${path}/outstanding-tasks`}>
             <Task
+              onFetchData={props.onFetchData}
               // outstanding={true}
+
               captions={
                 <>
                   <Caption
@@ -481,6 +483,7 @@ const Project = (props) => {
                 renderRowSubComponent={renderRowSubComponent}
               /> */}
             <Task
+              onFetchData={props.onFetchData}
               columns={columns}
               data={completedTasks}
               captions={
@@ -523,6 +526,7 @@ const Project = (props) => {
               toggler={props.toggler}
             /> */}
             <Task
+              onFetchData={props.onFetchData}
               // outstanding={true}
               captions={
                 <>
