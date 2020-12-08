@@ -583,16 +583,33 @@ def update_task(task_id):
 		recent_task_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).first()
 		recent_update_interval = datetime.now() - recent_task_detail.date_updated
 		#only update recently executed task details not older than 24 hours
-		if data["entry_type"]==2 and (recent_update_interval.total_seconds() < 86400):
+		if data["entry_type"]==2 and recent_task_detail.entry_type!=3 and (recent_update_interval.total_seconds() < 86400):
 			#update corresponding task_detail
-			print("in here")
 			recent_task_detail.target = data["target"]
 			recent_task_detail.target_date = data["date"]
 			recent_task_detail.comment = data["comment"] if "comment" in data else None
 			recent_task_detail.achieved = data["achieved"] if "achieved" in data else None
 			recent_task_detail.entry_type = data["entry_type"]
+
+			for personnel in recent_task_detail.personnel:
+				recent_task_detail.personnel.remove(personnel)
+			db.session.commit()
+			if data["personnel"] is not None:
+				for personnel in data["personnel"]:
+					db_pers = User.query.get(personnel["id"])
+					if db_pers is None:
+						#add personnel
+						db_pers = User(
+								id=personnel["id"],
+								name=personnel["name"]
+							)
+						db.session.add(db_pers)
+						db.session.commit()
+					enrol_user_task_detail(recent_task_detail.id, personnel["id"])
+					db.session.commit()
 		elif data["entry_type"] in [2,3]:
 			#execute task by passing task_detail, to create enrtry row in database
+			print("entry_type", data["entry_type"])
 			task_detail = Task_Detail(
 				target_date=data["date"],
 				entry_type=data["entry_type"],
@@ -602,23 +619,37 @@ def update_task(task_id):
 				task=task
 			)
 			db.session.add(task_detail)
+			db.session.commit()
+			if data["personnel"] is not None:
+				for personnel in data["personnel"]:
+					db_pers = User.query.get(personnel["id"])
+					if db_pers is None:
+						#add personnel
+						db_pers = User(
+								id=personnel["id"],
+								name=personnel["name"]
+							)
+						db.session.add(db_pers)
+						db.session.commit()
+					enrol_user_task_detail(task_detail.id, personnel["id"])
+			db.session.commit()
 		db.session.commit()
-		for personnel in task.personnel[:]:
-			task.personnel.remove(personnel)
-		db.session.commit()
-		if data["personnel"] is not None:
-			for personnel in data["personnel"]:
-				db_pers = User.query.get(personnel["id"])
-				if db_pers is None:
-					#add personnel
-					db_pers = User(
-							id=personnel["id"],
-							name=personnel["name"]
-						)
-					db.session.add(db_pers)
-					db.session.commit()
-				enrol_user_task(task.id, personnel["id"])
-		db.session.commit()
+		# for personnel in task.personnel[:]:
+		# 	task.personnel.remove(personnel)
+		# db.session.commit()
+		# if data["personnel"] is not None:
+		# 	for personnel in data["personnel"]:
+		# 		db_pers = User.query.get(personnel["id"])
+		# 		if db_pers is None:
+		# 			#add personnel
+		# 			db_pers = User(
+		# 					id=personnel["id"],
+		# 					name=personnel["name"]
+		# 				)
+		# 			db.session.add(db_pers)
+		# 			db.session.commit()
+		# 		enrol_user_task_detail(task.id, personnel["id"])
+		# db.session.commit()
 		return {
 			"success":True,
 		} 
@@ -800,16 +831,43 @@ def task_users(task_id):
 	try:
 		# task = get_tasks(task_detail)
 		task = Task.query.get(task_id)
+		recent_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all()
+		print(recent_detail)
+		msg = "does not exist"
+		if recent_detail is not None:
+			personnel_list = []
+			for personnel in recent_detail[0].personnel:
+				personnel_list.append(personnel)
+			return jsonify(User.serialize_list(personnel_list))
+			msg = "has not yet got enrolled personnel"
+		return {
+			"success":False,
+			"msg":"Task with ID: %d %s" % (task_id, msg)
+		}
+	except SQLAlchemyError as err:
+		print(err)
+		return{
+			"success":Falses
+		}
+
+@app.route('/api/task/enrolments/verbose/<int:task_id>')
+def task_users_verbose(task_id):
+	'''Get all users that have been enrolled to a task'''
+	data = []
+	try:
+		task = Task.query.get(task_id)
 		details = task.details
 		msg = "does not exist"
-		if len(details)!=0:
-			personnel = []
+		if len(details) != 0:
+			task_detail_personnel = []
 			for detail in details:
-				personnel.append(detail.personnel)
-				if len(personnel[:]) != 0:
-					print(detail.personnel)
-					# return jsonify(User.serialize_list(personnel))
-					return {"success":True}
+				personnel_list = ""
+				for personnel in detail.personnel:
+					personnel_list += personnel.name
+					if not detail.personnel[-1]==personnel:
+						personnel_list+=", "
+				task_detail_personnel.append({"detail_id":detail.id,"personnel":personnel_list})
+			return jsonify(task_detail_personnel)
 			msg = "has not yet got enrolled personnel"
 		return {
 			"success":False,
@@ -906,22 +964,25 @@ def project_verbose(proj_id):
 				print("project %id has no tasks" % (project.id))
 			tasks_obj = Task.serialize_list(tasks)
 			for task in tasks:
-				# append personnel list
-				personnel = ''
-				task_users = User.serialize_list(task.personnel)
-				for task_user in task_users:
-					personnel += task_user['name']
-					if not task_users[-1]==task_user:
-						personnel+=", "
-				# plist.append(personnel)
-				# append task details
-				details = Task_Detail.serialize_list(db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all())
-				if len(details) !=0:
-					# find task object that mataches id of details
-					obj = [x for x in tasks_obj if x["id"] == details[0]["task_id"]][0]
-				# append details and personnel
-				tasks_obj[tasks_obj.index(obj)]["details"] = details
-				tasks_obj[tasks_obj.index(obj)]["personnel"] = personnel
+				# return recent task detail
+				recent_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).first()
+				if recent_detail is not None:
+					# append personnel list
+					personnel = ''
+					task_users = User.serialize_list(recent_detail.personnel)
+					for task_user in task_users:
+						personnel += task_user['name']
+						if not task_users[-1]==task_user:
+							personnel+=", "
+					# plist.append(personnel)
+					# append task details
+					details = Task_Detail.serialize_list(db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all())
+					if len(details) !=0:
+						# find task object that mataches id of details
+						obj = [x for x in tasks_obj if x["id"] == details[0]["task_id"]][0]
+					# append details and personnel
+					tasks_obj[tasks_obj.index(obj)]["details"] = details
+					tasks_obj[tasks_obj.index(obj)]["personnel"] = personnel
 			return {
 				"success":True,
 				"tasks_list":tasks_obj,
@@ -990,7 +1051,14 @@ def task_verbose(proj_id):
 def attendance(proj_id):
 	'''assess attendance of personnel'''
 	data = request.get_json()
-
+	project = Project.query.get(proj_id)
+	if project is None:
+		#add project
+		project = Project(
+			id=proj_id
+		)
+		db.session.add(project)
+		db.session.commit()
 	try:
 		#check if the register for day already exists
 		project = Project.query.get_or_404(proj_id)
