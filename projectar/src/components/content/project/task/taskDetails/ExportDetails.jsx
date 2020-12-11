@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -24,6 +25,28 @@ const Img = styled.img`
 `;
 
 const Export = (props) => {
+  const location = useLocation();
+  // const [taskDetails, setTaskDetails] = useState([]);
+  // useEffect(
+  //   () => {
+  //     let taskDetails;
+  //     props
+  //       .onFetchData(
+  //         `/api/task/enrolments/verbose/${location.state &&
+  //           location.state.taskID}`
+  //       )
+  //       .then(({ data }) => {
+  //         taskDetails = props.taskDetails.map((detail) => {
+  //           return {
+  //             ...detail,
+  //             personnel: data.find((d) => d.detail_id === detail.id).personnel,
+  //           };
+  //         });
+  //         setTaskDetails(taskDetails);
+  //       });
+  //   },
+  //   [props.taskDetails]
+  // );
   const exportPDF = () => {
     const unit = "pt";
     const size = "A4"; // Use A1, A2, A3 or A4
@@ -98,12 +121,16 @@ const Export = (props) => {
     });
 
     //the filtered tasks table
+
     doc.autoTable({
       // exclude rescheduled detail
-      body: props.taskDetails.filter((taskDetail)=>taskDetail.entry_type!==3),
+      body: props.taskDetails.filter(
+        (taskDetail) => taskDetail.entry_type !== 3
+      ),
       columns: [
         { header: "LAST UPDATE", dataKey: "date_updated" },
         { header: "STATUS", dataKey: "entry_type" },
+        { header: "PERSONNEL", dataKey: "personnel" },
         { header: "TARGET", dataKey: "target" },
         { header: "ACHIEVED", dataKey: "achieved" },
         { header: "DATE", dataKey: "target_date" },

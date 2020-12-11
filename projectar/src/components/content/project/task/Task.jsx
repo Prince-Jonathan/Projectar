@@ -214,7 +214,7 @@ const Task = (props) => {
           </Wrapper>
         </Route>
         <Route path={`${path}/:id/details`}>
-          <TaskDetails />
+          <TaskDetails onFetchData={props.onFetchData} />
         </Route>
         <Route path={`${path}/:id/execute`}>
           <Caption flabel="Execute" slabel="Task" />

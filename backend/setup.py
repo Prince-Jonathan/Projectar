@@ -11,8 +11,8 @@ from datetime import datetime
 
 app=Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI']='postgresql://jona:jona132435@35.202.128.59:5432/projectar'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/projectar'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://app:1234@http://10.20.100.104:5432/r_n_d'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/projectar'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://app:1234@10.20.100.104:5432/projectar'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #consumes lot of memory: set to fals
 
 db=SQLAlchemy(app)
@@ -27,11 +27,10 @@ enrolment = db.Table('enrolment',
 			db.Column('id', db.Integer, primary_key=True),
 			db.Column('personnel_id', db.Integer, db.ForeignKey('user.id')),
 			db.Column('project_id', db.Integer, db.ForeignKey('project.id')),
-			db.Column('task_id', db.Integer, db.ForeignKey('task.id')),
+			db.Column('detail_id', db.Integer, db.ForeignKey('detail.id')),
 			db.Column('announcement_id', db.Integer, db.ForeignKey('announcement.id')),
 			db.Column('date', db.DateTime, default=datetime.utcnow)
 		)
-
 #Model User Table
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -41,7 +40,7 @@ class User(db.Model):
 	# role_id=db.Column(db.Integer, nullable=True)
 
 	projects = db.relationship('Project', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
-	tasks = db.relationship('Task', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
+	task_details =  db.relationship('Detail', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 	announcements = db.relationship('Announcement', secondary=enrolment, backref=db.backref('personnel', lazy='dynamic'))
 
 	#date_created =  db.Column(db.DateTime, default=datetime.utcnow)	
@@ -82,7 +81,7 @@ class Task(db.Model):
 
 	creator = db.Column(db.Integer, nullable=False)
 	project_id=db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
-	details = db.relationship('Task_Detail', backref='task', lazy=True)
+	details = db.relationship('Detail', backref='task', lazy=True)
 
 	# target=db.Column(db.String(5), nullable=False)
 	# achieved=db.Column(db.String(5), nullable=True)
@@ -95,7 +94,7 @@ class Task(db.Model):
 		return '<Task %r>' % self.title
 
 #Model Task Detailes Table
-class Task_Detail(db.Model):
+class Detail(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	task_id = db.Column(db.Integer, db.ForeignKey('task.id'))
 	date_updated = db.Column(db.DateTime, default=datetime.utcnow)
@@ -106,7 +105,7 @@ class Task_Detail(db.Model):
 	comment = db.Column(db.String(2000), nullable=True)
 
 	def __repr__(self): 
-		return '<Task_Detail %r>' % self.id
+		return '<Detail %r>' % self.id
 
 #Model Register Table
 class Register(db.Model):

@@ -29,6 +29,7 @@ import Button from "../uiElements/Button";
 import TaskDetailsStatus from "./task/TaskDetailsStatus";
 import Can from "../../Can";
 import fetchTasksPersonnel from "./task/fetchTasksPersonnel";
+import fetchParentTaskPersonnel from "./task/fetchParentTaskPersonnel";
 
 const Styles = styled.div`
   .project {
@@ -83,6 +84,7 @@ const Project = (props) => {
 
   const [projectPersonnel, setProjectPersonnel] = useState([]);
   const [tasksPersonnel, setTasksPersonnel] = useState([]);
+  const [parentTaskPersonnel, setParentTaskPersonnel] = useState([]);
 
   // let projectPersonnel =[];
   const fetchProjectPersonnel = async (projectID) => {
@@ -100,9 +102,7 @@ const Project = (props) => {
 
   useEffect(
     () => {
-      location.state
-        ? fetchProjectPersonnel(location.state.projectID)
-        : fetchProjectPersonnel(id);
+      location.state && fetchProjectPersonnel(location.state.projectID);
     },
     [id, location.state]
   );
@@ -116,10 +116,22 @@ const Project = (props) => {
         setTasksPersonnel,
         assignedPersonnel
       );
+      let parentTaskAssignedPersonnel = [];
+      fetchParentTaskPersonnel(
+        data,
+        props.onFetchData,
+        setParentTaskPersonnel,
+        parentTaskAssignedPersonnel
+      );
     },
     [tasks]
   ); //the location.state changes after editing success: this should refresh assigned personnel list
-
+  useEffect(
+    () => {
+      console.log("parent task personnel", parentTaskPersonnel);
+    },
+    [parentTaskPersonnel]
+  );
   const fetchAttendance = async () => {
     trackPromise(
       props.onFetchData(`/api/attendance/${id}/all`).then(({ data }) => {
@@ -143,6 +155,7 @@ const Project = (props) => {
     },
     [attendanceDate, toggleFetchAttendance]
   );
+  console.log(data);
   data =
     data &&
     data.sort((a, b) => {
@@ -400,7 +413,9 @@ const Project = (props) => {
                 />
               </Slate>
             </Wrapper>
-            {location.state && assignedPersonnel.length ? (
+            {/* {location.state && assignedPersonnel.length ? ( */}
+            {console.log("verify", parentTaskPersonnel)}
+            {location.state && parentTaskPersonnel.length ? (
               <Bay>
                 <EditTask
                   postData={props.postData}
@@ -408,7 +423,10 @@ const Project = (props) => {
                   onFetchTasks={props.onFetchTasks}
                   onTaskUpdate={props.onTaskUpdate}
                   projectPersonnel={projectPersonnel || []}
-                  assignedPersonnel={assignedPersonnel}
+                  // assignedPersonnel={assignedPersonnel}
+                  assignedPersonnel={parentTaskPersonnel.filter(
+                    (personnel) => personnel.id === location.state.taskID
+                  )}
                   tasksPersonnel={tasksPersonnel}
                   tasks={props.tasks || []}
                   resetSelectedTaskID={props.resetSelectedTaskID}
@@ -432,7 +450,9 @@ const Project = (props) => {
           </Route>
           <Route path={`${path}/outstanding-tasks`}>
             <Task
+              onFetchData={props.onFetchData}
               // outstanding={true}
+
               captions={
                 <>
                   <Caption
@@ -483,6 +503,7 @@ const Project = (props) => {
                 renderRowSubComponent={renderRowSubComponent}
               /> */}
             <Task
+              onFetchData={props.onFetchData}
               columns={columns}
               data={completedTasks}
               captions={
@@ -525,6 +546,7 @@ const Project = (props) => {
               toggler={props.toggler}
             /> */}
             <Task
+              onFetchData={props.onFetchData}
               // outstanding={true}
               captions={
                 <>

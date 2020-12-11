@@ -101,7 +101,10 @@ const Register = (props) => {
   const handleIsPresent = React.useCallback(
     (data) => {
       let prev = [...isPresents];
-      let personnel = prev.filter((personnel) => personnel.id === data[0].id);
+      console.log("logging before snap", data);
+      let personnel = data[0]
+        ? prev.filter((personnel) => personnel.id === data[0].id)
+        : [];
       if (personnel.length !== 0) {
         const index = prev.indexOf(personnel[0]);
         prev[index] = { ...data[0] };
@@ -116,7 +119,9 @@ const Register = (props) => {
   const handleSetSignIn = React.useCallback(
     (data) => {
       let prev = [...signIns];
-      let personnel = prev.filter((personnel) => personnel.id === data[0].id);
+      let personnel = data[0]
+        ? prev.filter((personnel) => personnel.id === data[0].id)
+        : [];
       if (personnel.length !== 0) {
         const index = prev.indexOf(personnel[0]);
         prev[index] = { ...data[0] };
@@ -130,7 +135,9 @@ const Register = (props) => {
   const handleSetSignOut = React.useCallback(
     (data) => {
       let prev = [...signOuts];
-      let personnel = prev.filter((personnel) => personnel.id === data[0].id);
+      let personnel = data[0]
+        ? prev.filter((personnel) => personnel.id === data[0].id)
+        : [];
       if (personnel.length !== 0) {
         const index = prev.indexOf(personnel[0]);
         prev[index] = { ...data[0] };
@@ -144,7 +151,9 @@ const Register = (props) => {
   const handleHadLunch = React.useCallback(
     (data) => {
       let prev = [...lunchs];
-      let personnel = prev.filter((personnel) => personnel.id === data[0].id);
+      let personnel = data[0]
+        ? prev.filter((personnel) => personnel.id === data[0].id)
+        : [];
       if (personnel.length !== 0) {
         const index = prev.indexOf(personnel[0]);
         prev[index] = { ...data[0] };
@@ -159,7 +168,9 @@ const Register = (props) => {
   const handleSetTandts = React.useCallback(
     (data) => {
       let prev = [...tandts];
-      let personnel = prev.filter((personnel) => personnel.id === data[0].id);
+      let personnel = data[0]
+        ? prev.filter((personnel) => personnel.id === data[0].id)
+        : [];
       if (personnel.length !== 0) {
         const index = prev.indexOf(personnel[0]);
         prev[index] = { ...data[0] };
