@@ -511,9 +511,9 @@ def enrol_user_task(task_id, personnel_id):
 
 @app.route('/api/enrol/user/task/<int:task_detail_id>/<int:personnel_id>')
 def enrol_user_task_detail(task_detail_id, personnel_id):
-	'''Passes task id and personnel id to enrol personnel to a task '''
+	'''Passes task id and personnel id to enrol personnel to a task detail'''
 	try:
-		personnel=User.query.get_or_404(personnel_id)
+		personnel = User.query.get_or_404(personnel_id)
 		task_detail	 = Task_Detail.query.get_or_404(task_detail_id)
 		task_detail.personnel.append(personnel)
 		db.session.commit()
@@ -536,16 +536,16 @@ def edit_task(task_id):
 		task = Task.query.get_or_404(task_id)
 		task.title = data["title"]
 		task.description = data["description"]
-		recent_task_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).first()
+		recent_task_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id, Task_Detail.entry_type==1).order_by(Task_Detail.date_updated.desc()).first()
 		recent_task_detail.target = data["target"]
 		recent_task_detail.target_date = data["date"]
-		recent_task_detail.comment = data["comment"] if "comment" in data else None
-		recent_task_detail.achieved = data["achieved"] if "achieved" in data else None
-		recent_task_detail.entry_type = data["entry_type"]
-		recent_task_detail.date_updated = datetime.now()
+		# recent_task_detail.comment = data["comment"] if "comment" in data else None
+		# recent_task_detail.achieved = data["achieved"] if "achieved" in data else None
+		# recent_task_detail.entry_type = data["entry_type"]
+		# recent_task_detail.date_updated = datetime.now()
 		db.session.commit()
-		for personnel in task.personnel[:]:
-			task.personnel.remove(personnel)
+		for personnel in recent_task_detail.personnel[:]:
+			recent_task_detail.personnel.remove(personnel)
 		db.session.commit()
 		if data["personnel"] is not None:
 			for personnel in data["personnel"]:
@@ -558,7 +558,7 @@ def edit_task(task_id):
 						)
 					db.session.add(db_pers)
 					db.session.commit()
-				enrol_user_task(task.id, personnel["id"])
+				enrol_user_task_detail(recent_task_detail.id, personnel["id"])
 		db.session.commit()
 		return {
 			"success":True,
@@ -583,7 +583,7 @@ def update_task(task_id):
 		recent_task_detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).first()
 		recent_update_interval = datetime.now() - recent_task_detail.date_updated
 		#only update recently executed task details not older than 24 hours
-		if data["entry_type"]==2 and recent_task_detail.entry_type!=3 and (recent_update_interval.total_seconds() < 86400):
+		if data["entry_type"]==2 and recent_task_detail.entry_type==2 and (recent_update_interval.total_seconds() < 86400):
 			#update corresponding task_detail
 			recent_task_detail.target = data["target"]
 			recent_task_detail.target_date = data["date"]
@@ -824,6 +824,32 @@ def proj_users(project_id):
 		"data" : data["data"]
 	}
 
+@app.route('/api/parent_task/enrolments/<int:task_id>')
+def parent_task_users(task_id):
+	'''Get all users that have been enrolled to a parent_task'''
+	data = []
+	try:
+		# task = get_tasks(task_detail)
+		task = Task.query.get(task_id)
+		detail = db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id,Task_Detail.entry_type==1).order_by(Task_Detail.date_updated.desc()).all()
+		print("the detail", detail)
+		msg = "does not exist"
+		if detail is not None:
+			personnel_list = []
+			print(detail)
+			for personnel in detail[0].personnel:
+				personnel_list.append(personnel)
+			return jsonify(User.serialize_list(personnel_list))
+			msg = "has not yet got enrolled personnel"
+		return {
+			"success":False,
+			"msg":"Task with ID: %d %s" % (task_id, msg)
+		}
+	except SQLAlchemyError as err:
+		print(err)
+		return{
+			"success":False
+		}
 @app.route('/api/task/enrolments/<int:task_id>')
 def task_users(task_id):
 	'''Get all users that have been enrolled to a task'''
@@ -849,7 +875,6 @@ def task_users(task_id):
 		return{
 			"success":Falses
 		}
-
 @app.route('/api/task/enrolments/verbose/<int:task_id>')
 def task_users_verbose(task_id):
 	'''Get all users that have been enrolled to a task'''
@@ -897,7 +922,9 @@ def user_tasks(user_id):
 				# 				tasks.remove(task)
 				# 		i+=1
 				tasks = get_tasks(task_details)
+				print(tasks)
 				tasks_obj = Task.serialize_list(tasks)
+				print(tasks_obj)
 				# append task details
 				for task in tasks:
 					details = Task_Detail.serialize_list(db.session.query(Task_Detail).filter(Task_Detail.task_id==task.id).order_by(Task_Detail.date_updated.desc()).all())

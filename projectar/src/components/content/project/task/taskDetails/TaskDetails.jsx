@@ -117,7 +117,24 @@ const TaskDetails = (props) => {
     () => {
       let forDesktop = [
         {
-          Header: "Last Update",
+          // Make an expander cell
+          Header: () => null, // No header
+          id: "expander", // It needs an ID
+          Cell: ({ row }) => (
+            // Use Cell to render an expander for each row.
+            // We can use the getToggleRowExpandedProps prop-getter
+            // to build the expander.
+            <span {...row.getToggleRowExpandedProps()}>
+              {row.isExpanded ? (
+                <i class="fa fa-compress" aria-hidden="true" />
+              ) : (
+                <i class="fa fa-expand" aria-hidden="true" />
+              )}
+            </span>
+          ),
+        },
+        {
+          Header: "Date Updated",
           accessor: "date_updated",
           Filter: isMobile ? () => null : ColumnFilter,
         },
@@ -179,21 +196,67 @@ const TaskDetails = (props) => {
     [isMobile]
   );
 
-  const outstandingTasks =
-    data && data.filter((task) => parseInt(task.achieved) !== 100);
-  const completedTasks =
-    data && data.filter((task) => parseInt(task.achieved) === 100);
+  // const outstandingTasks =
+  //   data && data.filter((task) => parseInt(task.achieved) !== 100);
+  // const completedTasks =
+  //   data && data.filter((task) => parseInt(task.achieved) === 100);
 
-  const handleOClick = ({ row }) => {
-    setSelectedTaskID(row.original.id);
-    history.push(`${url}/outstanding-tasks/${row.original.id}/execute`, {
-      taskID: row.original.id,
-      projectID: id,
-      entry_type: 2,
-      taskStatus: "outstanding",
-    });
-  };
-
+  // const handleOClick = ({ row }) => {
+  //   setSelectedTaskID(row.original.id);
+  //   history.push(`${url}/outstanding-tasks/${row.original.id}/execute`, {
+  //     taskID: row.original.id,
+  //     projectID: id,
+  //     entry_type: 2,
+  //     taskStatus: "outstanding",
+  //   });
+  // };
+  const renderRowSubComponent = React.useCallback(({ row }) => {
+    return (
+      <>
+        {row.original.comment ? (
+          <div style={{ color: "10292e", fontWeight: 700 }}>
+            Comment:{" "}
+            <div
+              style={{
+                color: "white",
+                fontWeight: 300,
+                // padding: 10,
+                marginTop: 5,
+                maxWidth: "90vw",
+              }}
+            >
+              <CKEditor
+                editor={ClassicEditor}
+                name="comment"
+                data={row.original.comment}
+                type="inline"
+                onInit={(editor) => {
+                  editor.isReadOnly = true;
+                }}
+                config={{
+                  // removePlugins: "toolbar",
+                  ckfinder: {
+                    uploadUrl: "https://projectar.automationghana.com/upload",
+                  },
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              color: "white",
+            }}
+          >
+            No Comments
+          </div>
+        )}
+      </>
+    );
+    // <div>Comment:{row.original.comment}</div>
+  }, []);
   return (
     <div>
       <Styles>
@@ -255,6 +318,7 @@ const TaskDetails = (props) => {
                 <Table
                   columns={columns}
                   data={taskDetails}
+                  renderRowSubComponent={renderRowSubComponent}
                   getHeaderProps={(cellInfo) => {
                     return (
                       (cellInfo.id === "target" ||

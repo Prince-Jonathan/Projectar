@@ -30,21 +30,23 @@ def get_tasks(task_details):
 	if len(task_details[:]) != 0:
 				for detail in task_details:
 					tasks.append(detail.task)
-				i=0
-				for task in tasks:
-						if tasks.index(task)!=i:
-								tasks.remove(task)
-						i+=1
-	return tasks
+				# i=0
+				# for task in tasks:
+				# 		if tasks.index(task)!=i:
+				# 				tasks.remove(task)
+				# 		i+=1
+	# return tasks
+	return list(dict.fromkeys(tasks))
 
 def get_task_personnel(task_details):
 	tasks = []
 	if len(task_details[:]) != 0:
 				for detail in task_details:
 					tasks.append(detail.task)
-				i=0
-				for task in tasks:
-						if tasks.index(task)!=i:
-								tasks.remove(task)
-						i+=1
-	return tasks
+	# 			i=0
+	# 			for task in tasks:
+	# 					if tasks.index(task)!=i:
+	# 							tasks.remove(task)
+	# 					i+=1
+	# return tasks
+	return list(dict.fromkeys(tasks))

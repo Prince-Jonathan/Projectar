@@ -147,11 +147,10 @@ const Projects = (props) => {
         <div className="project">
           <div className="left">
             <Can
-              role={JSON.parse(
-                localStorage.getItem("netsuite")
-              ).role && JSON.parse(
-                localStorage.getItem("netsuite")
-              ).role.toLowerCase()}
+              role={
+                JSON.parse(localStorage.getItem("netsuite")).role &&
+                JSON.parse(localStorage.getItem("netsuite")).role.toLowerCase()
+              }
               perform="tasks:add"
               yes={() => (
                 <Button
@@ -190,7 +189,9 @@ const Projects = (props) => {
                 <>
                   <Button
                     onClick={() =>
-                      history.push(`/project/${row.original.id}/attendance`)
+                      history.push(`/project/${row.original.id}/attendance`, {
+                        projectID: row.original.id,
+                      })
                     }
                   >
                     Attendance
