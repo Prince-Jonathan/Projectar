@@ -40,13 +40,19 @@ const Layout = (props) => {
               <Column>
                 <Route exact path="/">
                   <Greeting
-                    name={JSON.parse(localStorage.getItem("netsuite")) && JSON.parse(localStorage.getItem("netsuite")).name}
+                    name={
+                      JSON.parse(localStorage.getItem("netsuite")) &&
+                      JSON.parse(localStorage.getItem("netsuite")).name
+                    }
                   />
                 </Route>
                 {props.children}
                 <Route path="/">
                   <Wall
-                    name={JSON.parse(localStorage.getItem("netsuite")) && JSON.parse(localStorage.getItem("netsuite")).name}
+                    name={
+                      JSON.parse(localStorage.getItem("netsuite")) &&
+                      JSON.parse(localStorage.getItem("netsuite")).name
+                    }
                   />
                 </Route>
               </Column>
@@ -76,12 +82,18 @@ const Layout = (props) => {
               <Column className="section pad">
                 <Route exact path="/">
                   <Greeting
-                    name={JSON.parse(localStorage.getItem("netsuite")) && JSON.parse(localStorage.getItem("netsuite")).name}
+                    name={
+                      JSON.parse(localStorage.getItem("netsuite")) &&
+                      JSON.parse(localStorage.getItem("netsuite")).name
+                    }
                   />
                 </Route>
                 {props.children}
                 <Wall
-                  name={JSON.parse(localStorage.getItem("netsuite")) && JSON.parse(localStorage.getItem("netsuite")).name}
+                  name={
+                    JSON.parse(localStorage.getItem("netsuite")) &&
+                    JSON.parse(localStorage.getItem("netsuite")).name
+                  }
                 />
               </Column>
             </Row>

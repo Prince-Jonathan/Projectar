@@ -5,7 +5,6 @@
 .Side-menu-default *:not(i) {
   font-family: "Open Sans", sans-serif;
   font-weight: 300;
-  
 }
 .Side-menu-default .divider {
   background-color: #0b1d20;
@@ -17,7 +16,7 @@
   color: #ffee00;
 }
 .Side-menu-default .item.active {
-  color: #F68887;
+  color: #f68887;
 }
 .Side-menu-default .item.active .children {
   color: #ffee00;
@@ -26,7 +25,7 @@
   color: white;
 }
 .Side-menu-default .item:hover > .item-title {
-  color: #F68887;
+  color: #f68887;
 }
 .Side-menu-default .item:hover > .item-title a {
   color: white;

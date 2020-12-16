@@ -210,53 +210,90 @@ const TaskDetails = (props) => {
   //     taskStatus: "outstanding",
   //   });
   // };
-  const renderRowSubComponent = React.useCallback(({ row }) => {
-    return (
-      <>
-        {row.original.comment ? (
-          <div style={{ color: "10292e", fontWeight: 700 }}>
-            Comment:{" "}
+  const renderRowSubComponent = React.useCallback(
+    ({ row }) => {
+      return (
+        <>
+          {isMobile && (
+            <div style={{ color: "10292e", fontWeight: 700 }}>
+              Achieved:
+              <div
+                style={{
+                  color: "white",
+                  fontWeight: 600,
+                  textShadow: "1px 1px 1px #000",
+                }}
+              >
+                {row.original.achieved}
+              </div>
+              Personnel:{" "}
+              <div
+                style={{
+                  color: "white",
+                  fontWeight: 600,
+                  textShadow: "1px 1px 1px #000",
+                }}
+              >
+                {row.original.personnel}
+              </div>
+              Scheduled Date:
+              <div
+                style={{
+                  color: "white",
+                  fontWeight: 600,
+                  textShadow: "1px 1px 1px #000",
+                }}
+              >
+                {row.original.target_date}
+              </div>
+            </div>
+          )}
+          {row.original.comment ? (
+            <div style={{ color: "10292e", fontWeight: 700 }}>
+              Comment:{" "}
+              <div
+                style={{
+                  color: "white",
+                  fontWeight: 300,
+                  // padding: 10,
+                  marginTop: 5,
+                  maxWidth: "90vw",
+                }}
+              >
+                <CKEditor
+                  editor={ClassicEditor}
+                  name="comment"
+                  data={row.original.comment}
+                  type="inline"
+                  onInit={(editor) => {
+                    editor.isReadOnly = true;
+                  }}
+                  config={{
+                    // removePlugins: "toolbar",
+                    ckfinder: {
+                      uploadUrl: "https://projectar.automationghana.com/upload",
+                    },
+                  }}
+                />
+              </div>
+            </div>
+          ) : (
             <div
               style={{
+                display: "flex",
+                justifyContent: "space-around",
                 color: "white",
-                fontWeight: 300,
-                // padding: 10,
-                marginTop: 5,
-                maxWidth: "90vw",
               }}
             >
-              <CKEditor
-                editor={ClassicEditor}
-                name="comment"
-                data={row.original.comment}
-                type="inline"
-                onInit={(editor) => {
-                  editor.isReadOnly = true;
-                }}
-                config={{
-                  // removePlugins: "toolbar",
-                  ckfinder: {
-                    uploadUrl: "https://projectar.automationghana.com/upload",
-                  },
-                }}
-              />
+              No Comments
             </div>
-          </div>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-              color: "white",
-            }}
-          >
-            No Comments
-          </div>
-        )}
-      </>
-    );
-    // <div>Comment:{row.original.comment}</div>
-  }, []);
+          )}
+        </>
+      );
+      // <div>Comment:{row.original.comment}</div>
+    },
+    [isMobile]
+  );
   return (
     <div>
       <Styles>
