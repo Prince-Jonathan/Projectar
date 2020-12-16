@@ -270,7 +270,7 @@ const Project = (props) => {
                             taskType: location.state && location.state.taskType,
                           },
                           taskID: row.original.id,
-                          projectID: id,
+                          projectID: row.original.project_id,
                           reAssign: { entry_type: 3 },
                         });
                       }}
