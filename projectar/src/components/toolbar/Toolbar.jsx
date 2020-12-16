@@ -27,6 +27,26 @@ const Toolbar = (props) => {
           style={{ cursor: "pointer" }}
         />
       </div>
+      <i
+        className="fa fa-arrow-circle-left fa-lg fa-fw  "
+        aria-hidden="true"
+        style={{
+          cursor: "pointer",
+          textDecoration: "none",
+          color: "#10292e",
+        }}
+        onClick={() => history.goBack()}
+      />
+      <i
+        className="fa fa-arrow-circle-right fa-lg fa-fw  "
+        aria-hidden="true"
+        style={{
+          cursor: "pointer",
+          textDecoration: "none",
+          color: "#10292e",
+        }}
+        onClick={() => history.goForward()}
+      />
       <div className="right">
         <div
           style={{

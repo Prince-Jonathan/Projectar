@@ -18,3 +18,4 @@ backend/__pycache__/routes.cpython-37.pyc
 .gitignore
 
 projectar.zip
+projectar/public/meta.json
