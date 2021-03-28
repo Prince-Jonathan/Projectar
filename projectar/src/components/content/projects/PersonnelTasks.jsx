@@ -148,7 +148,6 @@ const PersonnelTasks = (props) => {
         },
       ];
       return isMobile ? column.splice(0, 2) : column;
-      // return column;
     },
     [isMobile]
   );
