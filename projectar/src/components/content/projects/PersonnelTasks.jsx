@@ -147,7 +147,8 @@ const PersonnelTasks = (props) => {
           Filter: () => null,
         },
       ];
-      return isMobile ? column.splice(0, 1) : column;
+      return isMobile ? column.splice(0, 2) : column;
+      // return column;
     },
     [isMobile]
   );
